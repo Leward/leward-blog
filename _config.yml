@@ -1,0 +1,53 @@
+# Welcome to Jekyll!
+#
+# This config file is meant for settings that affect your whole blog, values
+# which you are expected to set up once and rarely need to edit after that.
+# For technical reasons, this file is *NOT* reloaded automatically when you use
+# 'jekyll serve'. If you change this file, please restart the server process.
+
+# Site settings
+title: Paul-Julien Vauthier
+email: pj.vauthier@gmail.com
+description: 
+    fr: Site web personnel à propos de mon travail en tant que Développer et Consultant IT , de vélo en tant que hobby, et de mon déménagement à venir à Singapour. 
+    en: Personnal website about my job as an IT Consultant and Developer, casual Cycling and my relocation to Singapore.  
+    de: Personnal website about my job as an IT Consultant and Developer, casual Cycling and my relocation to Singapore.  
+    jp: Personnal website about my job as an IT Consultant and Developer, casual Cycling and my relocation to Singapore.  
+baseurl: "" # the subpath of your site, e.g. /blog
+url: "http://yourdomain.com" # the base hostname & protocol for your site
+twitter_username: Pj_Leward
+github_username:  Leward
+
+# Build settings
+markdown: kramdown
+
+# Menu settings
+menu: 
+    fr:
+        home: 
+            name: "Accueil"
+            url: "/index_FR"
+        resume: 
+            name: "CV"
+            url: "/cv"
+    en: 
+        home:
+            name: "Home"
+            url: "/"
+        resume:
+            name: "Resume"
+            url: "/resume"
+    de: 
+        home: 
+            name: "Home"
+            url: "/index_DE"
+        resume: 
+            name: "Lebenslauf"
+            url: "/lebenslauf"
+    jp:
+        home: 
+            name: "ホームページ"
+            url: "/index_JP"
+        resume: 
+            name: "りれきしょ" # http://www.visajapon.com/cv-japonais　#TODO: Kanji
+            url: "/rirekisho"
