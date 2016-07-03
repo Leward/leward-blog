@@ -1,14 +1,14 @@
 ---
 layout: post
-title:  "私のブォグ"
+title:  "私のブログ"
 date:   2016-04-02 23:21:55 +0200
 categories: jekyll update
 lang: jp
 ref: blog-creation
 ---
 
-スタルト!
+スタート!
 
 私は日本語のがくせい。私はしょしんしゃです。
 
-これは私のブォグです。
+これは私のブログです。
