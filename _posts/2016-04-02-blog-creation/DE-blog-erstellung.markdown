@@ -8,8 +8,9 @@ lang:         de
 ref:          blog-creation
 ---
 
-Vor einige Monate hatte ich das Idee den Blog zu schaffen. Schließlich, wird das Blog geboren sein. Für welche Ziel ? Habe ich etwas zu sagen oder zu teilen ?
+Vor einige Monate hatte ich die Idee den Blog zu schaffen. Schließlich, wird das Blog geboren sein.
+Für welches Ziel ? Habe ich etwas zu sagen oder zu teilen ?
 
-I bin ein IT-Berater auch "Full Stack" Softwareentwickler. I möchte mit disem Blog
-meine Erfahrungen teilen. Ich möchte in Singapur auswandern and möchte ich auch über
-meine Zukunft umzug teilen. Schließlich möchte ich über meine Leidenschaft für Fahrräder.
+Ich bin ein IT-Berater auch "Full Stack" Softwareentwickler. I möchte mit diesem Blog
+meine Erfahrungen teilen. Ich möchte in Singapur auswandern und möchte ich auch über
+meine Zukunft Umzug teilen. Schließlich möchte ich über meine Leidenschaft für Fahrräder.
