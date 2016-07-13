@@ -11,8 +11,8 @@ email: pj.vauthier@gmail.com
 description:
     fr: Site web personnel à propos de mon travail en tant que Développer et Consultant IT , de vélo en tant que hobby, et de mon déménagement à venir à Singapour.
     en: Personnal website about my job as an IT Consultant and Developer, casual Cycling and my relocation to Singapore.
-    de: Personnal website about my job as an IT Consultant and Developer, casual Cycling and my relocation to Singapore.
-    jp: Personnal website about my job as an IT Consultant and Developer, casual Cycling and my relocation to Singapore.
+    de: Persönlich Website über meinen Job als einen IT-Berater und Softwareentwickler, Radfahren und meinen Umzug nach Singapur.
+    jp: じょうほうテクノロジー と じてんしゃ　と　シンガポール についての私のブログ.
 baseurl: "" # the subpath of your site, e.g. /blog
 url: "http://yourdomain.com" # the base hostname & protocol for your site
 twitter_username: Pj_Leward
