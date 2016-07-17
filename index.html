@@ -18,7 +18,7 @@ ref: index
           <a class="post-link" href="{{ post.url | prepend: site.baseurl }}">{{ post.title }}</a>
         </h2>
           
-        <p>{{ post.excerpt }}</p>
+        <div class="excerpt">{{ post.excerpt }}</div>
       </li>
     {% endfor %}
   </ul>

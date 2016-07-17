@@ -54,6 +54,13 @@ $on-laptop:        800px;
     }
 }
 
+// Do not display headings in excerpts
+.home .post .excerpt {
+    h1, h2, h3 {
+        display: none;
+    }
+}
+
 
 
 // Import partials from `sass_dir` (defaults to `_sass`)
