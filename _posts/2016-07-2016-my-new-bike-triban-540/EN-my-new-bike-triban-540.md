@@ -117,4 +117,4 @@ it my review fits your needs.
 You can also refer to the review from [Bike Radar](http://www.bikeradar.com/road/gear/category/bikes/road/product/review-btwin-triban-540-49953/) 
 if you still need to make up your mind. 
 
-Feel free to ask me any question on my [Twitter account](http://www.bikeradar.com/road/gear/category/bikes/road/product/review-btwin-triban-540-49953/).
+Feel free to ask me any question on my [Twitter account](https://twitter.com/Pj_Leward).
