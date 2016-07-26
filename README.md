@@ -10,6 +10,7 @@ by following this link: http://beta.codenvy.com/f?id=k1ax3wyjyojnlwva
 
  * Japan
  * Docker, Rancher and personal PaaS
+ * Trigger a Rancher service upgrade from Jenkins
  * Rapid Application Development with Grails 3
  * Presentation of my bicycles
  * Review of Garmin Edge 1000 Explore
