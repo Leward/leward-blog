@@ -66,7 +66,7 @@ prix plutôt accessible (16€ pour les deux garde-boues).
 
 J'ai ajouté deux porte-bidons Elite et leurs bouteilles pour emporter de l'eau sur la route. 
 
-Habitant dans une grande et m'étant déjà fait volé un vélo, un antivol en U n'est pas une option. Cela aurait été dommage de 
+Habitant dans une grande ville et m'étant déjà fait volé un vélo, un antivol en U n'est pas une option. Cela aurait été dommage de 
 devoir transporter un antivol encombrant, c'est j'ai opté pour le 
 [Kryptonite Evolution Mini 5](http://www.kryptonitelock.com/en/products/product-information/current-key/000983.html) 
 avec son support Kryto-Flex pour maintenir l'antivol sur le cadre. Trouver un emplacement satisfaisant pour le support d'antivol 
