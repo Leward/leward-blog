@@ -1,0 +1,12 @@
+workspace.runtime.docker.image="leward/codenvy-jekyll"
+workspace.name = "jekyll"
+
+workspace.commands[1].name="run"
+workspace.commands[1].commandLine="cd ${current.project.path} && jekyll serve -P 3000 -H 0.0.0.0"
+workspace.commands[1].attributes={
+  "previewUrl": "http://${server.port.3000}"
+}
+
+workspace.projects[0].type="leward-blog"
+workspace.projects[0].source.type = "git"
+workspace.projects[0].source.location = "git@github.com:Leward/leward-blog.git"
