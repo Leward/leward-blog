@@ -1,4 +1,4 @@
-[![alt](https://codenvy.com/factory/resources/factory-dark.png)](http://beta.codenvy.com/f?id=k1ax3wyjyojnlwva)
+[![alt](https://codenvy.com/factory/resources/factory-dark.png)](https://codenvy.com/f?id=k1ax3wyjyojnlwva)
 
 # leward-blog
 Personal blog
