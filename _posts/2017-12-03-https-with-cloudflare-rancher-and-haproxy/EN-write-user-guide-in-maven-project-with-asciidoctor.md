@@ -11,7 +11,7 @@ excerpt_separator: <!--more-->
 
 I have my own personal PaaS platform that is powered by [Rancher](https://rancher.com/rancher/). It consists of 3 [cheap VPS
 from OVH](https://www.ovh.ie/vps/) and [one database hosted in AWS](https://aws.amazon.com/rds/). One VPS is used to run Rancher, the two others as 
-Docker host to be used by Rancher to run my applications. 
+Docker hosts to be used by Rancher to run my applications. 
 
 On top of that, I use [Cloudflare](https://www.cloudflare.com) as a [Name Server](https://en.wikipedia.org/wiki/Name_server) for my personal (leward.eu) domain and domains related to the apps running on my platform.
 
@@ -21,7 +21,7 @@ Cloudflare is also enabled as an HTTP proxy for some of my services, mainly to e
 
 ## The Setup
 
-I have three domain I want to use:
+I have three domains I want to use:
 
  * `leward.eu`
  * `app-a.leward.eu`
@@ -47,7 +47,7 @@ app-b.leward.eu     CNAME   leward.eu.
 
 ```
 
-On **each** docker Host I have an [HA proxy](https://www.digitalocean.com/community/tutorials/an-introduction-to-haproxy-and-load-balancing-concepts) listening on port 80 and directing the traffic to the proper Docker container based on the HTTP Host Header. This works even if the app is not on the same docker host as the HA proxy instance as [Rancher handles the networking between two hosts](http://rancher.com/docs/rancher/latest/en/rancher-services/networking/).
+On **each** docker Host I have an [HA proxy](https://www.digitalocean.com/community/tutorials/an-introduction-to-haproxy-and-load-balancing-concepts) listening on port 80 and directing the traffic to the proper Docker container based on the HTTP Host Header. This works even if the app is not on the same docker host as the HA proxy instance because [Rancher handles the networking between two hosts](http://rancher.com/docs/rancher/latest/en/rancher-services/networking/).
 
 The domains are managed by Cloudflare, with their HTTP proxy enabled and forcing the traffic to HTTPS. 
 
@@ -74,9 +74,9 @@ When relying on [Round-robin DNS](https://en.wikipedia.org/wiki/Round-robin_DNS)
 
 I have a [Grails](https://grails.org) application running with this configuration. And when I used the Grails `redirect` method it did not work because the URL built was using HTTP and not HTTPS.
 
-The issue is that HA Proxy itself is listening in HTTP, so when forwarding the traffic in indicates it is running.
+The issue is that HA Proxy itself is listening in HTTP, so when forwarding the traffic in indicates it is running expose and exposed through plain HTTP.
 
-There is a trick that solved the problem: adding an `X-Forwarded-Port` HTTP header through HA Proxy.
+There is a trick that solved the problem: adding an `X-Forwarded-Port` HTTP header at the HA Proxy level.
 
 ### Configure HA proxy with Rancher
 
