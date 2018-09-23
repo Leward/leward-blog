@@ -20,6 +20,10 @@ github_username:  Leward
 
 # Build settings
 markdown: kramdown
+exclude: 
+    - "docs/"
+    - Dockerfile
+    - "*.sh"
 
 # Default permalink format for posts
 permalink: /:year/:month/:day/:title.html

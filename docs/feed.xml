@@ -1,0 +1,1026 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Paul-Julien Vauthier</title>
+    <description>{&quot;fr&quot;=&gt;&quot;Site web personnel à propos de mon travail en tant que Développer et Consultant IT , de vélo en tant que hobby, et de mon déménagement à venir à Singapour.&quot;, &quot;en&quot;=&gt;&quot;Personnal website about my job as an IT Consultant and Developer, casual Cycling and my relocation to Singapore.&quot;, &quot;de&quot;=&gt;&quot;Persönlich Website über meinen Job als einen IT-Berater und Softwareentwickler, Radfahren und meinen Umzug nach Singapur.&quot;, &quot;jp&quot;=&gt;&quot;じょうほうテクノロジー と じてんしゃ　と　シンガポール についての私のブログ.&quot;}</description>
+    <link>http://yourdomain.com/</link>
+    <atom:link href="http://yourdomain.com/feed.xml" rel="self" type="application/rss+xml"/>
+    <pubDate>Mon, 24 Sep 2018 01:37:07 +0800</pubDate>
+    <lastBuildDate>Mon, 24 Sep 2018 01:37:07 +0800</lastBuildDate>
+    <generator>Jekyll v3.5.1</generator>
+    
+      <item>
+        <title>Notes on Diesel, a Rust ORM</title>
+        <description>&lt;p&gt;Lately &lt;a href=&quot;https://twitter.com/pj_Leward/status/1005856316840030208&quot;&gt;I have been playing around&lt;/a&gt; and enjoyed learning about the Rust programming. Today I spend some time working with &lt;a href=&quot;http://diesel.rs/&quot;&gt;Diesel&lt;/a&gt;, a Rust ORM.&lt;/p&gt;
+
+&lt;!--more--&gt;
+
+&lt;h2 id=&quot;schema-generation&quot;&gt;Schema generation&lt;/h2&gt;
+
+&lt;p&gt;Diesel uses a schema definition (usually called &lt;code class=&quot;highlighter-rouge&quot;&gt;schema.rs&lt;/code&gt;) to ensure the type-safety of its API.&lt;/p&gt;
+
+&lt;p&gt;When started such a project there are usually two options:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Everything is brand new, there is no existing database 
+ -&amp;gt; the dabase can be generated from the data types used in the program&lt;/li&gt;
+  &lt;li&gt;Writing a program for an existing database -&amp;gt; you don’t necessarily want an exact 1:1 mapping of 
+ the DB schema into your code. For many reasons there may be a lot of things your application does not care about in the DB schema&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;As I have an existing database, I generated my schema using the &lt;code class=&quot;highlighter-rouge&quot;&gt;diesel print-schema&lt;/code&gt; command. 
+The command dumps the DB structure into my &lt;code class=&quot;highlighter-rouge&quot;&gt;schema.rs&lt;/code&gt; file.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Note:&lt;/strong&gt; Don’t forget to add the generated &lt;code class=&quot;highlighter-rouge&quot;&gt;schema&lt;/code&gt; module to your &lt;code class=&quot;highlighter-rouge&quot;&gt;main.rs&lt;/code&gt; using &lt;code class=&quot;highlighter-rouge&quot;&gt;mod schema;&lt;/code&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;schema-mapping&quot;&gt;Schema Mapping&lt;/h2&gt;
+
+&lt;p&gt;The second step is to create the structs corresponding to your shema.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;schema.rs:&lt;/strong&gt;&lt;/p&gt;
+&lt;div class=&quot;language-rust highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nd&quot;&gt;table!&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;nf&quot;&gt;cover&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;id&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;id&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Int8&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+        &lt;span class=&quot;c&quot;&gt;// version -&amp;gt; Int8,&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;name&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Varchar&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;url&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Varchar&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;&lt;strong&gt;cover.rs:&lt;/strong&gt;&lt;/p&gt;
+&lt;div class=&quot;language-rust highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;use&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;diesel&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Queryable&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+&lt;span class=&quot;cp&quot;&gt;#[derive(Queryable,&lt;/span&gt; &lt;span class=&quot;cp&quot;&gt;Clone)]&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;pub&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;struct&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Cover&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;pub&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;id&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;i64&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;pub&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;pub&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;url&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Note that in my schema I commented out the &lt;code class=&quot;highlighter-rouge&quot;&gt;version&lt;/code&gt; column. Indeed, at this current stage, I don’t really care about that field.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Note:&lt;/strong&gt; If a field is in your &lt;code class=&quot;highlighter-rouge&quot;&gt;schema.rs&lt;/code&gt;, it should be in your struct as well. If the field is not in the struct, requests will have to specify all the columns every time, which is a bit cumbersome.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Note:&lt;/strong&gt; Make sure the order of the fields in your schema and your struct is the same. Diesel does its mapping using tuples, so the order of the fields matters.&lt;/p&gt;
+
+&lt;h2 id=&quot;the-connection-to-the-db&quot;&gt;The connection to the DB&lt;/h2&gt;
+
+&lt;p&gt;If you are working in a simple use case, a single connection to the database may be enough. 
+However, if your application is expected to issue multiple requests concurrently, it is recommended to use a pool of connections.&lt;/p&gt;
+
+&lt;p&gt;I used the following libraries to help me with the creation of my pool of connections:&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://crates.io/crates/lazy_static&quot;&gt;lazy_static&lt;/a&gt;: allows to define global constants computed at runetime&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://crates.io/crates/r2d2&quot;&gt;r2d2&lt;/a&gt;: a generic connection pool library&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://crates.io/crates/r2d2-diesel&quot;&gt;r2d2-diesel&lt;/a&gt;: support for diesel connection pool&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;The snippet below is heavily inspired from a snippet a saw somewhere else, I just can’t recall where it was…&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;database.rs&lt;/strong&gt;&lt;/p&gt;
+&lt;div class=&quot;language-rust highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;use&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;diesel&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;nn&quot;&gt;pg&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;PgConnection&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;use&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;r2d2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;::{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Pool&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;PooledConnection&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;};&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;use&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;r2d2_diesel&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ConnectionManager&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;use&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;std&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;env&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;// Type aliases to simplify a bit the types&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;type&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;PostgresPool&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Pool&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ConnectionManager&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;PgConnection&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&amp;gt;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;pub&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;type&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;PostgresPooledConnection&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;PooledConnection&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ConnectionManager&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;PgConnection&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&amp;gt;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;// Using lazy static to have a global reference to my connection pool&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;// However, I feel that for testing/mocking this won't be great.&lt;/span&gt;
+&lt;span class=&quot;nd&quot;&gt;lazy_static!&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;ref&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;POOL&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;PostgresPool&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;init_pool&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;};&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;fn&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;init_pool&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;PostgresPool&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;c&quot;&gt;// I chose configuration via an environment variable&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;let&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;database_url&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;env&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;var&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;DATABASE_URL&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;.expect&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;DATABASE_URL must be set&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;let&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;manager&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;ConnectionManager&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;PgConnection&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;new&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;database_url&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;nn&quot;&gt;Pool&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;builder&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+        &lt;span class=&quot;nf&quot;&gt;.build&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;manager&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;nf&quot;&gt;.expect&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Failed to create pool.&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;c&quot;&gt;// Unrecoverable failure!&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;/// Get a connection from a static pool of connections&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;pub&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;fn&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;get_pooled_connection&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;PostgresPooledConnection&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;let&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pool&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;POOL&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;.clone&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;let&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;database_connection&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pool&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;.get&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;.expect&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Failed to get pooled connection&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt; &lt;span class=&quot;c&quot;&gt;// Not sure when a panic is triggered here&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;database_connection&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h2 id=&quot;simple-query&quot;&gt;Simple Query&lt;/h2&gt;
+
+&lt;p&gt;This is how you can then make a query using Diesel:&lt;/p&gt;
+
+&lt;div class=&quot;language-rust highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;use&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;database&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;get_pooled_connection&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;fn&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;list_covers&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;Vec&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Cover&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;use&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;schema&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;cover&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;let&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;connection&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;*&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;get_pooled_connection&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+    &lt;span class=&quot;nn&quot;&gt;cover&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;nn&quot;&gt;table&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;load&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;connection&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;.expect&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Error loading covers&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h2 id=&quot;joining&quot;&gt;Joining&lt;/h2&gt;
+
+&lt;p&gt;Let’s have a look at a slightly more complex example involving 2 tables which needs to be joined. 
+The snippet below fetches the 5 latest news.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;schema.rs&lt;/strong&gt;&lt;/p&gt;
+&lt;div class=&quot;language-rust highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nd&quot;&gt;table!&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;nf&quot;&gt;cover&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;id&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;id&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Int8&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;name&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Varchar&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;url&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Varchar&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;nd&quot;&gt;table!&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;nf&quot;&gt;news&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;id&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;id&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Int8&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;content&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Text&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;date&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Nullable&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Timestamp&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;title&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Varchar&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;cover_id&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Int8&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;nd&quot;&gt;joinable!&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;news&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;cover&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;cover_id&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;));&lt;/span&gt; &lt;span class=&quot;c&quot;&gt;// Materialize a assiocation and a foreign key&lt;/span&gt;
+
+&lt;span class=&quot;nd&quot;&gt;allow_tables_to_appear_in_same_query!&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;cover&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;news&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;&lt;strong&gt;news.rs&lt;/strong&gt;&lt;/p&gt;
+&lt;div class=&quot;language-rust highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;use&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;chrono&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;nn&quot;&gt;prelude&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;use&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;diesel&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;::{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ExpressionMethods&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;QueryDsl&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Queryable&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;RunQueryDsl&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;};&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;use&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;cover&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Cover&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;use&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;database&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;get_pooled_connection&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+&lt;span class=&quot;cp&quot;&gt;#[derive(Debug,&lt;/span&gt; &lt;span class=&quot;cp&quot;&gt;Queryable)]&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;struct&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;NewsRow&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;id&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;i64&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;content&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;date&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;Option&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;NaiveDateTime&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;title&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;cover_id&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;i64&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;pub&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;struct&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;News&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;pub&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;id&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;i64&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;pub&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;content&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;pub&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;date&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;Option&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;NaiveDateTime&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;pub&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;title&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;pub&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;cover&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Cover&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;c&quot;&gt;// Here I want to have a Cover, not a cover_id&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;impl&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;News&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;fn&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;from&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;news_row&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;NewsRow&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;cover&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Cover&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;News&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;c&quot;&gt;// Too much cloning? Maybe, I am not sure... &lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;News&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+            &lt;span class=&quot;n&quot;&gt;id&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;news_row&lt;/span&gt;&lt;span class=&quot;py&quot;&gt;.id&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+            &lt;span class=&quot;n&quot;&gt;content&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;news_row&lt;/span&gt;&lt;span class=&quot;py&quot;&gt;.content&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;.clone&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(),&lt;/span&gt;
+            &lt;span class=&quot;n&quot;&gt;date&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;news_row&lt;/span&gt;&lt;span class=&quot;py&quot;&gt;.date&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;.clone&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(),&lt;/span&gt;
+            &lt;span class=&quot;n&quot;&gt;title&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;news_row&lt;/span&gt;&lt;span class=&quot;py&quot;&gt;.title&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;.clone&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(),&lt;/span&gt;
+            &lt;span class=&quot;n&quot;&gt;cover&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;cover&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;.clone&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(),&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;fn&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;get_latest_news&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;Vec&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;News&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;use&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;schema&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;cover&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;use&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;schema&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;news&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;let&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;connection&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;*&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;get_pooled_connection&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+    &lt;span class=&quot;nn&quot;&gt;news&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;table&lt;/span&gt;
+        &lt;span class=&quot;nf&quot;&gt;.inner_join&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nn&quot;&gt;cover&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;table&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;nf&quot;&gt;.limit&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;5&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;nf&quot;&gt;.order&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nn&quot;&gt;news&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;date&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;.desc&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;())&lt;/span&gt;
+        &lt;span class=&quot;py&quot;&gt;.load&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;NewsRow&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Cover&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;connection&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;c&quot;&gt;// To this point we get the result as a tuple. &lt;/span&gt;
+        &lt;span class=&quot;nf&quot;&gt;.expect&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Error loading news&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;c&quot;&gt;// Another panic waiting to happen!&lt;/span&gt;
+        &lt;span class=&quot;nf&quot;&gt;.iter&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+        &lt;span class=&quot;nf&quot;&gt;.map&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(|&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;result&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;News&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;from&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;result&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;result&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
+        &lt;span class=&quot;nf&quot;&gt;.collect&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;&lt;strong&gt;Note:&lt;/strong&gt; When doing a join, diesel returns the result as a tuple. 
+This works great if your struct and your schema have the same fields in the same order. 
+It it quick trickier to do it otherwise.&lt;/p&gt;
+
+&lt;p&gt;In the &lt;a href=&quot;http://diesel.rs/guides/getting-started/&quot;&gt;diesel documentation&lt;/a&gt; the snippets often indicates &lt;code class=&quot;highlighter-rouge&quot;&gt;use schema::cover::dsl::*;&lt;/code&gt;, which I don’t like very much as it very easily creates conflicts in the names of my variables. It becomes even more confusing whene joinning tables (both are likely to have an &lt;code class=&quot;highlighter-rouge&quot;&gt;id&lt;/code&gt; column).&lt;/p&gt;
+
+&lt;p&gt;In the snippet above I had to use two structs: &lt;code class=&quot;highlighter-rouge&quot;&gt;NewsRow&lt;/code&gt; and &lt;code class=&quot;highlighter-rouge&quot;&gt;News&lt;/code&gt;. The reason is that Diesel does not resolve associations in the structs like an ORM like Hibernate (Java) would do. Maybe that’s for the better as a lot of the weird stuff with Hibernate happen when handling associations.&lt;/p&gt;
+
+&lt;p&gt;I took me quite a while to wrap my head around all of that. I hope this will be useful to someone. I still feel I am just scratching the surface. Once the &lt;em&gt;I have no Idea what I’m doing&lt;/em&gt; step is over, it is quite enjoyable to use as like many things in rust: if it compile it is likely to work.&lt;/p&gt;
+</description>
+        <pubDate>Sun, 23 Sep 2018 22:35:00 +0800</pubDate>
+        <link>http://yourdomain.com/2018/09/23/diesel-rust-notes.html</link>
+        <guid isPermaLink="true">http://yourdomain.com/2018/09/23/diesel-rust-notes.html</guid>
+        
+        
+      </item>
+    
+      <item>
+        <title>Logs analysis with OVH Logs Data Platform</title>
+        <description>&lt;p&gt;OVH offers a service called “Logs Data Platform” which helps you centralizing and analyzing your logs.&lt;/p&gt;
+
+&lt;!--more--&gt;
+
+&lt;p&gt;I see two main benefits using this service:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;It’s a managed service (SaaS)&lt;/li&gt;
+  &lt;li&gt;It’s cheap&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;The offertings starts at 1€ per month for 1GB of logs with one stream of logs and one dashboard. The data retention is of 45 days.&lt;/p&gt;
+
+&lt;p&gt;It also allows to setup multiple users and define more fine-grained access rules even though I did not test the feature.&lt;/p&gt;
+
+&lt;p&gt;The service allows to interact with your logs using &lt;a href=&quot;https://www.graylog.org/features&quot;&gt;Graylog&lt;/a&gt; or &lt;a href=&quot;https://www.elastic.co/products/elasticsearch&quot;&gt;Elastisearch&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;So I decided to give a try to store and analyze the the logs of &lt;a href=&quot;https://inkzone.games&quot;&gt;Inkzone&lt;/a&gt;, a website I am currently working on.&lt;/p&gt;
+
+&lt;!--more--&gt;
+
+&lt;h2 id=&quot;about-graylog-and-gelf-format&quot;&gt;About Graylog and GELF format&lt;/h2&gt;
+
+&lt;p&gt;Graylog is a tool that centralize your logs in one place and make in easier to browse and analyze them.&lt;/p&gt;
+
+&lt;p&gt;The more applications you have the more benefits you’ll get from this kind of tool. The more you have, the more log files you also have to manage with rotation and retention policy.&lt;/p&gt;
+
+&lt;p&gt;Greylog uses a log format called &lt;a href=&quot;http://docs.graylog.org/en/2.3/pages/gelf.html&quot;&gt;GELF (Graylog Extended Lenght Format)&lt;/a&gt;. GELF differs from other log formats (like &lt;a href=&quot;https://en.wikipedia.org/wiki/Syslog&quot;&gt;syslog&lt;/a&gt;) by being a structured logging format with custom typed fields. This makes it better suited for indexing and analysis than other non structured formats.&lt;/p&gt;
+
+&lt;h2 id=&quot;send-docker-container-logs-to-graylog&quot;&gt;Send Docker container logs to Graylog&lt;/h2&gt;
+
+&lt;p&gt;Docker has a native &lt;a href=&quot;https://docs.docker.com/engine/admin/logging/gelf/&quot;&gt;gelf log driver&lt;/a&gt;.
+If you use Docker to deploy your applications and print your logs in the standard output to print your logs you can directly send your logs to graylog by changing the log driver of your containers.&lt;/p&gt;
+
+&lt;p&gt;In order to proceed you will need to know:&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;The endpoint to collect GELF logs over UDP (&lt;code class=&quot;highlighter-rouge&quot;&gt;udp://gra2.logs.ovh.com:2202&lt;/code&gt; for me)&lt;/li&gt;
+  &lt;li&gt;The token for your stream&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Then, run the docker container with the following configuration:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;docker run \
+  -e X-OVH-TOKEN=&quot;7982bbc4-9a66-4426-9de3-33d6eb201ed6&quot; \
+  --log-driver gelf \
+  --log-opt gelf-address=udp://gra2.logs.ovh.com:2202 \
+  --log-opt env=X-OVH-TOKEN \
+  -d busybox
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Replace &lt;code class=&quot;highlighter-rouge&quot;&gt;7982bbc4-9a66-4426-9de3-33d6eb201ed6&lt;/code&gt; by your actual Stream token.&lt;/p&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;--log-opt env=X-OVH-TOKEN&lt;/code&gt; for the gelf log driver will put the specified environment variable as a custom field in the GELF message (prefixed by an underscore &lt;code class=&quot;highlighter-rouge&quot;&gt;_&lt;/code&gt;). That’s how OVH can accept and properly route the incoming logs.&lt;/p&gt;
+
+&lt;p&gt;It works, however the main drawback is that the logs will be made from the Docker perspective. The reported log levels are the ones from Docker, not from the java app. Docker will only consider for log levels the standard and error outputs, so you will note have the same granulary as the java logs (DEBUG, INFO, WARN, ERROR, etc.) without doing intermediate processing.&lt;/p&gt;
+
+&lt;p&gt;If you want richer logs there are two possible approaches:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Configure and use an &lt;a href=&quot;http://docs.graylog.org/en/2.3/pages/extractors.html&quot;&gt;Extractor&lt;/a&gt; in graylog&lt;/li&gt;
+  &lt;li&gt;Send logs from the Java logging framework of your choice (logback in my case)&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&quot;send-logback-logs-to-graylog&quot;&gt;Send logback logs to Graylog&lt;/h2&gt;
+
+&lt;p&gt;From logback you can send the logs to to Greylogs by adding a new Appender:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;cp&quot;&gt;&amp;lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;configuration&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;debug=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;true&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
+
+  &lt;span class=&quot;nt&quot;&gt;&amp;lt;appender&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;name=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;STDOUT&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;class=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;ch.qos.logback.core.ConsoleAppender&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;layout&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;class=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;ch.qos.logback.classic.PatternLayout&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
+      &lt;span class=&quot;nt&quot;&gt;&amp;lt;Pattern&amp;gt;&lt;/span&gt;
+        %level %logger - %msg%n
+      &lt;span class=&quot;nt&quot;&gt;&amp;lt;/Pattern&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;/layout&amp;gt;&lt;/span&gt;
+  &lt;span class=&quot;nt&quot;&gt;&amp;lt;/appender&amp;gt;&lt;/span&gt;
+
+  &lt;span class=&quot;nt&quot;&gt;&amp;lt;appender&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;name=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;GELF&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;class=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;de.siegmar.logbackgelf.GelfUdpAppender&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;graylogHost&amp;gt;&lt;/span&gt;gra2.logs.ovh.com&lt;span class=&quot;nt&quot;&gt;&amp;lt;/graylogHost&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;graylogPort&amp;gt;&lt;/span&gt;2202&lt;span class=&quot;nt&quot;&gt;&amp;lt;/graylogPort&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;layout&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;class=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;de.siegmar.logbackgelf.GelfLayout&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
+        &lt;span class=&quot;nt&quot;&gt;&amp;lt;staticField&amp;gt;&lt;/span&gt;X-OVH-TOKEN:7982bbc4-9a66-4426-9de3-33d6eb201ed6&lt;span class=&quot;nt&quot;&gt;&amp;lt;/staticField&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;/layout&amp;gt;&lt;/span&gt;
+  &lt;span class=&quot;nt&quot;&gt;&amp;lt;/appender&amp;gt;&lt;/span&gt;
+
+  &lt;span class=&quot;nt&quot;&gt;&amp;lt;root&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;level=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;INFO&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;appender-ref&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;ref=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;STDOUT&quot;&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;/&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;appender-ref&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;ref=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;GELF&quot;&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;/&amp;gt;&lt;/span&gt;
+  &lt;span class=&quot;nt&quot;&gt;&amp;lt;/root&amp;gt;&lt;/span&gt;
+
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;/configuration&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Replace &lt;code class=&quot;highlighter-rouge&quot;&gt;7982bbc4-9a66-4426-9de3-33d6eb201ed6&lt;/code&gt; by your actual Stream token.&lt;/p&gt;
+
+&lt;p&gt;You’ll need to add the following dependency to you project: &lt;code class=&quot;highlighter-rouge&quot;&gt;compile 'de.siegmar:logback-gelf:1.0.4'&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;There is logback appender &lt;a href=&quot;https://github.com/mp911de/logstash-gelf&quot;&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;biz.paluch.logging:logstash-gelf&lt;/code&gt;&lt;/a&gt; that is quite popular, but I did not manage to make it work. So I went for &lt;a href=&quot;https://github.com/osiegmar/logback-gelf&quot;&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;de.siegmar:logback-gelf&lt;/code&gt;&lt;/a&gt; instead.&lt;/p&gt;
+</description>
+        <pubDate>Mon, 18 Dec 2017 00:40:00 +0800</pubDate>
+        <link>http://yourdomain.com/2017/12/18/logs-analysis-with-ovh.html</link>
+        <guid isPermaLink="true">http://yourdomain.com/2017/12/18/logs-analysis-with-ovh.html</guid>
+        
+        
+      </item>
+    
+      <item>
+        <title>Use Cloudflare HTTPS with Rancher and HA Proxy</title>
+        <description>&lt;p&gt;I have my own personal PaaS platform that is powered by &lt;a href=&quot;https://rancher.com/rancher/&quot;&gt;Rancher&lt;/a&gt;. It consists of 3 &lt;a href=&quot;https://www.ovh.ie/vps/&quot;&gt;cheap VPS
+from OVH&lt;/a&gt; and &lt;a href=&quot;https://aws.amazon.com/rds/&quot;&gt;one database hosted in AWS&lt;/a&gt;. One VPS is used to run Rancher, the two others as 
+Docker hosts to be used by Rancher to run my applications.&lt;/p&gt;
+
+&lt;p&gt;On top of that, I use &lt;a href=&quot;https://www.cloudflare.com&quot;&gt;Cloudflare&lt;/a&gt; as a &lt;a href=&quot;https://en.wikipedia.org/wiki/Name_server&quot;&gt;Name Server&lt;/a&gt; for my personal (leward.eu) domain and domains related to the apps running on my platform.&lt;/p&gt;
+
+&lt;p&gt;Cloudflare is also enabled as an HTTP proxy for some of my services, mainly to easily enable HTTPS.&lt;/p&gt;
+
+&lt;!--more--&gt;
+
+&lt;h2 id=&quot;the-setup&quot;&gt;The Setup&lt;/h2&gt;
+
+&lt;p&gt;I have three domains I want to use:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;leward.eu&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;app-a.leward.eu&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;app-b.leward.eu&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;I have three VPS servers:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Rancher&lt;/li&gt;
+  &lt;li&gt;Docker Host #1&lt;/li&gt;
+  &lt;li&gt;Docker Host #2&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;My domains are configured to point to all my docker hosts. The DNS records looks like this (simplified):&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;;; A Records
+leward.eu           A       IP_DOCKER_HOST_1
+leward.eu           A       IP_DOCKER_HOST_2
+platform.leward.eu  A       IP_RANCHER_HOST
+
+;; CNAME Records
+app-a.leward.eu     CNAME   leward.eu.
+app-b.leward.eu     CNAME   leward.eu.
+
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;On &lt;strong&gt;each&lt;/strong&gt; docker Host I have an &lt;a href=&quot;https://www.digitalocean.com/community/tutorials/an-introduction-to-haproxy-and-load-balancing-concepts&quot;&gt;HA proxy&lt;/a&gt; listening on port 80 and directing the traffic to the proper Docker container based on the HTTP Host Header. This works even if the app is not on the same docker host as the HA proxy instance because &lt;a href=&quot;http://rancher.com/docs/rancher/latest/en/rancher-services/networking/&quot;&gt;Rancher handles the networking between two hosts&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;The domains are managed by Cloudflare, with their HTTP proxy enabled and forcing the traffic to HTTPS.&lt;/p&gt;
+
+&lt;p&gt;A request made to one of my application actually going throught the following layers:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;User --[HTTPS]--&amp;gt; Cloudflare --[HTTP]--&amp;gt; HA proxy --[HTTP]--&amp;gt; App
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;This not perfect, but it is quite convenient and removes the hassle of having to deal myself with certificates.&lt;/p&gt;
+
+&lt;p&gt;I would like in the future to be able to have HTTPS all the way (maybe using &lt;a href=&quot;https://letsencrypt.org/&quot;&gt;Let’s Encrypt&lt;/a&gt;):&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;User --[HTTPS]--&amp;gt; HA Proxy --[HTTPS]--&amp;gt; App
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;&lt;a href=&quot;/assets/2017-12-03-https-with-cloudflare-rancher-and-haproxy/Rancher.svg&quot;&gt;&lt;img src=&quot;/assets/2017-12-03-https-with-cloudflare-rancher-and-haproxy/Rancher.svg&quot; alt=&quot;Diagram of my personal PaaS&quot; /&gt;&lt;/a&gt;
+&lt;em&gt;Diagram made with &lt;a href=&quot;https://www.draw.io&quot;&gt;draw.io&lt;/a&gt; and their amazing SVG export feature&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;When relying on &lt;a href=&quot;https://en.wikipedia.org/wiki/Round-robin_DNS&quot;&gt;Round-robin DNS&lt;/a&gt; to achieve load balancing and high-availability, it is good to use &lt;a href=&quot;https://blog.digitalocean.com/floating-ips-start-architecting-your-applications-for-high-availability/&quot;&gt;Floating IP&lt;/a&gt; addresses that you can easily map to another host.&lt;/p&gt;
+
+&lt;h2 id=&quot;the-application-believes-it-is-accessed-through-http&quot;&gt;The Application believes it is accessed through HTTP&lt;/h2&gt;
+
+&lt;p&gt;I have a &lt;a href=&quot;https://grails.org&quot;&gt;Grails&lt;/a&gt; application running with this configuration. And when I used the Grails &lt;code class=&quot;highlighter-rouge&quot;&gt;redirect&lt;/code&gt; method it did not work because the URL built was using HTTP and not HTTPS.&lt;/p&gt;
+
+&lt;p&gt;The issue is that HA Proxy itself is listening in HTTP, so when forwarding the traffic in indicates it is running expose and exposed through plain HTTP.&lt;/p&gt;
+
+&lt;p&gt;There is a trick that solved the problem: adding an &lt;code class=&quot;highlighter-rouge&quot;&gt;X-Forwarded-Port&lt;/code&gt; HTTP header at the HA Proxy level.&lt;/p&gt;
+
+&lt;h3 id=&quot;configure-ha-proxy-with-rancher&quot;&gt;Configure HA proxy with Rancher&lt;/h3&gt;
+
+&lt;p&gt;Custom configuration can be added to HA Proxy on Rancher. However, figuring out how to properly apply the configuration was not straightforward.&lt;/p&gt;
+
+&lt;p&gt;Let’s say &lt;strong&gt;App B&lt;/strong&gt; is the application on which I want to correct that behavior.&lt;/p&gt;
+
+&lt;p&gt;Then I have to add in my custom &lt;code class=&quot;highlighter-rouge&quot;&gt;haproxy.cfg&lt;/code&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;backend 80_app_b_leward_sg_
+    http-request add-header X-Forwarded-Port 443
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;80_app_b_leward_sg_&lt;/code&gt; is a value generated by Rancher. You can verify which one Rancher has generated for your application by running a Shell into the HA Proxy container and inspect the configuration using &lt;code class=&quot;highlighter-rouge&quot;&gt;vi /etc/haproxy/haproxy.cfg&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;After the configuration being applied, my Grails app could properly perform the redirect using HTTPS.&lt;/p&gt;
+</description>
+        <pubDate>Sun, 03 Dec 2017 23:23:00 +0800</pubDate>
+        <link>http://yourdomain.com/2017/12/03/use-cloudflare-https-with-rancher-and-ha-proxy.html</link>
+        <guid isPermaLink="true">http://yourdomain.com/2017/12/03/use-cloudflare-https-with-rancher-and-ha-proxy.html</guid>
+        
+        
+      </item>
+    
+      <item>
+        <title>Write a user guide in a Maven project using Asciidoctor</title>
+        <description>&lt;p&gt;On my current engagement for a client at &lt;a href=&quot;http://www.zenika.sg&quot;&gt;Zenika&lt;/a&gt; I work on an authentication module that is going to be used by many applications.&lt;/p&gt;
+
+&lt;p&gt;The fact that many applications are going to rely on us makes documentation what we do quite important. So far we used Swagger in order to document our REST API thanks to &lt;a href=&quot;http://springfox.github.io/springfox/&quot;&gt;Springfox&lt;/a&gt; and some documentation that we tried to maintain in Confluence.&lt;/p&gt;
+
+&lt;!--more--&gt;
+
+&lt;h2 id=&quot;our-documentation-problem&quot;&gt;Our documentation problem&lt;/h2&gt;
+
+&lt;p&gt;The Swagger documentation overall can always be improved but it did quite a good job at documenting our API contracts and people used it quite a lot. What was lacking, however, was a proper user guide, gor users to properly understand what our authentication module is about and how to integrate with it. I had to explain the workflow to every consumer and that is far from ideal.&lt;/p&gt;
+
+&lt;p&gt;We also lacked documentation explaining how to setup the project and all the possible configurations such as the external systems to connect to, the database configuration, the authentication flow (groovy DSL to configure authentication screens - I should write an article about this) and whether to use mocks or not.&lt;/p&gt;
+
+&lt;p&gt;We actually to put some documentation in Confluence, but it is not easy to organize, is used by many people for different purpose. The documentation we put there was eventually behind the god and not versionned. Versionning of the documentation is useful if you have multiple deployments of the same software which could be of different versions.&lt;/p&gt;
+
+&lt;p&gt;That’s why in the team we decided to try to tight our documentation into our codebase. So that it will follow the code evolutions, can be compiled and published automatically. From now on we can also more easily integrate documentation tasks and review as part of our Pull Requests and code reviews.&lt;/p&gt;
+
+&lt;h2 id=&quot;implementation-of-documentation-in-code-using-asciidoctor&quot;&gt;Implementation of documentation in code using Asciidoctor&lt;/h2&gt;
+
+&lt;p&gt;The project is a Spring project and we use Maven to build the project. It turns out that Spring themesevles write &lt;a href=&quot;http://cloud.spring.io/spring-cloud-static/spring-cloud-config/1.3.1.RELEASE/&quot;&gt;some of their documentations&lt;/a&gt; using &lt;a href=&quot;http://asciidoctor.org&quot;&gt;Asciidoctor&lt;/a&gt; and their is an &lt;a href=&quot;https://github.com/asciidoctor/asciidoctor-maven-plugin&quot;&gt;Asciidoctor Maven plugin&lt;/a&gt; available.&lt;/p&gt;
+
+&lt;p&gt;To start with Asciidoctor on your existing Maven project add the asciidoctor plugin in your &lt;code class=&quot;highlighter-rouge&quot;&gt;pom.xml&lt;/code&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;language-xml highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nt&quot;&gt;&amp;lt;plugin&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;groupId&amp;gt;&lt;/span&gt;org.asciidoctor&lt;span class=&quot;nt&quot;&gt;&amp;lt;/groupId&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;artifactId&amp;gt;&lt;/span&gt;asciidoctor-maven-plugin&lt;span class=&quot;nt&quot;&gt;&amp;lt;/artifactId&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;version&amp;gt;&lt;/span&gt;1.5.5&lt;span class=&quot;nt&quot;&gt;&amp;lt;/version&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;executions&amp;gt;&lt;/span&gt;
+        &lt;span class=&quot;nt&quot;&gt;&amp;lt;execution&amp;gt;&lt;/span&gt;
+            &lt;span class=&quot;nt&quot;&gt;&amp;lt;id&amp;gt;&lt;/span&gt;asciidoc-html&lt;span class=&quot;nt&quot;&gt;&amp;lt;/id&amp;gt;&lt;/span&gt;
+            &lt;span class=&quot;nt&quot;&gt;&amp;lt;phase&amp;gt;&lt;/span&gt;generate-resources&lt;span class=&quot;nt&quot;&gt;&amp;lt;/phase&amp;gt;&lt;/span&gt;
+            &lt;span class=&quot;nt&quot;&gt;&amp;lt;goals&amp;gt;&lt;/span&gt;
+                &lt;span class=&quot;nt&quot;&gt;&amp;lt;goal&amp;gt;&lt;/span&gt;process-asciidoc&lt;span class=&quot;nt&quot;&gt;&amp;lt;/goal&amp;gt;&lt;/span&gt;
+            &lt;span class=&quot;nt&quot;&gt;&amp;lt;/goals&amp;gt;&lt;/span&gt;
+            &lt;span class=&quot;nt&quot;&gt;&amp;lt;configuration&amp;gt;&lt;/span&gt;
+                &lt;span class=&quot;nt&quot;&gt;&amp;lt;backend&amp;gt;&lt;/span&gt;html&lt;span class=&quot;nt&quot;&gt;&amp;lt;/backend&amp;gt;&lt;/span&gt;
+            &lt;span class=&quot;nt&quot;&gt;&amp;lt;/configuration&amp;gt;&lt;/span&gt;
+        &lt;span class=&quot;nt&quot;&gt;&amp;lt;/execution&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;/executions&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;/plugin&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;We add &lt;code class=&quot;highlighter-rouge&quot;&gt;asciidoctor-maven-plugin&lt;/code&gt; to our build and configure it to attach the generation of the documentation to the Maven &lt;code class=&quot;highlighter-rouge&quot;&gt;generate-resources&lt;/code&gt; phase. The only configuration we need to specify is that we want the documentation generated in HTML.&lt;/p&gt;
+
+&lt;p&gt;The maven build being configured, we can now right the documentation. By default the documation as to be located under the &lt;code class=&quot;highlighter-rouge&quot;&gt;src/main/asciidoc&lt;/code&gt; directory.&lt;/p&gt;
+
+&lt;p&gt;Then create an &lt;code class=&quot;highlighter-rouge&quot;&gt;index.adoc&lt;/code&gt; file with the following content:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-asciidoc&quot;&gt;= MyIdeas User Guide
+
+This is a user manual for an example project.
+
+== Introduction
+
+This project does something.
+We just haven't decided what that is yet.
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;To generate the documentation in HTML format, run: &lt;code class=&quot;highlighter-rouge&quot;&gt;mvn clean package&lt;/code&gt; and you should have a &lt;code class=&quot;highlighter-rouge&quot;&gt;target/generated-docs/index.html&lt;/code&gt; file generated.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;/assets/2017-08-05-write-user-guide-in-maven-project-with-asciidoctor/first-doc-generated.png&quot;&gt;&lt;img src=&quot;/assets/2017-08-05-write-user-guide-in-maven-project-with-asciidoctor/first-doc-generated.png&quot; alt=&quot;Our first generated documentation&quot; /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;We can already see that it comes with a neat default theme and the footer includes the generation date.&lt;/p&gt;
+
+&lt;h2 id=&quot;tips-and-tricks&quot;&gt;Tips and tricks&lt;/h2&gt;
+
+&lt;h3 id=&quot;include-project-version-number&quot;&gt;Include project version number&lt;/h3&gt;
+
+&lt;p&gt;To track which version of the software the generated document it is possible to include the version of the Maven project in the header of the generated document. The &lt;a href=&quot;https://github.com/asciidoctor/asciidoctor-maven-plugin#add-version-and-build-date-to-the-header&quot;&gt;plugin’s documentation&lt;/a&gt; describes how to configure it:&lt;/p&gt;
+
+&lt;div class=&quot;language-xml highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nt&quot;&gt;&amp;lt;properties&amp;gt;&lt;/span&gt;
+   &lt;span class=&quot;c&quot;&gt;&amp;lt;!-- Custom date format to be displayed --&amp;gt;&lt;/span&gt;
+   &lt;span class=&quot;nt&quot;&gt;&amp;lt;maven.build.timestamp.format&amp;gt;&lt;/span&gt;dd MMMM yyyy HH&lt;span class=&quot;nt&quot;&gt;&amp;lt;/maven.build.timestamp.format&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;/properties&amp;gt;&lt;/span&gt;
+
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;configuration&amp;gt;&lt;/span&gt;
+    ...
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;attributes&amp;gt;&lt;/span&gt;
+        ...
+        &lt;span class=&quot;nt&quot;&gt;&amp;lt;revnumber&amp;gt;&lt;/span&gt;${project.version}&lt;span class=&quot;nt&quot;&gt;&amp;lt;/revnumber&amp;gt;&lt;/span&gt;
+        &lt;span class=&quot;nt&quot;&gt;&amp;lt;revdate&amp;gt;&lt;/span&gt;${maven.build.timestamp}&lt;span class=&quot;nt&quot;&gt;&amp;lt;/revdate&amp;gt;&lt;/span&gt;
+        &lt;span class=&quot;nt&quot;&gt;&amp;lt;organization&amp;gt;&lt;/span&gt;${project.organization.name}&lt;span class=&quot;nt&quot;&gt;&amp;lt;/organization&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;/attributes&amp;gt;&lt;/span&gt;
+    ...
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;/configuration&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;&lt;a href=&quot;/assets/2017-08-05-write-user-guide-in-maven-project-with-asciidoctor/doc-with-version-number.png&quot;&gt;&lt;img src=&quot;/assets/2017-08-05-write-user-guide-in-maven-project-with-asciidoctor/doc-with-version-number.png&quot; alt=&quot;Maven version number in the header&quot; /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;include-code-snippets-from-actual-code&quot;&gt;Include code snippets from actual code&lt;/h3&gt;
+
+&lt;p&gt;You can also link actual code snippets from the project without having to copy them. This means your documentation never get out of sync if a code example change.&lt;/p&gt;
+
+&lt;p&gt;First, define the &lt;code class=&quot;highlighter-rouge&quot;&gt;sourcedir&lt;/code&gt; attribute in order to inscruct the plugin where to look for source code:&lt;/p&gt;
+
+&lt;div class=&quot;language-xml highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nt&quot;&gt;&amp;lt;attributes&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;sourcedir&amp;gt;&lt;/span&gt;${project.build.sourceDirectory}&lt;span class=&quot;nt&quot;&gt;&amp;lt;/sourcedir&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;/attributes&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Then in your documentation you can use this reference to include code snippets:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-asciidoc&quot;&gt;== Code from the project
+
+[source,java]
+.Java code from project
+----
+include::{sourcedir}/eu/leward/asciidocdemo/IdeaController.java[tags=class]
+----
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Noticed the &lt;code class=&quot;highlighter-rouge&quot;&gt;[tags=class]&lt;/code&gt;? The brackets after the file you want to include give more details about how the inclusion should be done. Here we don’t want to show the whole file as we are not interested in the java imports.&lt;/p&gt;
+
+&lt;p&gt;In order to extract a subset of the file you can put tags in the source code:&lt;/p&gt;
+
+&lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kn&quot;&gt;package&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;eu&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;leward&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;asciidocdemo&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;org.springframework.web.bind.annotation.RestController&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;// tag::class[]&lt;/span&gt;
+&lt;span class=&quot;nd&quot;&gt;@RestController&lt;/span&gt;
+&lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;IdeaController&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;// end::class[]&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;By leaving the brackets empty you can display the whole file&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-asciidoc&quot;&gt;include::{sourcedir}/eu/leward/asciidocdemo/IdeaController.java[]
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;a href=&quot;/assets/2017-08-05-write-user-guide-in-maven-project-with-asciidoctor/doc-with-code-snippet.png&quot;&gt;&lt;img src=&quot;/assets/2017-08-05-write-user-guide-in-maven-project-with-asciidoctor/doc-with-code-snippet.png&quot; alt=&quot;Documentation with code snippet from the actual project source code&quot; /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;A good usecases would be to have in the documentation some snippets that are unit tests. They are often short example and the project will benefits from the automatic tests.&lt;/p&gt;
+
+&lt;h2 id=&quot;about-the-asciidoc-syntax&quot;&gt;About the Asciidoc syntax&lt;/h2&gt;
+
+&lt;p&gt;The Asciidoc syntax is, like Markdown, lightweight and aims at making the document written in Asciidoc easily readable without beiing processed or converted.&lt;/p&gt;
+
+&lt;p&gt;When using Asciidoctor, a lot of the syntax elements &lt;a href=&quot;http://asciidoctor.org/docs/asciidoc-syntax-quick-reference/#markdown-compatibility&quot;&gt;are the same as in markdown&lt;/a&gt; such as headings, paragraphs, formatting, links, images, source code, etc.&lt;/p&gt;
+
+&lt;p&gt;However there are some differences and more important Asciidoc comes more possibilities in its syntax than regular Markdown or even GitHub flavoured markdown.&lt;/p&gt;
+
+&lt;p&gt;You can find a &lt;a href=&quot;http://asciidoctor.org/docs/asciidoc-syntax-quick-reference/&quot;&gt;reference of Asciidoc syntax on the official documentation&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h2 id=&quot;links&quot;&gt;Links&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/Leward/swagger-asciidoc-demo&quot;&gt;Examples used in this article on Github&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://asciidoctor.org/docs/asciidoc-syntax-quick-reference/&quot;&gt;AsciiDoc Syntax Quick Reference&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;http://asciidoctor.org&quot;&gt;Asciidoctor website&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/asciidoctor/asciidoctor-maven-plugin&quot;&gt;Asciidoctor Maven plugin&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        <pubDate>Sat, 05 Aug 2017 14:24:00 +0800</pubDate>
+        <link>http://yourdomain.com/2017/08/05/write-user-guide-maven-project-with-asciidoctor.html</link>
+        <guid isPermaLink="true">http://yourdomain.com/2017/08/05/write-user-guide-maven-project-with-asciidoctor.html</guid>
+        
+        
+      </item>
+    
+      <item>
+        <title>My first PCN ride in Singapore</title>
+        <description>&lt;p&gt;I recently received my 
+ &lt;a href=&quot;/2016/07/16/my-new-bike-triban-540.html&quot;&gt;bicycle&lt;/a&gt;
+ from France. Almost a month without riding my legs urged me to have a ride.&lt;/p&gt;
+
+&lt;p&gt;I needed to buy a few stuff for my bike, as I left some of bike equipments to a colleague in France.  So I decided to have a ride to one of the &lt;a href=&quot;https://www.decathlon.sg/content/465_store-locations&quot;&gt;Singapore’s Decathlon store&lt;/a&gt;. Then, let’s ride to the City Square Mall!&lt;/p&gt;
+
+&lt;!--more--&gt;
+
+&lt;p&gt;I basically had two options:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Have a gentle ride using the PCN (Park Connectors Network)&lt;/li&gt;
+  &lt;li&gt;Rush to my destination via the main road&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&quot;the-pcn-ride&quot;&gt;The PCN Ride&lt;/h2&gt;
+
+&lt;p&gt;To go to City Square Mall I relied on my Garmin on which I just installed the Singapore Map thanks to &lt;a href=&quot;http://garmin.openstreetmap.nl&quot;&gt;nice Dutch Garmin map export tool&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;Generally my GPS will make small detours if it can find a safer and more bicycle friendly route. Which, in my case, led me to mainly using the PCN as the GPS saw it as pretty nice, direct, dedicated and connected routes. It indeed sounds like the perfect route.&lt;/p&gt;
+
+&lt;p&gt;I &lt;a href=&quot;/assets/2017-01-15-first-pcn-ride-in-singapore/deviation-got-lost-serangoon-pcn.png&quot;&gt;got lost&lt;/a&gt; at some point. Ok that one is enterily my fault, I should’t have thought I was more clever than the GPS.&lt;/p&gt;
+
+&lt;p&gt;Overall, this was a pleasant ride with almost no moments which I had to share my path with cars. As you get to go though some parks (hence the name Park Connector) I experiences quite nice greeneries.&lt;/p&gt;
+
+&lt;p&gt;Although I enjoyed my ride, there are a few things which I thing are worth mentioning.&lt;/p&gt;
+
+&lt;h3 id=&quot;works-and-deviation&quot;&gt;Works and deviation&lt;/h3&gt;
+
+&lt;p&gt;There were some heavy works going on the &lt;a href=&quot;https://www.nparks.gov.sg/gardens-parks-and-nature/park-connector-network/sungei-serangoon-pc&quot;&gt;Seragoon Park Connector&lt;/a&gt;. 
+The good thing is that an &lt;a href=&quot;/assets/2017-01-15-first-pcn-ride-in-singapore/deviation-got-lost-serangoon-pcn.png&quot;&gt;alternate route&lt;/a&gt; was proposed to the cyclist and it was quite easy to follow. 
+However as I traveled though the Deviation my GPS went berserk: “&lt;em&gt;Calculating new Route…&lt;/em&gt;”, “&lt;em&gt;Make U-turn&lt;/em&gt;”, “&lt;em&gt;Turn left&lt;/em&gt;”.&lt;/p&gt;
+
+&lt;p&gt;When planning a route, you may not foresee these deviations. 
+I my case the indications were easy to follow. 
+I don’t know how it generally is.&lt;/p&gt;
+
+&lt;h3 id=&quot;paths-are-mostly-shared-paths&quot;&gt;Paths are mostly shared paths&lt;/h3&gt;
+
+&lt;p&gt;Most of the paths are shared with pedestrians. 
+The parks connectors have dedicated paths and paths that are actually a sidewalk. The sidewalks ones are not the nicest as they are quite narrow and you get to encourer pedestrians and bus stops on them. 
+During the week-end it can get quite crowded and you’d need to carefully overtake pedestrians while minding for the oncoming cyclists and pedestrians. 
+I guess for a morning ride during the week-end this is much more quiet.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;/assets/2017-01-15-first-pcn-ride-in-singapore/serangoon park connector.jpg&quot;&gt;&lt;img src=&quot;/assets/2017-01-15-first-pcn-ride-in-singapore/serangoon park connector_mini.jpg&quot; alt=&quot;View Serangoon PCN&quot; /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;A view on the Serangoon PCN. Picture by &lt;a href=&quot;http://j0035001-2.blogspot.sg/2013/06/singapore-punggol-park-march-2013.html&quot;&gt;George&lt;/a&gt;.&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;A funny thing is that when I saw dedicated and segragated paths for cyclists and pedestrians, they kind of liked using the cycling path instead of the pedestrian’s.&lt;/p&gt;
+
+&lt;h3 id=&quot;the-dreaded-overpass-and-underpass&quot;&gt;The dreaded overpass and underpass&lt;/h3&gt;
+
+&lt;p&gt;You know the weather is Singapore is hot and humid. When you start riding we can enjoy a breeze of refreshing air. 
+This is really enjoyable until you meet with an over or underpass on which you cannot physically ride (stairs) or on which you are not allowed to ride (or risk a S$1000 fine).&lt;/p&gt;
+
+&lt;p&gt;The thing it that you will start sweating even though if you tried to pace yourself and having to carry the bicycle on the bicycle makes things worst.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;/assets/2017-01-15-first-pcn-ride-in-singapore/spiral-bridge-pie.jpg&quot;&gt;&lt;img src=&quot;/assets/2017-01-15-first-pcn-ride-in-singapore/spiral-bridge-pie.jpg&quot; alt=&quot;A spirale bridge to be build&quot; /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;The overal trip from Buangkok to City Square mall &lt;strong&gt;took me 1h19m for a distance of 17.6km&lt;/strong&gt;. 
+It should have been quicker as I didn’t know the way. 
+I think the ride could have been 10 minutes shorter without increasing my pace by… well… not geting lost.&lt;/p&gt;
+
+&lt;h2 id=&quot;the-way-back-home&quot;&gt;The way back home&lt;/h2&gt;
+
+&lt;p&gt;Even if I enjoyed my ride on the PCN the night fell and I wanted to go home faster. 
+Also, I wanted to avoid the overpass and underpass I met before. 
+I opened the map on my phone and decided to go for the most direct options, via the main roads. 
+I used to ride long distances and in the traffic in Paris, I guess it shouldn’t be too bad.&lt;/p&gt;
+
+&lt;p&gt;I always keep going straightforward, I don’t use my GPS for the navigation. 
+I have quite a good pace, I ride around 30km/h which makes it easy to move within the traffic.
+I see the MRT stations on my way: Boon Keng, Potong Pasir, Serangoon… I am already at Serangoon that was quick!&lt;/p&gt;
+
+&lt;p&gt;Actually I had more fun riding the way back. Probably because of the adrenaline. 
+I like pushing myself and arrived completely sweaty at home.
+However I didn’t really took the time to enjoy the scenery although I saw a few nice buildings on my way.&lt;/p&gt;
+
+&lt;p&gt;It took me 35 minutes to get home. Still longer than using the MRT, but 10 extra minutes for a decent workout and some fun is definitely worth it.
+Even though I was constantly riding around 30km/h, my average speed is only of 18km/h.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;/assets/2017-01-15-first-pcn-ride-in-singapore/city_square_to_buangkok_speed_graph.png&quot;&gt;&lt;img src=&quot;/assets/2017-01-15-first-pcn-ride-in-singapore/city_square_to_buangkok_speed_graph.png&quot; alt=&quot;Speed graph between&quot; /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Also on my way I met a fellow cyclist. I couldn’t be helped, I had to speed in order to join him. 
+I overtook him, then he overtook me again. We greeted each other at the traffic light and continue a bit together. 
+That’s soemthing I love about bicycle, it triggers chats and exchanges with fellow riders. 
+You definitely wouldn’t do that in a car or on the MRT: “&lt;em&gt;Oh so you take the yellow line, me too, how awesome!&lt;/em&gt;”.&lt;/p&gt;
+
+&lt;p&gt;The presence of bus lane made this ride quite enjoyable, because you have to worry less about the traffic having to overtake you. 
+There are much less buses to take care of than cars.&lt;/p&gt;
+
+&lt;h2 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h2&gt;
+
+&lt;p&gt;The PCN network is a very good idea and do wonders when they are made of dedicated and wide paths. However a full ride away of the traffic is not always possible and sometimes makes big detours unavoidable.&lt;/p&gt;
+
+&lt;p&gt;If you are more in a hurry you can ride in the traffic on the main ride, most of them can be used by bike (exceptions being some tunnels and all the expressways). However Singapore’s street are wide with often fast moving traffic which makes the experience to be quite intimidating. The good side is that you ride for sport there are good stretch of roads to practice.&lt;/p&gt;
+
+&lt;h2 id=&quot;links&quot;&gt;Links&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;http://jnhiew.blogspot.sg/2014/12/cycling-map-in-singapore.html&quot;&gt;Unofficial Singapore cycling maps with good annotations&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.youtube.com/watch?v=0fr8qgqPkjQ&quot;&gt;The Strait Times: Cycling from Clementi to the CBD&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.youtube.com/watch?v=9ZjpR3tuRYA&quot;&gt;An old fashioned video showing the Serangoon Park Connector&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;http://j0035001-2.blogspot.sg&quot;&gt;Goerge’s Blog featuring photos of the different Park Connectors&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        <pubDate>Sun, 15 Jan 2017 18:23:00 +0800</pubDate>
+        <link>http://yourdomain.com/2017/01/15/my-first-pcn-ride-in-singapore.html</link>
+        <guid isPermaLink="true">http://yourdomain.com/2017/01/15/my-first-pcn-ride-in-singapore.html</guid>
+        
+        
+      </item>
+    
+      <item>
+        <title>私　の　あたらしい　じてんしゃ</title>
+        <description>&lt;p&gt;あたらしいじてんしゃがひつようだか。&lt;/p&gt;
+
+&lt;p&gt;いいえとはい。わかりません。&lt;/p&gt;
+
+&lt;!--more--&gt;
+
+&lt;p&gt;&lt;a href=&quot;/2016/07/16/my-new-bike-triban-540.html&quot;&gt;英語での記事&lt;/a&gt;.&lt;/p&gt;
+</description>
+        <pubDate>Sat, 16 Jul 2016 02:57:00 +0800</pubDate>
+        <link>http://yourdomain.com/2016/07/16/%E7%A7%81%E3%81%AE%E3%81%82%E3%81%9F%E3%82%89%E3%81%97%E3%81%84%E3%81%98%E3%81%A6%E3%82%93%E3%81%97%E3%82%83.html</link>
+        <guid isPermaLink="true">http://yourdomain.com/2016/07/16/%E7%A7%81%E3%81%AE%E3%81%82%E3%81%9F%E3%82%89%E3%81%97%E3%81%84%E3%81%98%E3%81%A6%E3%82%93%E3%81%97%E3%82%83.html</guid>
+        
+        
+      </item>
+    
+      <item>
+        <title>Mon nouveau vélo: le B'Twin Triban 540</title>
+        <description>&lt;h2 id=&quot;et-un-vélo-de-plus-&quot;&gt;Et un vélo de plus !&lt;/h2&gt;
+
+&lt;p&gt;Est-ce que j’avais besoin d’un nouveau vélo ? Pas forcément… enfin peut-être… ou absolument. Jusqu’ici je possédais deux 
+vélos pliants: un &lt;a href=&quot;http://dahon.com/bikes/eco-c7/&quot;&gt;Dahon Eco C7&lt;/a&gt; rouge et un &lt;a href=&quot;http://dahon.com/bikes/mu-p24/&quot;&gt;Dahon Mu P24&lt;/a&gt; blanc. 
+Il s’agit de mes vélos à tout faire : trajet &lt;a href=&quot;http://forum.velotaf.com&quot;&gt;vélotaf&lt;/a&gt; quotidien en ville, faire les courses et faire des
+randonnées un peu longues, en général avec un ami.&lt;br /&gt;
+&lt;!--more--&gt;&lt;/p&gt;
+
+&lt;p&gt;Enfourcher ces vélos est toujours un plaisir et je devrai à l’occasion pour présenter mes deux petits (vélos, je rappelle). 
+A vrai dire un nouveau membre vient juste de rejoindre cette belle famille.&lt;/p&gt;
+
+&lt;p&gt;Aussi fun soient-ils j’ai commencé à ressentir quelques limitations avec mes vélos pliants. Tout d’abord, en gagnant de l’expérience sur 
+le vélo, ma vitesse moyenne s’améliore et mes Dahons ne sont pas forcément les meilleurs quand il s’agit de rouler à 30 km/h ou plus. 
+Aussi, je sens que ces derniers manquent de rigidité dans les accélérations et maintenir et atteindre une vitesse importante est rapidement 
+fatiguant.&lt;/p&gt;
+
+&lt;p&gt;C’est pourquoi j’ai décidé d’acquérir un nouveau vélo plus classique. J’ai dû négocier un peu à la maison afin d’avoir la permission 
+pour apporter un nouveau vélo : il fallait que j’en vende un en échange (spoiler: j’ai toujours mes deux Dahons =D).&lt;/p&gt;
+
+&lt;h2 id=&quot;le-vélo&quot;&gt;Le vélo&lt;/h2&gt;
+
+&lt;p&gt;Le Triban 540 entre dans la catégorie des vélos de route. Cependant, je le qualifierai de vélo de route versatile dans la mesure où je l’utilise 
+au quotidien pour mes trajets de vétotaf ainsi que mes randonnées plus ou moins longues.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;/assets/2016-07-15-my-new-bike-triban-540/triban_540_official.jpg&quot;&gt;&lt;img src=&quot;/assets/2016-07-15-my-new-bike-triban-540/triban_540_official.jpg&quot; alt=&quot;Triban 540 picture from B'Twin&quot; /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Du côté de la transmission le vélo propose un groupe Shimano 105 partiel : cassette (11 vitesses - 11/28), dérailleurs et manettes. 
+Le pédalier compact n’est pas de Shimano, il s’agit d’un “Prowheel Ounce 721”. Bien qu’il fasse bien son office, il n’a pas le look ravageur des derniers 
+pédaliers de chez Shimano.&lt;/p&gt;
+
+&lt;p&gt;Les pneus d’origine sont des &lt;a href=&quot;http://www.hutchinsontires.com/en/road/28-equinox-2.html&quot;&gt;Hutchinson Equinox 2&lt;/a&gt;. Ce sont des pneus corrects offrant globalement de 
+bons compromis: confort, résistance à la crevaison, sans sacrifier trop de résistance au roulement.&lt;/p&gt;
+
+&lt;p&gt;Le cadre est en aluminium. La fourche, par contre, est en carbone avec des oeillets de fixation pour porte bagage avant. Ce n’est pas courant sur ce type de fourche 
+et j’apprécie beaucoup ce petit détail même si je n’en ai pas encore tiré parti. Je n’ai pas vérifié le poids du vélo, sur la fiche de la 
+&lt;a href=&quot;http://www.decathlon.fr/velo-route-triban-540-id_8350480.html&quot;&gt;boutique en ligne&lt;/a&gt; il est annoncé un poids de 9,5 kg sans pédale. Je dirais qu’il s’agit au final d’un 
+vélo qui doit faire autour de 10kg.&lt;/p&gt;
+
+&lt;p&gt;Les roues sont des &lt;a href=&quot;http://www.mavic.co.uk/wheels-road-triathlon-aksium?&quot;&gt;Mavic Askium&lt;/a&gt;. Ce sont des roues d’entrée de gamme chez Mavic. Cependant, leur entrée de gamme 
+offre des roues vraiment correctes, pas trop lourdes et résistantes ce qui me fait penser qu’elles dureront longtemps.&lt;/p&gt;
+
+&lt;h2 id=&quot;modifications-et-équipements&quot;&gt;Modifications et équipements&lt;/h2&gt;
+
+&lt;p&gt;Afin de mieux correspondre à mes besoins, j’ai ajouté un porte-bagage arrière 
+puisque j’utilise ce vélo pour aller au boulot et faire de la randonnée. 
+J’ai choisi un porte-bagage &lt;a href=&quot;https://www.pletscher.ch/index.php/en/products-en/carriers-en/standard-carriers-en&quot;&gt;Pletscher Athlete 4B&lt;/a&gt; 
+qui était disponible là où j’ai acheté mon vélo pour 26€.&lt;/p&gt;
+
+&lt;p&gt;Je voulais aussi ajouter des garde-boues SKS, mais ces derniers laissent peu d’espace entre les pneus et les freins. 
+De plus, il n’était finalement pas possible de les monter sur le cadre en dépit de ce qui était indiqué sur la fiche 
+produit. J’ai finalement opté pour des garde-boues Zefal &lt;a href=&quot;http://www.zefal.com/fr/garde-boue-route/75-croozer-road.html&quot;&gt;Croozer Road avant&lt;/a&gt; et 
+&lt;a href=&quot;http://www.zefal.com/fr/garde-boue-route/77-swan-road.html&quot;&gt;Swan Road arrière&lt;/a&gt;. 
+Ils ne sont pas aussi couvrant que les SKS, mais je n’ai pas eu à m’en plaindre et sont proposés à 
+prix plutôt accessible (16€ pour les deux garde-boues).&lt;/p&gt;
+
+&lt;p&gt;J’ai ajouté deux porte-bidons Elite et leurs bouteilles pour emporter de l’eau sur la route.&lt;/p&gt;
+
+&lt;p&gt;Habitant dans une grande ville et m’étant déjà fait volé un vélo, un antivol en U n’est pas une option. Cela aurait été dommage de 
+devoir transporter un antivol encombrant, c’est j’ai opté pour le 
+&lt;a href=&quot;http://www.kryptonitelock.com/en/products/product-information/current-key/000983.html&quot;&gt;Kryptonite Evolution Mini 5&lt;/a&gt; 
+avec son support Kryto-Flex pour maintenir l’antivol sur le cadre. Trouver un emplacement satisfaisant pour le support d’antivol 
+n’était pas évident mais j’ai fini par le placer au dessus du porte-bidon sur le tube vertical. Sur mes trajets quotidiens je n’ai 
+pas besoin de deux bouteilles et sur les trajets plus longs l’antivol, grâce à sa petite taille, se glisse facilement au fond d’une 
+sacoche.&lt;/p&gt;
+
+&lt;p&gt;Du côté des gadgets électroniques, j’avoue j’ai un peu craqué et je me suis acheté un GPS vélo : le 
+&lt;a href=&quot;https://buy.garmin.com/fr-FR/FR/sports-outdoor/velo/edge-explore-1000/prod522791.html&quot;&gt;Garmin Edge 1000 Explore&lt;/a&gt;. Ce modèle fait tout 
+ce qu’on attend d’un compteur de vélo classique : vitesse, durée, calories, distance, altitude. Ce modèle apporte en plus la fonctionnalité 
+de navigation un peu comme un GPS classique de voiture. Cela permet de naviguer vers une destination sans devoir minutieusement préparer son 
+itinéraire. Je devrais sûrement faire un retour sur ce GPS dans un autre article.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;/assets/2016-07-15-my-new-bike-triban-540/triban-540-before-departure-to-lille.jpg&quot;&gt;&lt;img src=&quot;/assets/2016-07-15-my-new-bike-triban-540/triban-540-before-departure-to-lille-mini.jpg&quot; alt=&quot;The Triban 540 before departure to Lille&quot; /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Pour résumer les équipements et modifications :&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;Porte-bagage arrière :&lt;/strong&gt; &lt;a href=&quot;https://www.pletscher.ch/index.php/en/products-en/carriers-en/standard-carriers-en&quot;&gt;Pletscher Athlete 4B&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Garde-boues:&lt;/strong&gt; &lt;a href=&quot;http://www.zefal.com/fr/garde-boue-route/75-croozer-road.html&quot;&gt;Zefal Croozer Road (avant)&lt;/a&gt; 
+and &lt;a href=&quot;http://www.zefal.com/fr/garde-boue-route/77-swan-road.html&quot;&gt;Zefal Swan Road (rear)&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Antivol :&lt;/strong&gt; &lt;a href=&quot;http://www.kryptonitelock.com/en/products/product-information/current-key/000983.html&quot;&gt;Kryptonite Evolution Mini 5&lt;/a&gt; 
+avec &lt;a href=&quot;http://www.kryptonitelock.com/content/kryt-us/en/products/product-information/current-key/000730.html&quot;&gt;support Krytpo-Flex&lt;/a&gt; + 
+axes de roue antivols.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;GPS :&lt;/strong&gt; &lt;a href=&quot;https://buy.garmin.com/fr-FR/FR/sports-outdoor/velo/edge-explore-1000/prod522791.html&quot;&gt;Garmin Edge 1000 Explore&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Pneu arrière :&lt;/strong&gt; &lt;a href=&quot;http://www.continental-pneus.fr/velo/pneus/pneus-course/grand-prix-4-season&quot;&gt;Continental Grand Prix 4-Season &lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;mon-avis-sur-le-vélo&quot;&gt;Mon avis sur le vélo&lt;/h2&gt;
+
+&lt;p&gt;Pour couper court à tout suspens, je suis plutôt content de ce vélo. Son comportement est plutôt bon à la fois en ville et sur la route 
+en campagne. Cependant, ce n’est pas un vélo de type cyclo-cross et n’apprécie que modérément les sorties hors-route. Il est&lt;br /&gt;
+possible d’en changer les pneus pour obtenir un meilleur comportement hors-route. La limitation se trouvera au niveau de la section maximum 
+limitée du pneu qui est de 32C.&lt;/p&gt;
+
+&lt;p&gt;Il est au final possible d’ajouter pas mal d’équipements sur ce vélo. En revanche, il faut avoir conscience que le cintre route avec la 
+guidoline épaisse et les câbles passant sous cette dernière, laisse peu de place aux équipements se fixant sur le cintre. Cela s’applique 
+de manière générale aux vélos équipés d’un cintre route.&lt;/p&gt;
+
+&lt;p&gt;Le meilleur essai pour ce vélo a été mon challenge de faire le trajet Paris - Lille à vélo (250+ km) dans la journée. Je l’ai fait et j’étais 
+bien content de le faire avec ce vélo. Je peux confirmer que c’est un bon vélo pour la longue distance.&lt;/p&gt;
+
+&lt;p&gt;J’ai récemment eu un problème avec la manette gauche de dérailleur avant qui a cassé. Le vélo est actuellement en réparation chez Decathlon. 
+C’est l’un des inconvénient de ce vélo : il ne peut être acheté que chez Décathlon. Même si leur service après-vente est plutôt bon, il y a 
+des réparations qui ne se font pas dans notre magasin habituel et le vélo doit être envoyé à l’atelier régional pour effectuer les réparations. 
+Cela rend le vélo indisponible pour au moins une semaine. Auprès d’un petit magasin de vélo local il aurait peut-être fallu attendre la 
+manette, mais le vélo n’aurait été réparé qu’une fois la pièce disponible et la réparation faite rapidement, mais si parfois il faut prendre 
+rendez-vous. L’avantage est que, si vous utilisez votre vélo comme certains utilisent leur voiture, vous ne vous retrouvez pas privé de votre 
+moyen de locomotion.&lt;/p&gt;
+
+&lt;p&gt;Est-ce que la série Triban chez B’Twin est une bonne série ? A vrai dire, regardez la photo ci-dessous prise au bureau : il n’y a pas moins 
+de 3 Tribans sur le range vélo. J’ai trouvé cela assez amusant et la photo a été prise sur le vif : n’y voyez donc pas de mise en scène.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;/assets/2016-07-15-my-new-bike-triban-540/tribans_at_work.jpg&quot;&gt;&lt;img src=&quot;/assets/2016-07-15-my-new-bike-triban-540/tribans_at_work_mini.jpg&quot; alt=&quot;Regardez moi tous ces Tribans au bureau !&quot; /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Le Triban 540 est un bon vélo et même un très bon vélo si l’on compare son prix à ce que propose la concurence. Je l’ai acheté pour 
+&lt;a href=&quot;http://www.decathlon.fr/velo-route-triban-540-id_8350480.html&quot;&gt;850€ chez Decathlon en France&lt;/a&gt;. C’est un très bon rapport qualité prix et je 
+le recommande chaudement si en lisant cet article, trouvez que ce vélo correspond à vos besoins.&lt;/p&gt;
+
+&lt;p&gt;Vous pouvez également vous référer à &lt;a href=&quot;http://www.bikeradar.com/road/gear/category/bikes/road/product/review-btwin-triban-540-49953/&quot;&gt;la critique de Bike Radar&lt;/a&gt; 
+qui porte pour sur le même vélo, mais dans sa version 10 vitesses.&lt;/p&gt;
+
+&lt;p&gt;Si vous avez une question à ce sujet, n’hésitez pas à m’envoyer un message via 
+&lt;a href=&quot;https://twitter.com/Pj_Leward&quot;&gt;Twitter&lt;/a&gt;.&lt;/p&gt;
+</description>
+        <pubDate>Sat, 16 Jul 2016 02:57:00 +0800</pubDate>
+        <link>http://yourdomain.com/2016/07/16/mon-nouveau-velo-triban-540.html</link>
+        <guid isPermaLink="true">http://yourdomain.com/2016/07/16/mon-nouveau-velo-triban-540.html</guid>
+        
+        
+      </item>
+    
+      <item>
+        <title>My new bicycle: the B'Twin Triban 540</title>
+        <description>&lt;h2 id=&quot;here-comes-a-new-bicycle&quot;&gt;Here comes a new bicycle&lt;/h2&gt;
+
+&lt;p&gt;Did I absolutly need a new bike? Not neccasary… well maybe… or absolutly. I was going on a rampage by owning so far 
+two Dahon folding bicycles: a red &lt;a href=&quot;http://dahon.com/bikes/eco-c7/&quot;&gt;Dahon Eco C7&lt;/a&gt; and a white &lt;a href=&quot;http://dahon.com/bikes/mu-p24/&quot;&gt;Dahon Mu P24&lt;/a&gt;. 
+Theyre were my all round bicycles for my daily commuting in town, doing some shopping, and go a long ride, usually with a friend. 
+&lt;!--more--&gt;&lt;/p&gt;
+
+&lt;p&gt;I really enjoy riding these bicycles and I should make a post someday to introduce you those two little guys. This sounds 
+like a new member is joining the family. It kind of is :)&lt;/p&gt;
+
+&lt;p&gt;As fun as they can be I started to feel some limitations with these folding bicycles. First as I get more experience riding, 
+my average speed tends to increase and my Dahons are maybe not the best for maintaining a 30+km/h speed. Also my most recent one, 
+the white Mu P24 isn’t rigid engough when I push hard on the pedal: speeding is exausting.&lt;/p&gt;
+
+&lt;p&gt;That’s why I decided to buy a new bicycle, a regular one. I had to negociate a bit to be allowed to bring a new bicycle at home: I 
+had to sell one of my bicycles (plot twist: I still own the two folding bikes, it’s our little secret).&lt;/p&gt;
+
+&lt;h2 id=&quot;the-bicycle&quot;&gt;The bicycle&lt;/h2&gt;
+
+&lt;p&gt;The Triban 540 falls into the category of a road bike. However I’d qualify it as a versatile road bike as I use it for my daily commute, 
+recreational rides and long trips.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;/assets/2016-07-15-my-new-bike-triban-540/triban_540_official.jpg&quot;&gt;&lt;img src=&quot;/assets/2016-07-15-my-new-bike-triban-540/triban_540_official.jpg&quot; alt=&quot;Triban 540 picture from B'Twin&quot; /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;For the transmission it offers Shimano 105 cassette (11 speeds - 11/28), derailleurs and shifters. The compact crank set (52/36) however is not 
+from Shimano but is a “Prowheel Ounce 721”. It sure does the job, but it doesn’t look as cool as the new Shimano cranksets.&lt;/p&gt;
+
+&lt;p&gt;Stock tyres are &lt;a href=&quot;http://www.hutchinsontires.com/en/road/28-equinox-2.html&quot;&gt;Hutchinson Equinox 2&lt;/a&gt;. These are good tyres for a start offert some confort, 
+relative puncture protection without sacrificing too much to rolling resistance.&lt;/p&gt;
+
+&lt;p&gt;The bicycle offers good handling even if you’re not used to road bikes. That’s something I really appreciated having experienced folding 
+bicycles before.&lt;/p&gt;
+
+&lt;p&gt;The frame is an aluminium frame. The fork, however, is a carbon fork with holes that allow mouting a front rack. This is not something very common and I really appreciate 
+it even though I didn’t use this feature yet. I did not check the weight of the bicycle. On the &lt;a href=&quot;http://www.decathlon.fr/velo-route-triban-540-id_8350480.html&quot;&gt;webshop&lt;/a&gt; they announce 9.5 kg 
+in size M without the pedals. So I’d say it’s a 10 kg bike.&lt;/p&gt;
+
+&lt;p&gt;The wheels are &lt;a href=&quot;http://www.mavic.co.uk/wheels-road-triathlon-aksium?&quot;&gt;Mavic Askium&lt;/a&gt; wheels. These are entry level wheels from Mavic but are already 
+good and solid which will make them to last long.&lt;/p&gt;
+
+&lt;h2 id=&quot;modifications-and-equipments&quot;&gt;Modifications and equipments&lt;/h2&gt;
+
+&lt;p&gt;To better suit my needs I added a rear luggage carrier as I am going to use this bike as both a commuting and touring bicycle. 
+I chose a &lt;a href=&quot;https://www.pletscher.ch/index.php/en/products-en/carriers-en/standard-carriers-en&quot;&gt;Pletscher Athlete 4B&lt;/a&gt; that was 
+available at the shop where I bought the bicycle for 26€.&lt;/p&gt;
+
+&lt;p&gt;I also wanted to add SKS fenders, however this leave little space between the tyre and the brake, plus it was finally not possible 
+to mount them on the frame despite what the product web page stated. So I ended up mounting 
+&lt;a href=&quot;http://www.zefal.com/en/mudguards-road/75-croozer-road.html&quot;&gt;Zefal road front&lt;/a&gt; and &lt;a href=&quot;http://www.zefal.com/en/mudguards-road/77-swan-road.html&quot;&gt;rear fenders&lt;/a&gt;.
+They do their job quite decently and provide good value for money (16€ for the fender set).&lt;/p&gt;
+
+&lt;p&gt;I added two Elite bottle cages with their bottle to carry water on the way.&lt;/p&gt;
+
+&lt;p&gt;Living in a big city and having already experienced a bicycle theft opting for a U-lock was not an option. It would have been a pity 
+to have to carry a huge lock with me, that’s why I chose the 
+&lt;a href=&quot;http://www.kryptonitelock.com/en/products/product-information/current-key/000983.html&quot;&gt;Kryptonite Evolution Mini 5&lt;/a&gt; with the flex 
+frame support to hold the lock on the frame while riding. It was quite tricky to find a proper position for the lock support and I 
+decided to put it on the vertical tube above the bottle cage. On my daily commute I wouldn’t need more than one bottle, and on longer 
+trip the small lock easily fit in any bag.&lt;/p&gt;
+
+&lt;p&gt;On the electronic side I went a bit crazy and bought a GPS for my rides: the 
+&lt;a href=&quot;https://buy.garmin.com/fr-FR/FR/sports-outdoor/velo/edge-explore-1000/prod522791.html&quot;&gt;Garmin Edge 1000 Explore&lt;/a&gt;. It does the stuff you’d
+expect from cycling computer which is mainly speed, time, calories, distance, altitude. This model bring the navigation mode which will help 
+you to navigate to your destination without the need of carefully planning your trip. I should make a dedicated review for this GPS.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;/assets/2016-07-15-my-new-bike-triban-540/triban-540-before-departure-to-lille.jpg&quot;&gt;&lt;img src=&quot;/assets/2016-07-15-my-new-bike-triban-540/triban-540-before-departure-to-lille-mini.jpg&quot; alt=&quot;The Triban 540 before departure to Lille&quot; /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;To sumarize the equipements and modiciations:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;Rear luggage carrier:&lt;/strong&gt; &lt;a href=&quot;https://www.pletscher.ch/index.php/en/products-en/carriers-en/standard-carriers-en&quot;&gt;Pletscher Athlete 4B&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Fenders:&lt;/strong&gt; &lt;a href=&quot;http://www.zefal.com/en/mudguards-road/75-croozer-road.html&quot;&gt;Zefal Croozer Road (front)&lt;/a&gt; 
+and &lt;a href=&quot;http://www.zefal.com/en/mudguards-road/77-swan-road.html&quot;&gt;Zefal Swan Road (rear)&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Lock:&lt;/strong&gt; &lt;a href=&quot;http://www.kryptonitelock.com/en/products/product-information/current-key/000983.html&quot;&gt;Kryptonite Evolution Mini 5&lt;/a&gt; 
+with &lt;a href=&quot;http://www.kryptonitelock.com/content/kryt-us/en/products/product-information/current-key/000730.html&quot;&gt;Flex Frame Support&lt;/a&gt; + 
+anti thefts wheel axles.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Bike computer&lt;/strong&gt;: &lt;a href=&quot;https://buy.garmin.com/fr-FR/FR/sports-outdoor/velo/edge-explore-1000/prod522791.html&quot;&gt;Garmin Edge 1000 Explore&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Rear tyre&lt;/strong&gt;: &lt;a href=&quot;http://www.continental-tires.com/bicycle/tyres/race-tyres/grand-prix-4-season&quot;&gt;Continental Grand Prix 4-Season &lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;what-i-think-of-this-bicycle&quot;&gt;What I think of this bicycle&lt;/h2&gt;
+
+&lt;p&gt;To cut off any suspense I am quite happy of this bicycle. It behaves well on both city and countryside roads. Whenever it is not a cross bicycle and 
+do not like very much offroading. You can however change the tyres to make it better offroad but will be limited on tyre width (32C max).&lt;/p&gt;
+
+&lt;p&gt;You can fit quite a lot of equipment on this bike, however be aware that the road handle bar with the thick ribbon and cable undearneath it 
+makes it difficult to fit a lot of accessories on the bar. This is true in general for any road bike.&lt;/p&gt;
+
+&lt;p&gt;For the best test ride was my challenge to ride from Paris to Lille (250+ km) within the day. I did it and was glad to ride this bicycle and can 
+confirm it is good at long rides.&lt;/p&gt;
+
+&lt;p&gt;I had recently one problem with the left shifter which breaked. The bicycle is currently under repair at Decathlon. That’s one drawback of this
+bicycle: it can only be bought at Decathlon. Even if they offer good after sale service there are some repair that they do not do at the shop 
+you bought the bike. Indeed to change my shifter they sent the bicycle to their regional workshop. This makes the bike unavailable for at least 
+week. At a local bike shop you’d maybe have to wait for the shifter to arrive but you’d give the bicycle only once the shifter can be mounted on 
+the bicycle and you’d be able to quickly get the bike back and enjoy it.&lt;/p&gt;
+
+&lt;p&gt;Is the Triban serie a good one? Well look at the picture bellow taken at my office: that’s a whooping of 3 triban bicycles on the rack. That was not 
+staged at all and I found it quite amusing.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;/assets/2016-07-15-my-new-bike-triban-540/tribans_at_work.jpg&quot;&gt;&lt;img src=&quot;/assets/2016-07-15-my-new-bike-triban-540/tribans_at_work_mini.jpg&quot; alt=&quot;Look at all the triban I met at my office. This is not even staged.&quot; /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;The triban 540 is a good bicycle, and a very good bicycle if you compare its price to what the competition offers. I bought it for 
+&lt;a href=&quot;http://www.decathlon.fr/velo-route-triban-540-id_8350480.html&quot;&gt;850€ at Decathlon in France&lt;/a&gt;. I got good value for my money I would recommand 
+it my review fits your needs.&lt;/p&gt;
+
+&lt;p&gt;You can also refer to the review from &lt;a href=&quot;http://www.bikeradar.com/road/gear/category/bikes/road/product/review-btwin-triban-540-49953/&quot;&gt;Bike Radar&lt;/a&gt; 
+if you still need to make up your mind.&lt;/p&gt;
+
+&lt;p&gt;Feel free to ask me any question on my &lt;a href=&quot;https://twitter.com/Pj_Leward&quot;&gt;Twitter account&lt;/a&gt;.&lt;/p&gt;
+</description>
+        <pubDate>Sat, 16 Jul 2016 02:57:00 +0800</pubDate>
+        <link>http://yourdomain.com/2016/07/16/my-new-bike-triban-540.html</link>
+        <guid isPermaLink="true">http://yourdomain.com/2016/07/16/my-new-bike-triban-540.html</guid>
+        
+        
+      </item>
+    
+      <item>
+        <title>私のブログ</title>
+        <description>&lt;p&gt;スタート!&lt;/p&gt;
+
+&lt;p&gt;私は日本語のがくせい。私はしょしんしゃです。&lt;/p&gt;
+
+&lt;p&gt;これは私のブログです。&lt;/p&gt;
+</description>
+        <pubDate>Sun, 03 Apr 2016 05:21:55 +0800</pubDate>
+        <link>http://yourdomain.com/2016/04/03/%E7%A7%81%E3%81%AE%E3%83%96%E3%83%AD%E3%82%B0.html</link>
+        <guid isPermaLink="true">http://yourdomain.com/2016/04/03/%E7%A7%81%E3%81%AE%E3%83%96%E3%83%AD%E3%82%B0.html</guid>
+        
+        
+      </item>
+    
+      <item>
+        <title>Création du blog</title>
+        <description>&lt;p&gt;Cela fait un moment que l’idée me trotte dans la tête : celle de créer mon site et blog personnel.
+J’ai finalement décidé de franchir le pas. Pourquoi ? Et pour dire quoi après tout ?&lt;/p&gt;
+
+&lt;p&gt;Ces derniers temps pas mal de choses bougent pour moi, et cela m’a donné envie d’aller de l’avant. Je suis maintenant un “IT Consultant”, ou plus généralement développeur
+“full-stack”, c’est-à-dire un peu touche à tout.&lt;/p&gt;
+
+&lt;p&gt;A travers ce blog je souhaite partager mes trouvailles liées à mon boulot,
+mes projets d’expatriation à Singapour et ma passion du vélo.&lt;/p&gt;
+</description>
+        <pubDate>Sun, 03 Apr 2016 05:21:55 +0800</pubDate>
+        <link>http://yourdomain.com/2016/04/03/cr%C3%A9ation-du-blog.html</link>
+        <guid isPermaLink="true">http://yourdomain.com/2016/04/03/cr%C3%A9ation-du-blog.html</guid>
+        
+        
+      </item>
+    
+  </channel>
+</rss>

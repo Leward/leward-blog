@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Logs analysis with OVH Logs Data Platform</title>
+  <meta name="description" content="OVH offers a service called “Logs Data Platform” which helps you centralizing and analyzing your logs.">
+
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="canonical" href="http://yourdomain.com/2017/12/18/logs-analysis-with-ovh.html">
+  <link rel="alternate" type="application/rss+xml" title="Paul-Julien Vauthier" href="http://yourdomain.com/feed.xml">
+</head>
+
+
+  <body>
+
+    <header class="site-header">
+
+  <div class="wrapper">
+      
+    <a class="site-title" href="/">
+        <img src="/images/bicycle.svg">
+        Paul-Julien Vauthier
+    </a>
+      
+    <div class="langs">
+        <ul>
+        
+        
+          <li>
+            <a href="/2017/12/18/logs-analysis-with-ovh.html" class="en">en</a>
+          </li>
+        
+
+        
+        
+        </ul>
+    </div>
+      
+    <p class="site-sub-title">
+        Personnal website about my job as an IT Consultant and Developer, casual Cycling and my relocation to Singapore.
+    </p>
+      
+    <nav class="site-nav">
+      <!--<a href="#" class="menu-icon">
+        <svg viewBox="0 0 18 15">
+          <path fill="#424242" d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.031C17.335,0,18,0.665,18,1.484L18,1.484z"/>
+          <path fill="#424242" d="M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0c0-0.82,0.665-1.484,1.484-1.484 h15.031C17.335,6.031,18,6.696,18,7.516L18,7.516z"/>
+          <path fill="#424242" d="M18,13.516C18,14.335,17.335,15,16.516,15H1.484C0.665,15,0,14.335,0,13.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.031C17.335,12.031,18,12.696,18,13.516L18,13.516z"/>
+        </svg>
+      </a>-->
+
+      <div class="trigger">
+        
+        <a class="page-link" href="/">Home</a>
+        
+        <a class="page-link" href="/resume">Resume</a>
+        
+        <!--
+          
+          <a class="page-link" href="/about/">About</a>
+          
+        
+          
+          <a class="page-link" href="/credits/">Credits</a>
+          
+        
+          
+          <a class="page-link" href="/credits-fr/">Crédits</a>
+          
+        
+          
+          <a class="page-link" href="/cv">CV</a>
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+          <a class="page-link" href="/lebenslauf">Lebenslauf</a>
+          
+        
+          
+        
+          
+          <a class="page-link" href="/resume">Resume</a>
+          
+        
+          
+          <a class="page-link" href="/rirekisho">りれきしょ</a>
+          
+        -->
+      </div>
+    </nav>
+    
+    
+
+  </div>
+
+</header>
+
+
+    <div class="page-content">
+      <div class="wrapper">
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">Logs analysis with OVH Logs Data Platform</h1>
+    <p class="post-meta"><time datetime="2017-12-18T00:40:00+08:00" itemprop="datePublished">Dec 18, 2017</time></p>
+  </header>
+
+  <div class="post-content" itemprop="articleBody">
+    <p>OVH offers a service called “Logs Data Platform” which helps you centralizing and analyzing your logs.</p>
+
+<!--more-->
+
+<p>I see two main benefits using this service:</p>
+
+<ol>
+  <li>It’s a managed service (SaaS)</li>
+  <li>It’s cheap</li>
+</ol>
+
+<p>The offertings starts at 1€ per month for 1GB of logs with one stream of logs and one dashboard. The data retention is of 45 days.</p>
+
+<p>It also allows to setup multiple users and define more fine-grained access rules even though I did not test the feature.</p>
+
+<p>The service allows to interact with your logs using <a href="https://www.graylog.org/features">Graylog</a> or <a href="https://www.elastic.co/products/elasticsearch">Elastisearch</a>.</p>
+
+<p>So I decided to give a try to store and analyze the the logs of <a href="https://inkzone.games">Inkzone</a>, a website I am currently working on.</p>
+
+<!--more-->
+
+<h2 id="about-graylog-and-gelf-format">About Graylog and GELF format</h2>
+
+<p>Graylog is a tool that centralize your logs in one place and make in easier to browse and analyze them.</p>
+
+<p>The more applications you have the more benefits you’ll get from this kind of tool. The more you have, the more log files you also have to manage with rotation and retention policy.</p>
+
+<p>Greylog uses a log format called <a href="http://docs.graylog.org/en/2.3/pages/gelf.html">GELF (Graylog Extended Lenght Format)</a>. GELF differs from other log formats (like <a href="https://en.wikipedia.org/wiki/Syslog">syslog</a>) by being a structured logging format with custom typed fields. This makes it better suited for indexing and analysis than other non structured formats.</p>
+
+<h2 id="send-docker-container-logs-to-graylog">Send Docker container logs to Graylog</h2>
+
+<p>Docker has a native <a href="https://docs.docker.com/engine/admin/logging/gelf/">gelf log driver</a>.
+If you use Docker to deploy your applications and print your logs in the standard output to print your logs you can directly send your logs to graylog by changing the log driver of your containers.</p>
+
+<p>In order to proceed you will need to know:</p>
+<ul>
+  <li>The endpoint to collect GELF logs over UDP (<code class="highlighter-rouge">udp://gra2.logs.ovh.com:2202</code> for me)</li>
+  <li>The token for your stream</li>
+</ul>
+
+<p>Then, run the docker container with the following configuration:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>docker run \
+  -e X-OVH-TOKEN="7982bbc4-9a66-4426-9de3-33d6eb201ed6" \
+  --log-driver gelf \
+  --log-opt gelf-address=udp://gra2.logs.ovh.com:2202 \
+  --log-opt env=X-OVH-TOKEN \
+  -d busybox
+</code></pre>
+</div>
+
+<p>Replace <code class="highlighter-rouge">7982bbc4-9a66-4426-9de3-33d6eb201ed6</code> by your actual Stream token.</p>
+
+<p><code class="highlighter-rouge">--log-opt env=X-OVH-TOKEN</code> for the gelf log driver will put the specified environment variable as a custom field in the GELF message (prefixed by an underscore <code class="highlighter-rouge">_</code>). That’s how OVH can accept and properly route the incoming logs.</p>
+
+<p>It works, however the main drawback is that the logs will be made from the Docker perspective. The reported log levels are the ones from Docker, not from the java app. Docker will only consider for log levels the standard and error outputs, so you will note have the same granulary as the java logs (DEBUG, INFO, WARN, ERROR, etc.) without doing intermediate processing.</p>
+
+<p>If you want richer logs there are two possible approaches:</p>
+
+<ol>
+  <li>Configure and use an <a href="http://docs.graylog.org/en/2.3/pages/extractors.html">Extractor</a> in graylog</li>
+  <li>Send logs from the Java logging framework of your choice (logback in my case)</li>
+</ol>
+
+<h2 id="send-logback-logs-to-graylog">Send logback logs to Graylog</h2>
+
+<p>From logback you can send the logs to to Greylogs by adding a new Appender:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code><span class="cp">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</span>
+<span class="nt">&lt;configuration</span> <span class="na">debug=</span><span class="s">"true"</span><span class="nt">&gt;</span>
+
+  <span class="nt">&lt;appender</span> <span class="na">name=</span><span class="s">"STDOUT"</span> <span class="na">class=</span><span class="s">"ch.qos.logback.core.ConsoleAppender"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;layout</span> <span class="na">class=</span><span class="s">"ch.qos.logback.classic.PatternLayout"</span><span class="nt">&gt;</span>
+      <span class="nt">&lt;Pattern&gt;</span>
+        %level %logger - %msg%n
+      <span class="nt">&lt;/Pattern&gt;</span>
+    <span class="nt">&lt;/layout&gt;</span>
+  <span class="nt">&lt;/appender&gt;</span>
+
+  <span class="nt">&lt;appender</span> <span class="na">name=</span><span class="s">"GELF"</span> <span class="na">class=</span><span class="s">"de.siegmar.logbackgelf.GelfUdpAppender"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;graylogHost&gt;</span>gra2.logs.ovh.com<span class="nt">&lt;/graylogHost&gt;</span>
+    <span class="nt">&lt;graylogPort&gt;</span>2202<span class="nt">&lt;/graylogPort&gt;</span>
+    <span class="nt">&lt;layout</span> <span class="na">class=</span><span class="s">"de.siegmar.logbackgelf.GelfLayout"</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;staticField&gt;</span>X-OVH-TOKEN:7982bbc4-9a66-4426-9de3-33d6eb201ed6<span class="nt">&lt;/staticField&gt;</span>
+    <span class="nt">&lt;/layout&gt;</span>
+  <span class="nt">&lt;/appender&gt;</span>
+
+  <span class="nt">&lt;root</span> <span class="na">level=</span><span class="s">"INFO"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;appender-ref</span> <span class="na">ref=</span><span class="s">"STDOUT"</span> <span class="nt">/&gt;</span>
+    <span class="nt">&lt;appender-ref</span> <span class="na">ref=</span><span class="s">"GELF"</span> <span class="nt">/&gt;</span>
+  <span class="nt">&lt;/root&gt;</span>
+
+<span class="nt">&lt;/configuration&gt;</span>
+</code></pre>
+</div>
+
+<p>Replace <code class="highlighter-rouge">7982bbc4-9a66-4426-9de3-33d6eb201ed6</code> by your actual Stream token.</p>
+
+<p>You’ll need to add the following dependency to you project: <code class="highlighter-rouge">compile 'de.siegmar:logback-gelf:1.0.4'</code></p>
+
+<p>There is logback appender <a href="https://github.com/mp911de/logstash-gelf"><code class="highlighter-rouge">biz.paluch.logging:logstash-gelf</code></a> that is quite popular, but I did not manage to make it work. So I went for <a href="https://github.com/osiegmar/logback-gelf"><code class="highlighter-rouge">de.siegmar:logback-gelf</code></a> instead.</p>
+
+  </div>
+
+</article>
+
+      </div>
+    </div>
+
+    <footer class="site-footer">
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Paul-Julien Vauthier</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li>Paul-Julien Vauthier</li>
+          <li><a href="mailto:pj.vauthier@gmail.com">pj.vauthier@gmail.com</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-2">
+        <ul class="social-media-list">
+          
+          <li>
+            <a href="https://github.com/Leward"><span class="icon icon--github"><svg viewBox="0 0 16 16"><path fill="#828282" d="M7.999,0.431c-4.285,0-7.76,3.474-7.76,7.761 c0,3.428,2.223,6.337,5.307,7.363c0.388,0.071,0.53-0.168,0.53-0.374c0-0.184-0.007-0.672-0.01-1.32 c-2.159,0.469-2.614-1.04-2.614-1.04c-0.353-0.896-0.862-1.135-0.862-1.135c-0.705-0.481,0.053-0.472,0.053-0.472 c0.779,0.055,1.189,0.8,1.189,0.8c0.692,1.186,1.816,0.843,2.258,0.645c0.071-0.502,0.271-0.843,0.493-1.037 C4.86,11.425,3.049,10.76,3.049,7.786c0-0.847,0.302-1.54,0.799-2.082C3.768,5.507,3.501,4.718,3.924,3.65 c0,0,0.652-0.209,2.134,0.796C6.677,4.273,7.34,4.187,8,4.184c0.659,0.003,1.323,0.089,1.943,0.261 c1.482-1.004,2.132-0.796,2.132-0.796c0.423,1.068,0.157,1.857,0.077,2.054c0.497,0.542,0.798,1.235,0.798,2.082 c0,2.981-1.814,3.637-3.543,3.829c0.279,0.24,0.527,0.713,0.527,1.437c0,1.037-0.01,1.874-0.01,2.129 c0,0.208,0.14,0.449,0.534,0.373c3.081-1.028,5.302-3.935,5.302-7.362C15.76,3.906,12.285,0.431,7.999,0.431z"/></svg>
+</span><span class="username">Leward</span></a>
+
+          </li>
+          
+
+          
+          <li>
+            <a href="https://twitter.com/Pj_Leward"><span class="icon icon--twitter"><svg viewBox="0 0 16 16"><path fill="#828282" d="M15.969,3.058c-0.586,0.26-1.217,0.436-1.878,0.515c0.675-0.405,1.194-1.045,1.438-1.809c-0.632,0.375-1.332,0.647-2.076,0.793c-0.596-0.636-1.446-1.033-2.387-1.033c-1.806,0-3.27,1.464-3.27,3.27 c0,0.256,0.029,0.506,0.085,0.745C5.163,5.404,2.753,4.102,1.14,2.124C0.859,2.607,0.698,3.168,0.698,3.767 c0,1.134,0.577,2.135,1.455,2.722C1.616,6.472,1.112,6.325,0.671,6.08c0,0.014,0,0.027,0,0.041c0,1.584,1.127,2.906,2.623,3.206 C3.02,9.402,2.731,9.442,2.433,9.442c-0.211,0-0.416-0.021-0.615-0.059c0.416,1.299,1.624,2.245,3.055,2.271 c-1.119,0.877-2.529,1.4-4.061,1.4c-0.264,0-0.524-0.015-0.78-0.046c1.447,0.928,3.166,1.469,5.013,1.469 c6.015,0,9.304-4.983,9.304-9.304c0-0.142-0.003-0.283-0.009-0.423C14.976,4.29,15.531,3.714,15.969,3.058z"/></svg>
+</span><span class="username">Pj_Leward</span></a>
+
+          </li>
+          
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-3">
+        <p><!--{"fr"=>"Site web personnel à propos de mon travail en tant que Développer et Consultant IT , de vélo en tant que hobby, et de mon déménagement à venir à Singapour.", "en"=>"Personnal website about my job as an IT Consultant and Developer, casual Cycling and my relocation to Singapore.", "de"=>"Persönlich Website über meinen Job als einen IT-Berater und Softwareentwickler, Radfahren und meinen Umzug nach Singapur.", "jp"=>"じょうほうテクノロジー と じてんしゃ　と　シンガポール についての私のブログ."}--></p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+
+
+  </body>
+
+</html>
