@@ -152,3 +152,5 @@ When I finished writing this blog post, here are the packages I have installed (
     keepassx2-2.0.3
     openttd-1.8.0
     vscode-1.30.2
+
+I am only scratching the surface on this topic. The next step for me will be to write my first [Nix expressions](https://nixos.org/nix/manual/#chap-writing-nix-expressions).

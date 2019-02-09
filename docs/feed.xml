@@ -5,8 +5,8 @@
     <description>{&quot;fr&quot;=&gt;&quot;Site web personnel à propos de mon travail en tant que Développer et Consultant IT , de vélo en tant que hobby, et de mon déménagement à venir à Singapour.&quot;, &quot;en&quot;=&gt;&quot;Personnal website about my job as an IT Consultant and Developer, casual Cycling and my relocation to Singapore.&quot;, &quot;de&quot;=&gt;&quot;Persönlich Website über meinen Job als einen IT-Berater und Softwareentwickler, Radfahren und meinen Umzug nach Singapur.&quot;, &quot;jp&quot;=&gt;&quot;じょうほうテクノロジー と じてんしゃ　と　シンガポール についての私のブログ.&quot;}</description>
     <link>http://yourdomain.com/</link>
     <atom:link href="http://yourdomain.com/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sun, 10 Feb 2019 05:41:50 +0800</pubDate>
-    <lastBuildDate>Sun, 10 Feb 2019 05:41:50 +0800</lastBuildDate>
+    <pubDate>Sun, 10 Feb 2019 05:47:24 +0800</pubDate>
+    <lastBuildDate>Sun, 10 Feb 2019 05:47:24 +0800</lastBuildDate>
     <generator>Jekyll v3.8.5</generator>
     
       <item>
@@ -163,6 +163,8 @@ keepassx2-2.0.3
 openttd-1.8.0
 vscode-1.30.2
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;I am only scratching the surface on this topic. The next step for me will be to write my first &lt;a href=&quot;https://nixos.org/nix/manual/#chap-writing-nix-expressions&quot;&gt;Nix expressions&lt;/a&gt;.&lt;/p&gt;
 </description>
         <pubDate>Sun, 10 Feb 2019 05:35:00 +0800</pubDate>
         <link>http://yourdomain.com/2019/02/10/using-nix-on-linux-mint.html</link>
