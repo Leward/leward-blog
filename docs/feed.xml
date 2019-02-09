@@ -5,9 +5,171 @@
     <description>{&quot;fr&quot;=&gt;&quot;Site web personnel à propos de mon travail en tant que Développer et Consultant IT , de vélo en tant que hobby, et de mon déménagement à venir à Singapour.&quot;, &quot;en&quot;=&gt;&quot;Personnal website about my job as an IT Consultant and Developer, casual Cycling and my relocation to Singapore.&quot;, &quot;de&quot;=&gt;&quot;Persönlich Website über meinen Job als einen IT-Berater und Softwareentwickler, Radfahren und meinen Umzug nach Singapur.&quot;, &quot;jp&quot;=&gt;&quot;じょうほうテクノロジー と じてんしゃ　と　シンガポール についての私のブログ.&quot;}</description>
     <link>http://yourdomain.com/</link>
     <atom:link href="http://yourdomain.com/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Mon, 21 Jan 2019 22:31:54 +0800</pubDate>
-    <lastBuildDate>Mon, 21 Jan 2019 22:31:54 +0800</lastBuildDate>
-    <generator>Jekyll v3.5.1</generator>
+    <pubDate>Sun, 10 Feb 2019 05:41:50 +0800</pubDate>
+    <lastBuildDate>Sun, 10 Feb 2019 05:41:50 +0800</lastBuildDate>
+    <generator>Jekyll v3.8.5</generator>
+    
+      <item>
+        <title>Using Nix on Linux Mint</title>
+        <description>&lt;h2 id=&quot;using-nix-on-linux-mint&quot;&gt;Using Nix on Linux Mint&lt;/h2&gt;
+
+&lt;p&gt;If you are currently happy with you package manager and installation, it is likely that you don’t need Nix (need as vital need). However, Nix will provide you with some nice additions:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Atomic upgrades and rollback&lt;/li&gt;
+  &lt;li&gt;Multi-user package management: the packages I install or remove do not affect other users&lt;/li&gt;
+  &lt;li&gt;Allowing multiple versions of a package to be installed&lt;/li&gt;
+  &lt;li&gt;Setup of specific build environments (hello developers and Docker)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;If you find enough benefits in those Nix features, a migration may be worthwhile.&lt;/p&gt;
+
+&lt;p&gt;Nix defines itself as a purely functional package manager. Here functional is to be understood as per the principles of &lt;a href=&quot;https://www.keycdn.com/blog/functional-programming&quot;&gt;functional programming&lt;/a&gt;. Immutability, absence of side-effect and pure functions are elements of functional programming which allows Nix to have similar properties as a package manager.&lt;/p&gt;
+
+&lt;p&gt;Upgrading to a newer version of Linux Mint, I decided to give Nix a try and write a follow-up blog post.&lt;/p&gt;
+
+&lt;!--more--&gt;
+
+&lt;h2 id=&quot;installation&quot;&gt;Installation&lt;/h2&gt;
+
+&lt;p&gt;To install Nix, run the following command (this is the &lt;a href=&quot;https://nixos.org/nix/manual/#sect-multi-user-installation&quot;&gt;multi-user installation&lt;/a&gt;):&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;sh &amp;lt;(curl https://nixos.org/nix/install) --daemon
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Always be careful when you install a downloaded script with &lt;code class=&quot;highlighter-rouge&quot;&gt;curl&lt;/code&gt;. Verify the source is trusted, and do not hesitate to review the installation script.&lt;/p&gt;
+
+&lt;p&gt;I like that the installation process tries its best being transparent about the different steps it is performing.&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;Note: there are two installation mode available: multi-user and single-user. In general multi-user is better and will let all the user of the systems use nix. However packages that you install as a user are not made available to the other users.&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;In the future, it may not be necessary to run this script as nix is &lt;a href=&quot;https://ftp-master.debian.org/new/nix_2.2.1-2.html&quot;&gt;now available on Debian&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h2 id=&quot;uninstall&quot;&gt;Uninstall&lt;/h2&gt;
+
+&lt;p&gt;If you play with Nix and would like to remove it, this can be done easily and cleanly. This means you can give Nix a try without risking creating havoc in your system.&lt;/p&gt;
+
+&lt;p&gt;Installing Nix is a matter of downloading and running a script. Uninstalling means undo whatever the script has done.&lt;/p&gt;
+
+&lt;p&gt;I advise to &lt;a href=&quot;https://nixos.org/nix/manual/#sect-multi-user-installation&quot;&gt;refer to the manual&lt;/a&gt;, as multiple steps are required and they may change over time.&lt;/p&gt;
+
+&lt;h2 id=&quot;common-commands&quot;&gt;Common Commands&lt;/h2&gt;
+
+&lt;p&gt;Searching for a package: &lt;code class=&quot;highlighter-rouge&quot;&gt;nix search packagename&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;Installing a package: &lt;code class=&quot;highlighter-rouge&quot;&gt;nix-env -i packagename&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;Removing a package: &lt;code class=&quot;highlighter-rouge&quot;&gt;nix-env -e packagename&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;List installed packages: &lt;code class=&quot;highlighter-rouge&quot;&gt;nix-env -q&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;Upgrade packages: &lt;code class=&quot;highlighter-rouge&quot;&gt;nix-env -u&lt;/code&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;caveats&quot;&gt;Caveats&lt;/h2&gt;
+
+&lt;h3 id=&quot;nemo--dropbox&quot;&gt;Nemo &amp;amp; Dropbox&lt;/h3&gt;
+
+&lt;p&gt;I use Dropbox to sync my documents between devices. Dropbox and its Nemo integration are not available. You can still install it using the Mint Software Manager.&lt;/p&gt;
+
+&lt;h3 id=&quot;entries-in-the-start-menu&quot;&gt;Entries in the start menu&lt;/h3&gt;
+
+&lt;p&gt;Entries in the desktop menu are not added. For this to work you need to configure the &lt;code class=&quot;highlighter-rouge&quot;&gt;XDG_DATA_DIR&lt;/code&gt; environment variable. You can add to your &lt;code class=&quot;highlighter-rouge&quot;&gt;.profile&lt;/code&gt; file:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;export XDG_DATA_DIRS=$HOME/.nix-profile/share/applications:&quot;${XDG_DATA_DIRS:-/usr/local/share/:/usr/share/}&quot;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Still doing so, does not make the entry appear after installing a new package with &lt;code class=&quot;highlighter-rouge&quot;&gt;nix-env -i&lt;/code&gt;. However at the next restart, the entry is there. If you open the menu editor you should also see the icon&lt;/p&gt;
+
+&lt;h3 id=&quot;nix-for-other-users&quot;&gt;Nix for other users&lt;/h3&gt;
+
+&lt;p&gt;Logging-in as a different user, &lt;code class=&quot;highlighter-rouge&quot;&gt;nix&lt;/code&gt; and &lt;code class=&quot;highlighter-rouge&quot;&gt;nix-env&lt;/code&gt; may not be immediately  available. Running &lt;code class=&quot;highlighter-rouge&quot;&gt;source /etc/profile&lt;/code&gt; should resolve it.&lt;/p&gt;
+
+&lt;h2 id=&quot;running-two-versions-side-by-side&quot;&gt;Running two versions side-by-side&lt;/h2&gt;
+
+&lt;p&gt;&lt;strong&gt;TL;DR;&lt;/strong&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;At runtime, only one version of a package can be present&lt;/li&gt;
+  &lt;li&gt;Use nix-shell for your builds&lt;/li&gt;
+  &lt;li&gt;Nix default channel (nixpkgs) does not keep, nor allow you to reference a particular version of a library or application&lt;/li&gt;
+  &lt;li&gt;Nix works great to setup the build environment, but won’t do a better job for the dependencies of your application if the ecosystem you are working already has some build and dependency management systems&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Nix is said to allow to have several installations of a package installed. Let’s try it:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ nix-env -i ruby
+installing 'ruby-2.6.1'
+
+$ ruby -v
+ruby 2.6.1p33 (2019-01-30) [x86_64-linux]
+
+$ nix-env -iA nixpkgs.ruby_2_3
+replacing old 'ruby-2.6.1'
+installing 'ruby-2.3.8'
+
+$ ruby -v
+ruby 2.3.8p459 (2018-10-18) [x86_64-linux]
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;What has happened here? The first installation of ruby is quite straightforward and works as expected. Where things are a little bit trickier is when installing an older version of ruby.&lt;/p&gt;
+
+&lt;p&gt;To install ruby 2.3 we had to add the &lt;code class=&quot;highlighter-rouge&quot;&gt;-A&lt;/code&gt; option and specify the package name as &lt;code class=&quot;highlighter-rouge&quot;&gt;nixpkgs.ruby_2_3&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;The following two commands are similar (as long as &lt;code class=&quot;highlighter-rouge&quot;&gt;nixpkgs.ruby_2_3&lt;/code&gt; points to the version 2.3.8 of ruby):&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;nix-env -iA nixpkgs.ruby_2_3&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;nix-env -i ruby-2.3.8&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;However note that running &lt;code class=&quot;highlighter-rouge&quot;&gt;nix-env -i ruby-2.3.7&lt;/code&gt; does not work, because that version is not targeted by any nix package. The versions which work are the ones returned one running &lt;code class=&quot;highlighter-rouge&quot;&gt;nix-env -qa ruby&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;General rule of thumb is to install with &lt;code class=&quot;highlighter-rouge&quot;&gt;niv-env -i&lt;/code&gt; only applications that you want to be available globally for a particular user. As a developer, to make the most of out of nix, you will need to create your own nix expressions in order to ensure your build are replicable using &lt;code class=&quot;highlighter-rouge&quot;&gt;nix-shell&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;The philosophy in Nix is not to pinpoint to a specific version of a library or application, but to have a set dependencies which can be easily reproduced between environment. &lt;a href=&quot;https://github.com/NixOS/nixpkgs/issues/9682#issuecomment-138105069&quot;&gt;Multiple versions are kept in nixpkgs (default Nix package repository) if there is a good reason to&lt;/a&gt;. This does not mean you can’t do it, there are ways of doing it, playing with nix channels, but I would not consider it to be straightforward.&lt;/p&gt;
+
+&lt;p&gt;For this reasons, nix is not always ideal, nor the silver bullet for developers needing to troubleshot and target a specific version.&lt;/p&gt;
+
+&lt;p&gt;Also here in our example, ruby2.6 has disappeared from the list when you run &lt;code class=&quot;highlighter-rouge&quot;&gt;nix-env -q&lt;/code&gt;. For a given package, only one can be resolved at runtime. If you need ruby 2.3 for a specific build, nix-shell is there for that purpose. It creates a shell with all the required dependencies to run the build.&lt;/p&gt;
+
+&lt;p&gt;Nix-shell is more useful when you need system libraries to be present such as when working in C. This is a bit less the case when you are already using a build and package manager such as Maven for Java, Cargo for Rust, NPM for Javascript.&lt;/p&gt;
+
+&lt;p&gt;As a developer if I need to do some troubleshooting on a particular version of Ruby, a tool such as &lt;a href=&quot;https://rvm.io/&quot;&gt;RVM&lt;/a&gt; may be more appropriate.&lt;/p&gt;
+
+&lt;h2 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h2&gt;
+
+&lt;p&gt;I am a fairly beginner with Nix and wanted to give it try as it is quite different from the traditional system package managers.&lt;/p&gt;
+
+&lt;p&gt;To make it work nicely with Linux Mint from a desktop user perspective, a few minor adjustment were needed, but overall the experience is pleasant.&lt;/p&gt;
+
+&lt;p&gt;Nix works great for my use case of installing applications globally on my system.  Is it significantly better than the package manager which shipped with my distribution? To the level I am using it, a bit, but not significantly. I can find in Nix packages which are not yet available in the main Mint repositories or newer versions.&lt;/p&gt;
+
+&lt;p&gt;As a developer to manage things like my versions of Java and Ruby, Rust, I will stick to tools such as &lt;a href=&quot;https://sdkman.io/&quot;&gt;SDKMAN&lt;/a&gt; and &lt;a href=&quot;https://rvm.io/&quot;&gt;rvm&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;If I were to work on C or C++ projects, I’d probably find more value to Nix for my builds. As a Java developer for example, you mostly need the JDK and Maven installed.&lt;/p&gt;
+
+&lt;p&gt;If you are a bit more curious, did you there was a Linux distribution called &lt;a href=&quot;https://nixos.org/&quot;&gt;NixOS&lt;/a&gt;? There is also a series of introduction posts to Nix called &lt;a href=&quot;https://nixos.org/nixos/nix-pills/index.html&quot;&gt;Nix Pills&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;When I finished writing this blog post, here are the packages I have installed (I just reinstalled my system):&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ nix-env -q
+bat-0.9.0
+git-2.19.2
+htop-2.2.0
+idea-ultimate-2018.3.4
+jekyll-3.8.5
+jq-1.6
+keepassx2-2.0.3
+openttd-1.8.0
+vscode-1.30.2
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+</description>
+        <pubDate>Sun, 10 Feb 2019 05:35:00 +0800</pubDate>
+        <link>http://yourdomain.com/2019/02/10/using-nix-on-linux-mint.html</link>
+        <guid isPermaLink="true">http://yourdomain.com/2019/02/10/using-nix-on-linux-mint.html</guid>
+        
+        
+      </item>
     
       <item>
         <title>Notes on Diesel, a Rust ORM</title>
@@ -38,7 +200,7 @@ The command dumps the DB structure into my &lt;code class=&quot;highlighter-roug
 &lt;p&gt;The second step is to create the structs corresponding to your shema.&lt;/p&gt;
 
 &lt;p&gt;&lt;strong&gt;schema.rs:&lt;/strong&gt;&lt;/p&gt;
-&lt;div class=&quot;language-rust highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nd&quot;&gt;table!&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+&lt;div class=&quot;language-rust highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nd&quot;&gt;table!&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
     &lt;span class=&quot;nf&quot;&gt;cover&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;id&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
         &lt;span class=&quot;n&quot;&gt;id&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Int8&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
         &lt;span class=&quot;c&quot;&gt;// version -&amp;gt; Int8,&lt;/span&gt;
@@ -46,20 +208,18 @@ The command dumps the DB structure into my &lt;code class=&quot;highlighter-roug
         &lt;span class=&quot;n&quot;&gt;url&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Varchar&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
     &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
 &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;p&gt;&lt;strong&gt;cover.rs:&lt;/strong&gt;&lt;/p&gt;
-&lt;div class=&quot;language-rust highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;use&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;diesel&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Queryable&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;div class=&quot;language-rust highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;use&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;diesel&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Queryable&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
 
-&lt;span class=&quot;cp&quot;&gt;#[derive(Queryable,&lt;/span&gt; &lt;span class=&quot;cp&quot;&gt;Clone)]&lt;/span&gt;
+&lt;span class=&quot;nd&quot;&gt;#[derive(Queryable,&lt;/span&gt; &lt;span class=&quot;nd&quot;&gt;Clone)]&lt;/span&gt;
 &lt;span class=&quot;k&quot;&gt;pub&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;struct&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Cover&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
     &lt;span class=&quot;k&quot;&gt;pub&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;id&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;i64&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
     &lt;span class=&quot;k&quot;&gt;pub&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
     &lt;span class=&quot;k&quot;&gt;pub&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;url&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
 &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;p&gt;Note that in my schema I commented out the &lt;code class=&quot;highlighter-rouge&quot;&gt;version&lt;/code&gt; column. Indeed, at this current stage, I don’t really care about that field.&lt;/p&gt;
 
@@ -82,7 +242,7 @@ However, if your application is expected to issue multiple requests concurrently
 &lt;p&gt;The snippet below is heavily inspired from a snippet a saw somewhere else, I just can’t recall where it was…&lt;/p&gt;
 
 &lt;p&gt;&lt;strong&gt;database.rs&lt;/strong&gt;&lt;/p&gt;
-&lt;div class=&quot;language-rust highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;use&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;diesel&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;nn&quot;&gt;pg&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;PgConnection&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;div class=&quot;language-rust highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;use&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;diesel&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;nn&quot;&gt;pg&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;PgConnection&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
 &lt;span class=&quot;k&quot;&gt;use&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;r2d2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;::{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Pool&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;PooledConnection&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;};&lt;/span&gt;
 &lt;span class=&quot;k&quot;&gt;use&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;r2d2_diesel&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ConnectionManager&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
 &lt;span class=&quot;k&quot;&gt;use&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;std&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;env&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
@@ -112,22 +272,20 @@ However, if your application is expected to issue multiple requests concurrently
     &lt;span class=&quot;k&quot;&gt;let&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;database_connection&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pool&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;.get&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;.expect&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Failed to get pooled connection&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt; &lt;span class=&quot;c&quot;&gt;// Not sure when a panic is triggered here&lt;/span&gt;
     &lt;span class=&quot;n&quot;&gt;database_connection&lt;/span&gt;
 &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;h2 id=&quot;simple-query&quot;&gt;Simple Query&lt;/h2&gt;
 
 &lt;p&gt;This is how you can then make a query using Diesel:&lt;/p&gt;
 
-&lt;div class=&quot;language-rust highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;use&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;database&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;get_pooled_connection&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;div class=&quot;language-rust highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;use&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;database&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;get_pooled_connection&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
 
 &lt;span class=&quot;k&quot;&gt;fn&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;list_covers&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;Vec&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Cover&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
     &lt;span class=&quot;k&quot;&gt;use&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;schema&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;cover&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
     &lt;span class=&quot;k&quot;&gt;let&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;connection&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;*&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;get_pooled_connection&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
     &lt;span class=&quot;nn&quot;&gt;cover&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;nn&quot;&gt;table&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;load&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;connection&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;.expect&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Error loading covers&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
 &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;h2 id=&quot;joining&quot;&gt;Joining&lt;/h2&gt;
 
@@ -135,7 +293,7 @@ However, if your application is expected to issue multiple requests concurrently
 The snippet below fetches the 5 latest news.&lt;/p&gt;
 
 &lt;p&gt;&lt;strong&gt;schema.rs&lt;/strong&gt;&lt;/p&gt;
-&lt;div class=&quot;language-rust highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nd&quot;&gt;table!&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+&lt;div class=&quot;language-rust highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nd&quot;&gt;table!&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
     &lt;span class=&quot;nf&quot;&gt;cover&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;id&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
         &lt;span class=&quot;n&quot;&gt;id&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Int8&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
         &lt;span class=&quot;n&quot;&gt;name&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Varchar&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
@@ -159,16 +317,15 @@ The snippet below fetches the 5 latest news.&lt;/p&gt;
     &lt;span class=&quot;n&quot;&gt;cover&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
     &lt;span class=&quot;n&quot;&gt;news&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
 &lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;p&gt;&lt;strong&gt;news.rs&lt;/strong&gt;&lt;/p&gt;
-&lt;div class=&quot;language-rust highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;use&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;chrono&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;nn&quot;&gt;prelude&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;div class=&quot;language-rust highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;use&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;chrono&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;nn&quot;&gt;prelude&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
 &lt;span class=&quot;k&quot;&gt;use&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;diesel&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;::{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ExpressionMethods&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;QueryDsl&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Queryable&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;RunQueryDsl&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;};&lt;/span&gt;
 &lt;span class=&quot;k&quot;&gt;use&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;cover&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Cover&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
 &lt;span class=&quot;k&quot;&gt;use&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;database&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;get_pooled_connection&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
 
-&lt;span class=&quot;cp&quot;&gt;#[derive(Debug,&lt;/span&gt; &lt;span class=&quot;cp&quot;&gt;Queryable)]&lt;/span&gt;
+&lt;span class=&quot;nd&quot;&gt;#[derive(Debug,&lt;/span&gt; &lt;span class=&quot;nd&quot;&gt;Queryable)]&lt;/span&gt;
 &lt;span class=&quot;k&quot;&gt;struct&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;NewsRow&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
     &lt;span class=&quot;n&quot;&gt;id&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;i64&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
     &lt;span class=&quot;n&quot;&gt;content&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
@@ -212,8 +369,7 @@ The snippet below fetches the 5 latest news.&lt;/p&gt;
         &lt;span class=&quot;nf&quot;&gt;.map&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(|&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;result&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;News&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;from&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;result&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;result&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
         &lt;span class=&quot;nf&quot;&gt;.collect&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
 &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;p&gt;&lt;strong&gt;Note:&lt;/strong&gt; When doing a join, diesel returns the result as a tuple. 
 This works great if your struct and your schema have the same fields in the same order. 
@@ -276,14 +432,13 @@ If you use Docker to deploy your applications and print your logs in the standar
 
 &lt;p&gt;Then, run the docker container with the following configuration:&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;docker run \
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;docker run \
   -e X-OVH-TOKEN=&quot;7982bbc4-9a66-4426-9de3-33d6eb201ed6&quot; \
   --log-driver gelf \
   --log-opt gelf-address=udp://gra2.logs.ovh.com:2202 \
   --log-opt env=X-OVH-TOKEN \
   -d busybox
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;p&gt;Replace &lt;code class=&quot;highlighter-rouge&quot;&gt;7982bbc4-9a66-4426-9de3-33d6eb201ed6&lt;/code&gt; by your actual Stream token.&lt;/p&gt;
 
@@ -302,7 +457,7 @@ If you use Docker to deploy your applications and print your logs in the standar
 
 &lt;p&gt;From logback you can send the logs to to Greylogs by adding a new Appender:&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;cp&quot;&gt;&amp;lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&amp;gt;&lt;/span&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;cp&quot;&gt;&amp;lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&amp;gt;&lt;/span&gt;
 &lt;span class=&quot;nt&quot;&gt;&amp;lt;configuration&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;debug=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;true&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
 
   &lt;span class=&quot;nt&quot;&gt;&amp;lt;appender&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;name=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;STDOUT&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;class=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;ch.qos.logback.core.ConsoleAppender&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
@@ -327,8 +482,7 @@ If you use Docker to deploy your applications and print your logs in the standar
   &lt;span class=&quot;nt&quot;&gt;&amp;lt;/root&amp;gt;&lt;/span&gt;
 
 &lt;span class=&quot;nt&quot;&gt;&amp;lt;/configuration&amp;gt;&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;p&gt;Replace &lt;code class=&quot;highlighter-rouge&quot;&gt;7982bbc4-9a66-4426-9de3-33d6eb201ed6&lt;/code&gt; by your actual Stream token.&lt;/p&gt;
 
@@ -375,7 +529,7 @@ Docker hosts to be used by Rancher to run my applications.&lt;/p&gt;
 
 &lt;p&gt;My domains are configured to point to all my docker hosts. The DNS records looks like this (simplified):&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;;; A Records
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;;; A Records
 leward.eu           A       IP_DOCKER_HOST_1
 leward.eu           A       IP_DOCKER_HOST_2
 platform.leward.eu  A       IP_RANCHER_HOST
@@ -384,8 +538,7 @@ platform.leward.eu  A       IP_RANCHER_HOST
 app-a.leward.eu     CNAME   leward.eu.
 app-b.leward.eu     CNAME   leward.eu.
 
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;p&gt;On &lt;strong&gt;each&lt;/strong&gt; docker Host I have an &lt;a href=&quot;https://www.digitalocean.com/community/tutorials/an-introduction-to-haproxy-and-load-balancing-concepts&quot;&gt;HA proxy&lt;/a&gt; listening on port 80 and directing the traffic to the proper Docker container based on the HTTP Host Header. This works even if the app is not on the same docker host as the HA proxy instance because &lt;a href=&quot;http://rancher.com/docs/rancher/latest/en/rancher-services/networking/&quot;&gt;Rancher handles the networking between two hosts&lt;/a&gt;.&lt;/p&gt;
 
@@ -393,17 +546,15 @@ app-b.leward.eu     CNAME   leward.eu.
 
 &lt;p&gt;A request made to one of my application actually going throught the following layers:&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;User --[HTTPS]--&amp;gt; Cloudflare --[HTTP]--&amp;gt; HA proxy --[HTTP]--&amp;gt; App
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;User --[HTTPS]--&amp;gt; Cloudflare --[HTTP]--&amp;gt; HA proxy --[HTTP]--&amp;gt; App
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;p&gt;This not perfect, but it is quite convenient and removes the hassle of having to deal myself with certificates.&lt;/p&gt;
 
 &lt;p&gt;I would like in the future to be able to have HTTPS all the way (maybe using &lt;a href=&quot;https://letsencrypt.org/&quot;&gt;Let’s Encrypt&lt;/a&gt;):&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;User --[HTTPS]--&amp;gt; HA Proxy --[HTTPS]--&amp;gt; App
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;User --[HTTPS]--&amp;gt; HA Proxy --[HTTPS]--&amp;gt; App
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;p&gt;&lt;a href=&quot;/assets/2017-12-03-https-with-cloudflare-rancher-and-haproxy/Rancher.svg&quot;&gt;&lt;img src=&quot;/assets/2017-12-03-https-with-cloudflare-rancher-and-haproxy/Rancher.svg&quot; alt=&quot;Diagram of my personal PaaS&quot; /&gt;&lt;/a&gt;
 &lt;em&gt;Diagram made with &lt;a href=&quot;https://www.draw.io&quot;&gt;draw.io&lt;/a&gt; and their amazing SVG export feature&lt;/em&gt;&lt;/p&gt;
@@ -426,10 +577,9 @@ app-b.leward.eu     CNAME   leward.eu.
 
 &lt;p&gt;Then I have to add in my custom &lt;code class=&quot;highlighter-rouge&quot;&gt;haproxy.cfg&lt;/code&gt;:&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;backend 80_app_b_leward_sg_
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;backend 80_app_b_leward_sg_
     http-request add-header X-Forwarded-Port 443
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;80_app_b_leward_sg_&lt;/code&gt; is a value generated by Rancher. You can verify which one Rancher has generated for your application by running a Shell into the HA Proxy container and inspect the configuration using &lt;code class=&quot;highlighter-rouge&quot;&gt;vi /etc/haproxy/haproxy.cfg&lt;/code&gt;&lt;/p&gt;
 
@@ -466,7 +616,7 @@ app-b.leward.eu     CNAME   leward.eu.
 
 &lt;p&gt;To start with Asciidoctor on your existing Maven project add the asciidoctor plugin in your &lt;code class=&quot;highlighter-rouge&quot;&gt;pom.xml&lt;/code&gt;:&lt;/p&gt;
 
-&lt;div class=&quot;language-xml highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nt&quot;&gt;&amp;lt;plugin&amp;gt;&lt;/span&gt;
+&lt;div class=&quot;language-xml highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nt&quot;&gt;&amp;lt;plugin&amp;gt;&lt;/span&gt;
     &lt;span class=&quot;nt&quot;&gt;&amp;lt;groupId&amp;gt;&lt;/span&gt;org.asciidoctor&lt;span class=&quot;nt&quot;&gt;&amp;lt;/groupId&amp;gt;&lt;/span&gt;
     &lt;span class=&quot;nt&quot;&gt;&amp;lt;artifactId&amp;gt;&lt;/span&gt;asciidoctor-maven-plugin&lt;span class=&quot;nt&quot;&gt;&amp;lt;/artifactId&amp;gt;&lt;/span&gt;
     &lt;span class=&quot;nt&quot;&gt;&amp;lt;version&amp;gt;&lt;/span&gt;1.5.5&lt;span class=&quot;nt&quot;&gt;&amp;lt;/version&amp;gt;&lt;/span&gt;
@@ -483,8 +633,7 @@ app-b.leward.eu     CNAME   leward.eu.
         &lt;span class=&quot;nt&quot;&gt;&amp;lt;/execution&amp;gt;&lt;/span&gt;
     &lt;span class=&quot;nt&quot;&gt;&amp;lt;/executions&amp;gt;&lt;/span&gt;
 &lt;span class=&quot;nt&quot;&gt;&amp;lt;/plugin&amp;gt;&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;p&gt;We add &lt;code class=&quot;highlighter-rouge&quot;&gt;asciidoctor-maven-plugin&lt;/code&gt; to our build and configure it to attach the generation of the documentation to the Maven &lt;code class=&quot;highlighter-rouge&quot;&gt;generate-resources&lt;/code&gt; phase. The only configuration we need to specify is that we want the documentation generated in HTML.&lt;/p&gt;
 
@@ -514,7 +663,7 @@ We just haven't decided what that is yet.
 
 &lt;p&gt;To track which version of the software the generated document it is possible to include the version of the Maven project in the header of the generated document. The &lt;a href=&quot;https://github.com/asciidoctor/asciidoctor-maven-plugin#add-version-and-build-date-to-the-header&quot;&gt;plugin’s documentation&lt;/a&gt; describes how to configure it:&lt;/p&gt;
 
-&lt;div class=&quot;language-xml highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nt&quot;&gt;&amp;lt;properties&amp;gt;&lt;/span&gt;
+&lt;div class=&quot;language-xml highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nt&quot;&gt;&amp;lt;properties&amp;gt;&lt;/span&gt;
    &lt;span class=&quot;c&quot;&gt;&amp;lt;!-- Custom date format to be displayed --&amp;gt;&lt;/span&gt;
    &lt;span class=&quot;nt&quot;&gt;&amp;lt;maven.build.timestamp.format&amp;gt;&lt;/span&gt;dd MMMM yyyy HH&lt;span class=&quot;nt&quot;&gt;&amp;lt;/maven.build.timestamp.format&amp;gt;&lt;/span&gt;
 &lt;span class=&quot;nt&quot;&gt;&amp;lt;/properties&amp;gt;&lt;/span&gt;
@@ -529,8 +678,7 @@ We just haven't decided what that is yet.
     &lt;span class=&quot;nt&quot;&gt;&amp;lt;/attributes&amp;gt;&lt;/span&gt;
     ...
 &lt;span class=&quot;nt&quot;&gt;&amp;lt;/configuration&amp;gt;&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;p&gt;&lt;a href=&quot;/assets/2017-08-05-write-user-guide-in-maven-project-with-asciidoctor/doc-with-version-number.png&quot;&gt;&lt;img src=&quot;/assets/2017-08-05-write-user-guide-in-maven-project-with-asciidoctor/doc-with-version-number.png&quot; alt=&quot;Maven version number in the header&quot; /&gt;&lt;/a&gt;&lt;/p&gt;
 
@@ -540,11 +688,10 @@ We just haven't decided what that is yet.
 
 &lt;p&gt;First, define the &lt;code class=&quot;highlighter-rouge&quot;&gt;sourcedir&lt;/code&gt; attribute in order to inscruct the plugin where to look for source code:&lt;/p&gt;
 
-&lt;div class=&quot;language-xml highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nt&quot;&gt;&amp;lt;attributes&amp;gt;&lt;/span&gt;
+&lt;div class=&quot;language-xml highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nt&quot;&gt;&amp;lt;attributes&amp;gt;&lt;/span&gt;
     &lt;span class=&quot;nt&quot;&gt;&amp;lt;sourcedir&amp;gt;&lt;/span&gt;${project.build.sourceDirectory}&lt;span class=&quot;nt&quot;&gt;&amp;lt;/sourcedir&amp;gt;&lt;/span&gt;
 &lt;span class=&quot;nt&quot;&gt;&amp;lt;/attributes&amp;gt;&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;p&gt;Then in your documentation you can use this reference to include code snippets:&lt;/p&gt;
 
@@ -561,14 +708,13 @@ include::{sourcedir}/eu/leward/asciidocdemo/IdeaController.java[tags=class]
 
 &lt;p&gt;In order to extract a subset of the file you can put tags in the source code:&lt;/p&gt;
 
-&lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kn&quot;&gt;package&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;eu&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;leward&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;asciidocdemo&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+&lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kn&quot;&gt;package&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;eu&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;leward&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;asciidocdemo&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
 &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;org.springframework.web.bind.annotation.RestController&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
 &lt;span class=&quot;c1&quot;&gt;// tag::class[]&lt;/span&gt;
 &lt;span class=&quot;nd&quot;&gt;@RestController&lt;/span&gt;
 &lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;IdeaController&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
 &lt;span class=&quot;c1&quot;&gt;// end::class[]&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;p&gt;By leaving the brackets empty you can display the whole file&lt;/p&gt;
 
@@ -1000,24 +1146,6 @@ if you still need to make up your mind.&lt;/p&gt;
         <pubDate>Sun, 03 Apr 2016 05:21:55 +0800</pubDate>
         <link>http://yourdomain.com/2016/04/03/%E7%A7%81%E3%81%AE%E3%83%96%E3%83%AD%E3%82%B0.html</link>
         <guid isPermaLink="true">http://yourdomain.com/2016/04/03/%E7%A7%81%E3%81%AE%E3%83%96%E3%83%AD%E3%82%B0.html</guid>
-        
-        
-      </item>
-    
-      <item>
-        <title>Création du blog</title>
-        <description>&lt;p&gt;Cela fait un moment que l’idée me trotte dans la tête : celle de créer mon site et blog personnel.
-J’ai finalement décidé de franchir le pas. Pourquoi ? Et pour dire quoi après tout ?&lt;/p&gt;
-
-&lt;p&gt;Ces derniers temps pas mal de choses bougent pour moi, et cela m’a donné envie d’aller de l’avant. Je suis maintenant un “IT Consultant”, ou plus généralement développeur
-“full-stack”, c’est-à-dire un peu touche à tout.&lt;/p&gt;
-
-&lt;p&gt;A travers ce blog je souhaite partager mes trouvailles liées à mon boulot,
-mes projets d’expatriation à Singapour et ma passion du vélo.&lt;/p&gt;
-</description>
-        <pubDate>Sun, 03 Apr 2016 05:21:55 +0800</pubDate>
-        <link>http://yourdomain.com/2016/04/03/cr%C3%A9ation-du-blog.html</link>
-        <guid isPermaLink="true">http://yourdomain.com/2016/04/03/cr%C3%A9ation-du-blog.html</guid>
         
         
       </item>

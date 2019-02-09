@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Using Nix on Linux Mint</title>
+  <meta name="description" content="Using Nix on Linux MintIf you are currently happy with you package manager and installation, it is likely that you don’t need Nix (need as vital need). Howev...">
+
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="canonical" href="http://yourdomain.com/2019/02/10/using-nix-on-linux-mint.html">
+  <link rel="alternate" type="application/rss+xml" title="Paul-Julien Vauthier" href="http://yourdomain.com/feed.xml">
+</head>
+
+
+  <body>
+
+    <header class="site-header">
+
+  <div class="wrapper">
+      
+    <a class="site-title" href="/">
+        <img src="/images/bicycle.svg">
+        Paul-Julien Vauthier
+    </a>
+      
+    <div class="langs">
+        <ul>
+        
+        
+          <li>
+            <a href="/2019/02/10/using-nix-on-linux-mint.html" class="en">en</a>
+          </li>
+        
+
+        
+        
+        </ul>
+    </div>
+      
+    <p class="site-sub-title">
+        Personnal website about my job as an IT Consultant and Developer, casual Cycling and my relocation to Singapore.
+    </p>
+      
+    <nav class="site-nav">
+      <!--<a href="#" class="menu-icon">
+        <svg viewBox="0 0 18 15">
+          <path fill="#424242" d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.031C17.335,0,18,0.665,18,1.484L18,1.484z"/>
+          <path fill="#424242" d="M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0c0-0.82,0.665-1.484,1.484-1.484 h15.031C17.335,6.031,18,6.696,18,7.516L18,7.516z"/>
+          <path fill="#424242" d="M18,13.516C18,14.335,17.335,15,16.516,15H1.484C0.665,15,0,14.335,0,13.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.031C17.335,12.031,18,12.696,18,13.516L18,13.516z"/>
+        </svg>
+      </a>-->
+
+      <div class="trigger">
+        
+        <a class="page-link" href="/">Home</a>
+        
+        <a class="page-link" href="/resume">Resume</a>
+        
+        <!--
+          
+          <a class="page-link" href="/about/">About</a>
+          
+        
+          
+          <a class="page-link" href="/credits/">Credits</a>
+          
+        
+          
+          <a class="page-link" href="/credits-fr/">Crédits</a>
+          
+        
+          
+          <a class="page-link" href="/cv">CV</a>
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+          <a class="page-link" href="/lebenslauf">Lebenslauf</a>
+          
+        
+          
+        
+          
+          <a class="page-link" href="/resume">Resume</a>
+          
+        
+          
+          <a class="page-link" href="/rirekisho">りれきしょ</a>
+          
+        -->
+      </div>
+    </nav>
+    
+    
+
+  </div>
+
+</header>
+
+
+    <div class="page-content">
+      <div class="wrapper">
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">Using Nix on Linux Mint</h1>
+    <p class="post-meta"><time datetime="2019-02-10T05:35:00+08:00" itemprop="datePublished">Feb 10, 2019</time></p>
+  </header>
+
+  <div class="post-content" itemprop="articleBody">
+    <h2 id="using-nix-on-linux-mint">Using Nix on Linux Mint</h2>
+
+<p>If you are currently happy with you package manager and installation, it is likely that you don’t need Nix (need as vital need). However, Nix will provide you with some nice additions:</p>
+
+<ul>
+  <li>Atomic upgrades and rollback</li>
+  <li>Multi-user package management: the packages I install or remove do not affect other users</li>
+  <li>Allowing multiple versions of a package to be installed</li>
+  <li>Setup of specific build environments (hello developers and Docker)</li>
+</ul>
+
+<p>If you find enough benefits in those Nix features, a migration may be worthwhile.</p>
+
+<p>Nix defines itself as a purely functional package manager. Here functional is to be understood as per the principles of <a href="https://www.keycdn.com/blog/functional-programming">functional programming</a>. Immutability, absence of side-effect and pure functions are elements of functional programming which allows Nix to have similar properties as a package manager.</p>
+
+<p>Upgrading to a newer version of Linux Mint, I decided to give Nix a try and write a follow-up blog post.</p>
+
+<!--more-->
+
+<h2 id="installation">Installation</h2>
+
+<p>To install Nix, run the following command (this is the <a href="https://nixos.org/nix/manual/#sect-multi-user-installation">multi-user installation</a>):</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sh &lt;(curl https://nixos.org/nix/install) --daemon
+</code></pre></div></div>
+
+<p>Always be careful when you install a downloaded script with <code class="highlighter-rouge">curl</code>. Verify the source is trusted, and do not hesitate to review the installation script.</p>
+
+<p>I like that the installation process tries its best being transparent about the different steps it is performing.</p>
+
+<p><em>Note: there are two installation mode available: multi-user and single-user. In general multi-user is better and will let all the user of the systems use nix. However packages that you install as a user are not made available to the other users.</em></p>
+
+<p>In the future, it may not be necessary to run this script as nix is <a href="https://ftp-master.debian.org/new/nix_2.2.1-2.html">now available on Debian</a>.</p>
+
+<h2 id="uninstall">Uninstall</h2>
+
+<p>If you play with Nix and would like to remove it, this can be done easily and cleanly. This means you can give Nix a try without risking creating havoc in your system.</p>
+
+<p>Installing Nix is a matter of downloading and running a script. Uninstalling means undo whatever the script has done.</p>
+
+<p>I advise to <a href="https://nixos.org/nix/manual/#sect-multi-user-installation">refer to the manual</a>, as multiple steps are required and they may change over time.</p>
+
+<h2 id="common-commands">Common Commands</h2>
+
+<p>Searching for a package: <code class="highlighter-rouge">nix search packagename</code></p>
+
+<p>Installing a package: <code class="highlighter-rouge">nix-env -i packagename</code></p>
+
+<p>Removing a package: <code class="highlighter-rouge">nix-env -e packagename</code></p>
+
+<p>List installed packages: <code class="highlighter-rouge">nix-env -q</code></p>
+
+<p>Upgrade packages: <code class="highlighter-rouge">nix-env -u</code></p>
+
+<h2 id="caveats">Caveats</h2>
+
+<h3 id="nemo--dropbox">Nemo &amp; Dropbox</h3>
+
+<p>I use Dropbox to sync my documents between devices. Dropbox and its Nemo integration are not available. You can still install it using the Mint Software Manager.</p>
+
+<h3 id="entries-in-the-start-menu">Entries in the start menu</h3>
+
+<p>Entries in the desktop menu are not added. For this to work you need to configure the <code class="highlighter-rouge">XDG_DATA_DIR</code> environment variable. You can add to your <code class="highlighter-rouge">.profile</code> file:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>export XDG_DATA_DIRS=$HOME/.nix-profile/share/applications:"${XDG_DATA_DIRS:-/usr/local/share/:/usr/share/}"
+</code></pre></div></div>
+
+<p>Still doing so, does not make the entry appear after installing a new package with <code class="highlighter-rouge">nix-env -i</code>. However at the next restart, the entry is there. If you open the menu editor you should also see the icon</p>
+
+<h3 id="nix-for-other-users">Nix for other users</h3>
+
+<p>Logging-in as a different user, <code class="highlighter-rouge">nix</code> and <code class="highlighter-rouge">nix-env</code> may not be immediately  available. Running <code class="highlighter-rouge">source /etc/profile</code> should resolve it.</p>
+
+<h2 id="running-two-versions-side-by-side">Running two versions side-by-side</h2>
+
+<p><strong>TL;DR;</strong></p>
+
+<ul>
+  <li>At runtime, only one version of a package can be present</li>
+  <li>Use nix-shell for your builds</li>
+  <li>Nix default channel (nixpkgs) does not keep, nor allow you to reference a particular version of a library or application</li>
+  <li>Nix works great to setup the build environment, but won’t do a better job for the dependencies of your application if the ecosystem you are working already has some build and dependency management systems</li>
+</ul>
+
+<p>Nix is said to allow to have several installations of a package installed. Let’s try it:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ nix-env -i ruby
+installing 'ruby-2.6.1'
+
+$ ruby -v
+ruby 2.6.1p33 (2019-01-30) [x86_64-linux]
+
+$ nix-env -iA nixpkgs.ruby_2_3
+replacing old 'ruby-2.6.1'
+installing 'ruby-2.3.8'
+
+$ ruby -v
+ruby 2.3.8p459 (2018-10-18) [x86_64-linux]
+</code></pre></div></div>
+
+<p>What has happened here? The first installation of ruby is quite straightforward and works as expected. Where things are a little bit trickier is when installing an older version of ruby.</p>
+
+<p>To install ruby 2.3 we had to add the <code class="highlighter-rouge">-A</code> option and specify the package name as <code class="highlighter-rouge">nixpkgs.ruby_2_3</code>.</p>
+
+<p>The following two commands are similar (as long as <code class="highlighter-rouge">nixpkgs.ruby_2_3</code> points to the version 2.3.8 of ruby):</p>
+
+<ul>
+  <li><code class="highlighter-rouge">nix-env -iA nixpkgs.ruby_2_3</code></li>
+  <li><code class="highlighter-rouge">nix-env -i ruby-2.3.8</code></li>
+</ul>
+
+<p>However note that running <code class="highlighter-rouge">nix-env -i ruby-2.3.7</code> does not work, because that version is not targeted by any nix package. The versions which work are the ones returned one running <code class="highlighter-rouge">nix-env -qa ruby</code></p>
+
+<p>General rule of thumb is to install with <code class="highlighter-rouge">niv-env -i</code> only applications that you want to be available globally for a particular user. As a developer, to make the most of out of nix, you will need to create your own nix expressions in order to ensure your build are replicable using <code class="highlighter-rouge">nix-shell</code>.</p>
+
+<p>The philosophy in Nix is not to pinpoint to a specific version of a library or application, but to have a set dependencies which can be easily reproduced between environment. <a href="https://github.com/NixOS/nixpkgs/issues/9682#issuecomment-138105069">Multiple versions are kept in nixpkgs (default Nix package repository) if there is a good reason to</a>. This does not mean you can’t do it, there are ways of doing it, playing with nix channels, but I would not consider it to be straightforward.</p>
+
+<p>For this reasons, nix is not always ideal, nor the silver bullet for developers needing to troubleshot and target a specific version.</p>
+
+<p>Also here in our example, ruby2.6 has disappeared from the list when you run <code class="highlighter-rouge">nix-env -q</code>. For a given package, only one can be resolved at runtime. If you need ruby 2.3 for a specific build, nix-shell is there for that purpose. It creates a shell with all the required dependencies to run the build.</p>
+
+<p>Nix-shell is more useful when you need system libraries to be present such as when working in C. This is a bit less the case when you are already using a build and package manager such as Maven for Java, Cargo for Rust, NPM for Javascript.</p>
+
+<p>As a developer if I need to do some troubleshooting on a particular version of Ruby, a tool such as <a href="https://rvm.io/">RVM</a> may be more appropriate.</p>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>I am a fairly beginner with Nix and wanted to give it try as it is quite different from the traditional system package managers.</p>
+
+<p>To make it work nicely with Linux Mint from a desktop user perspective, a few minor adjustment were needed, but overall the experience is pleasant.</p>
+
+<p>Nix works great for my use case of installing applications globally on my system.  Is it significantly better than the package manager which shipped with my distribution? To the level I am using it, a bit, but not significantly. I can find in Nix packages which are not yet available in the main Mint repositories or newer versions.</p>
+
+<p>As a developer to manage things like my versions of Java and Ruby, Rust, I will stick to tools such as <a href="https://sdkman.io/">SDKMAN</a> and <a href="https://rvm.io/">rvm</a>.</p>
+
+<p>If I were to work on C or C++ projects, I’d probably find more value to Nix for my builds. As a Java developer for example, you mostly need the JDK and Maven installed.</p>
+
+<p>If you are a bit more curious, did you there was a Linux distribution called <a href="https://nixos.org/">NixOS</a>? There is also a series of introduction posts to Nix called <a href="https://nixos.org/nixos/nix-pills/index.html">Nix Pills</a>.</p>
+
+<p>When I finished writing this blog post, here are the packages I have installed (I just reinstalled my system):</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ nix-env -q
+bat-0.9.0
+git-2.19.2
+htop-2.2.0
+idea-ultimate-2018.3.4
+jekyll-3.8.5
+jq-1.6
+keepassx2-2.0.3
+openttd-1.8.0
+vscode-1.30.2
+</code></pre></div></div>
+
+  </div>
+
+</article>
+
+      </div>
+    </div>
+
+    <footer class="site-footer">
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Paul-Julien Vauthier</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li>Paul-Julien Vauthier</li>
+          <li><a href="mailto:pj.vauthier@gmail.com">pj.vauthier@gmail.com</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-2">
+        <ul class="social-media-list">
+          
+          <li>
+            <a href="https://github.com/Leward"><span class="icon icon--github"><svg viewBox="0 0 16 16"><path fill="#828282" d="M7.999,0.431c-4.285,0-7.76,3.474-7.76,7.761 c0,3.428,2.223,6.337,5.307,7.363c0.388,0.071,0.53-0.168,0.53-0.374c0-0.184-0.007-0.672-0.01-1.32 c-2.159,0.469-2.614-1.04-2.614-1.04c-0.353-0.896-0.862-1.135-0.862-1.135c-0.705-0.481,0.053-0.472,0.053-0.472 c0.779,0.055,1.189,0.8,1.189,0.8c0.692,1.186,1.816,0.843,2.258,0.645c0.071-0.502,0.271-0.843,0.493-1.037 C4.86,11.425,3.049,10.76,3.049,7.786c0-0.847,0.302-1.54,0.799-2.082C3.768,5.507,3.501,4.718,3.924,3.65 c0,0,0.652-0.209,2.134,0.796C6.677,4.273,7.34,4.187,8,4.184c0.659,0.003,1.323,0.089,1.943,0.261 c1.482-1.004,2.132-0.796,2.132-0.796c0.423,1.068,0.157,1.857,0.077,2.054c0.497,0.542,0.798,1.235,0.798,2.082 c0,2.981-1.814,3.637-3.543,3.829c0.279,0.24,0.527,0.713,0.527,1.437c0,1.037-0.01,1.874-0.01,2.129 c0,0.208,0.14,0.449,0.534,0.373c3.081-1.028,5.302-3.935,5.302-7.362C15.76,3.906,12.285,0.431,7.999,0.431z"/></svg>
+</span><span class="username">Leward</span></a>
+
+          </li>
+          
+
+          
+          <li>
+            <a href="https://twitter.com/Pj_Leward"><span class="icon icon--twitter"><svg viewBox="0 0 16 16"><path fill="#828282" d="M15.969,3.058c-0.586,0.26-1.217,0.436-1.878,0.515c0.675-0.405,1.194-1.045,1.438-1.809c-0.632,0.375-1.332,0.647-2.076,0.793c-0.596-0.636-1.446-1.033-2.387-1.033c-1.806,0-3.27,1.464-3.27,3.27 c0,0.256,0.029,0.506,0.085,0.745C5.163,5.404,2.753,4.102,1.14,2.124C0.859,2.607,0.698,3.168,0.698,3.767 c0,1.134,0.577,2.135,1.455,2.722C1.616,6.472,1.112,6.325,0.671,6.08c0,0.014,0,0.027,0,0.041c0,1.584,1.127,2.906,2.623,3.206 C3.02,9.402,2.731,9.442,2.433,9.442c-0.211,0-0.416-0.021-0.615-0.059c0.416,1.299,1.624,2.245,3.055,2.271 c-1.119,0.877-2.529,1.4-4.061,1.4c-0.264,0-0.524-0.015-0.78-0.046c1.447,0.928,3.166,1.469,5.013,1.469 c6.015,0,9.304-4.983,9.304-9.304c0-0.142-0.003-0.283-0.009-0.423C14.976,4.29,15.531,3.714,15.969,3.058z"/></svg>
+</span><span class="username">Pj_Leward</span></a>
+
+          </li>
+          
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-3">
+        <p><!--{"fr"=>"Site web personnel à propos de mon travail en tant que Développer et Consultant IT , de vélo en tant que hobby, et de mon déménagement à venir à Singapour.", "en"=>"Personnal website about my job as an IT Consultant and Developer, casual Cycling and my relocation to Singapore.", "de"=>"Persönlich Website über meinen Job als einen IT-Berater und Softwareentwickler, Radfahren und meinen Umzug nach Singapur.", "jp"=>"じょうほうテクノロジー と じてんしゃ　と　シンガポール についての私のブログ."}--></p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+
+
+  </body>
+
+</html>
