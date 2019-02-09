@@ -162,14 +162,13 @@ If you use Docker to deploy your applications and print your logs in the standar
 
 <p>Then, run the docker container with the following configuration:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>docker run \
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker run \
   -e X-OVH-TOKEN="7982bbc4-9a66-4426-9de3-33d6eb201ed6" \
   --log-driver gelf \
   --log-opt gelf-address=udp://gra2.logs.ovh.com:2202 \
   --log-opt env=X-OVH-TOKEN \
   -d busybox
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>Replace <code class="highlighter-rouge">7982bbc4-9a66-4426-9de3-33d6eb201ed6</code> by your actual Stream token.</p>
 
@@ -188,7 +187,7 @@ If you use Docker to deploy your applications and print your logs in the standar
 
 <p>From logback you can send the logs to to Greylogs by adding a new Appender:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code><span class="cp">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</span>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</span>
 <span class="nt">&lt;configuration</span> <span class="na">debug=</span><span class="s">"true"</span><span class="nt">&gt;</span>
 
   <span class="nt">&lt;appender</span> <span class="na">name=</span><span class="s">"STDOUT"</span> <span class="na">class=</span><span class="s">"ch.qos.logback.core.ConsoleAppender"</span><span class="nt">&gt;</span>
@@ -213,8 +212,7 @@ If you use Docker to deploy your applications and print your logs in the standar
   <span class="nt">&lt;/root&gt;</span>
 
 <span class="nt">&lt;/configuration&gt;</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>Replace <code class="highlighter-rouge">7982bbc4-9a66-4426-9de3-33d6eb201ed6</code> by your actual Stream token.</p>
 

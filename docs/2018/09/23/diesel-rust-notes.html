@@ -147,7 +147,7 @@ The command dumps the DB structure into my <code class="highlighter-rouge">schem
 <p>The second step is to create the structs corresponding to your shema.</p>
 
 <p><strong>schema.rs:</strong></p>
-<div class="language-rust highlighter-rouge"><pre class="highlight"><code><span class="nd">table!</span> <span class="p">{</span>
+<div class="language-rust highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">table!</span> <span class="p">{</span>
     <span class="nf">cover</span> <span class="p">(</span><span class="n">id</span><span class="p">)</span> <span class="p">{</span>
         <span class="n">id</span> <span class="k">-&gt;</span> <span class="n">Int8</span><span class="p">,</span>
         <span class="c">// version -&gt; Int8,</span>
@@ -155,20 +155,18 @@ The command dumps the DB structure into my <code class="highlighter-rouge">schem
         <span class="n">url</span> <span class="k">-&gt;</span> <span class="n">Varchar</span><span class="p">,</span>
     <span class="p">}</span>
 <span class="p">}</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p><strong>cover.rs:</strong></p>
-<div class="language-rust highlighter-rouge"><pre class="highlight"><code><span class="k">use</span> <span class="nn">diesel</span><span class="p">::</span><span class="n">Queryable</span><span class="p">;</span>
+<div class="language-rust highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">use</span> <span class="nn">diesel</span><span class="p">::</span><span class="n">Queryable</span><span class="p">;</span>
 
-<span class="cp">#[derive(Queryable,</span> <span class="cp">Clone)]</span>
+<span class="nd">#[derive(Queryable,</span> <span class="nd">Clone)]</span>
 <span class="k">pub</span> <span class="k">struct</span> <span class="n">Cover</span> <span class="p">{</span>
     <span class="k">pub</span> <span class="n">id</span><span class="p">:</span> <span class="nb">i64</span><span class="p">,</span>
     <span class="k">pub</span> <span class="n">name</span><span class="p">:</span> <span class="nb">String</span><span class="p">,</span>
     <span class="k">pub</span> <span class="n">url</span><span class="p">:</span> <span class="nb">String</span><span class="p">,</span>
 <span class="p">}</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>Note that in my schema I commented out the <code class="highlighter-rouge">version</code> column. Indeed, at this current stage, I don’t really care about that field.</p>
 
@@ -191,7 +189,7 @@ However, if your application is expected to issue multiple requests concurrently
 <p>The snippet below is heavily inspired from a snippet a saw somewhere else, I just can’t recall where it was…</p>
 
 <p><strong>database.rs</strong></p>
-<div class="language-rust highlighter-rouge"><pre class="highlight"><code><span class="k">use</span> <span class="nn">diesel</span><span class="p">::</span><span class="nn">pg</span><span class="p">::</span><span class="n">PgConnection</span><span class="p">;</span>
+<div class="language-rust highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">use</span> <span class="nn">diesel</span><span class="p">::</span><span class="nn">pg</span><span class="p">::</span><span class="n">PgConnection</span><span class="p">;</span>
 <span class="k">use</span> <span class="nn">r2d2</span><span class="p">::{</span><span class="n">Pool</span><span class="p">,</span> <span class="n">PooledConnection</span><span class="p">};</span>
 <span class="k">use</span> <span class="nn">r2d2_diesel</span><span class="p">::</span><span class="n">ConnectionManager</span><span class="p">;</span>
 <span class="k">use</span> <span class="nn">std</span><span class="p">::</span><span class="n">env</span><span class="p">;</span>
@@ -221,22 +219,20 @@ However, if your application is expected to issue multiple requests concurrently
     <span class="k">let</span> <span class="n">database_connection</span> <span class="o">=</span> <span class="n">pool</span><span class="nf">.get</span><span class="p">()</span><span class="nf">.expect</span><span class="p">(</span><span class="s">"Failed to get pooled connection"</span><span class="p">);</span> <span class="c">// Not sure when a panic is triggered here</span>
     <span class="n">database_connection</span>
 <span class="p">}</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <h2 id="simple-query">Simple Query</h2>
 
 <p>This is how you can then make a query using Diesel:</p>
 
-<div class="language-rust highlighter-rouge"><pre class="highlight"><code><span class="k">use</span> <span class="nn">database</span><span class="p">::</span><span class="n">get_pooled_connection</span><span class="p">;</span>
+<div class="language-rust highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">use</span> <span class="nn">database</span><span class="p">::</span><span class="n">get_pooled_connection</span><span class="p">;</span>
 
 <span class="k">fn</span> <span class="nf">list_covers</span><span class="p">()</span> <span class="k">-&gt;</span> <span class="nb">Vec</span><span class="o">&lt;</span><span class="n">Cover</span><span class="o">&gt;</span> <span class="p">{</span>
     <span class="k">use</span> <span class="nn">schema</span><span class="p">::</span><span class="n">cover</span><span class="p">;</span>
     <span class="k">let</span> <span class="n">connection</span> <span class="o">=</span> <span class="o">&amp;*</span><span class="nf">get_pooled_connection</span><span class="p">();</span>
     <span class="nn">cover</span><span class="p">::</span><span class="nn">table</span><span class="p">::</span><span class="nf">load</span><span class="p">(</span><span class="n">connection</span><span class="p">)</span><span class="nf">.expect</span><span class="p">(</span><span class="s">"Error loading covers"</span><span class="p">)</span>
 <span class="p">}</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <h2 id="joining">Joining</h2>
 
@@ -244,7 +240,7 @@ However, if your application is expected to issue multiple requests concurrently
 The snippet below fetches the 5 latest news.</p>
 
 <p><strong>schema.rs</strong></p>
-<div class="language-rust highlighter-rouge"><pre class="highlight"><code><span class="nd">table!</span> <span class="p">{</span>
+<div class="language-rust highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">table!</span> <span class="p">{</span>
     <span class="nf">cover</span> <span class="p">(</span><span class="n">id</span><span class="p">)</span> <span class="p">{</span>
         <span class="n">id</span> <span class="k">-&gt;</span> <span class="n">Int8</span><span class="p">,</span>
         <span class="n">name</span> <span class="k">-&gt;</span> <span class="n">Varchar</span><span class="p">,</span>
@@ -268,16 +264,15 @@ The snippet below fetches the 5 latest news.</p>
     <span class="n">cover</span><span class="p">,</span>
     <span class="n">news</span><span class="p">,</span>
 <span class="p">);</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p><strong>news.rs</strong></p>
-<div class="language-rust highlighter-rouge"><pre class="highlight"><code><span class="k">use</span> <span class="nn">chrono</span><span class="p">::</span><span class="nn">prelude</span><span class="p">::</span><span class="o">*</span><span class="p">;</span>
+<div class="language-rust highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">use</span> <span class="nn">chrono</span><span class="p">::</span><span class="nn">prelude</span><span class="p">::</span><span class="o">*</span><span class="p">;</span>
 <span class="k">use</span> <span class="nn">diesel</span><span class="p">::{</span><span class="n">ExpressionMethods</span><span class="p">,</span> <span class="n">QueryDsl</span><span class="p">,</span> <span class="n">Queryable</span><span class="p">,</span> <span class="n">RunQueryDsl</span><span class="p">};</span>
 <span class="k">use</span> <span class="nn">cover</span><span class="p">::</span><span class="n">Cover</span><span class="p">;</span>
 <span class="k">use</span> <span class="nn">database</span><span class="p">::</span><span class="n">get_pooled_connection</span><span class="p">;</span>
 
-<span class="cp">#[derive(Debug,</span> <span class="cp">Queryable)]</span>
+<span class="nd">#[derive(Debug,</span> <span class="nd">Queryable)]</span>
 <span class="k">struct</span> <span class="n">NewsRow</span> <span class="p">{</span>
     <span class="n">id</span><span class="p">:</span> <span class="nb">i64</span><span class="p">,</span>
     <span class="n">content</span><span class="p">:</span> <span class="nb">String</span><span class="p">,</span>
@@ -321,8 +316,7 @@ The snippet below fetches the 5 latest news.</p>
         <span class="nf">.map</span><span class="p">(|</span><span class="n">result</span><span class="p">|</span> <span class="nn">News</span><span class="p">::</span><span class="nf">from</span><span class="p">(</span><span class="o">&amp;</span><span class="n">result</span><span class="err">.</span><span class="mi">0</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">result</span><span class="err">.</span><span class="mi">1</span><span class="p">))</span>
         <span class="nf">.collect</span><span class="p">()</span>
 <span class="p">}</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p><strong>Note:</strong> When doing a join, diesel returns the result as a tuple. 
 This works great if your struct and your schema have the same fields in the same order. 

@@ -142,7 +142,7 @@
 
 <p>To start with Asciidoctor on your existing Maven project add the asciidoctor plugin in your <code class="highlighter-rouge">pom.xml</code>:</p>
 
-<div class="language-xml highlighter-rouge"><pre class="highlight"><code><span class="nt">&lt;plugin&gt;</span>
+<div class="language-xml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;plugin&gt;</span>
     <span class="nt">&lt;groupId&gt;</span>org.asciidoctor<span class="nt">&lt;/groupId&gt;</span>
     <span class="nt">&lt;artifactId&gt;</span>asciidoctor-maven-plugin<span class="nt">&lt;/artifactId&gt;</span>
     <span class="nt">&lt;version&gt;</span>1.5.5<span class="nt">&lt;/version&gt;</span>
@@ -159,8 +159,7 @@
         <span class="nt">&lt;/execution&gt;</span>
     <span class="nt">&lt;/executions&gt;</span>
 <span class="nt">&lt;/plugin&gt;</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>We add <code class="highlighter-rouge">asciidoctor-maven-plugin</code> to our build and configure it to attach the generation of the documentation to the Maven <code class="highlighter-rouge">generate-resources</code> phase. The only configuration we need to specify is that we want the documentation generated in HTML.</p>
 
@@ -190,7 +189,7 @@ We just haven't decided what that is yet.
 
 <p>To track which version of the software the generated document it is possible to include the version of the Maven project in the header of the generated document. The <a href="https://github.com/asciidoctor/asciidoctor-maven-plugin#add-version-and-build-date-to-the-header">plugin’s documentation</a> describes how to configure it:</p>
 
-<div class="language-xml highlighter-rouge"><pre class="highlight"><code><span class="nt">&lt;properties&gt;</span>
+<div class="language-xml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;properties&gt;</span>
    <span class="c">&lt;!-- Custom date format to be displayed --&gt;</span>
    <span class="nt">&lt;maven.build.timestamp.format&gt;</span>dd MMMM yyyy HH<span class="nt">&lt;/maven.build.timestamp.format&gt;</span>
 <span class="nt">&lt;/properties&gt;</span>
@@ -205,8 +204,7 @@ We just haven't decided what that is yet.
     <span class="nt">&lt;/attributes&gt;</span>
     ...
 <span class="nt">&lt;/configuration&gt;</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p><a href="/assets/2017-08-05-write-user-guide-in-maven-project-with-asciidoctor/doc-with-version-number.png"><img src="/assets/2017-08-05-write-user-guide-in-maven-project-with-asciidoctor/doc-with-version-number.png" alt="Maven version number in the header" /></a></p>
 
@@ -216,11 +214,10 @@ We just haven't decided what that is yet.
 
 <p>First, define the <code class="highlighter-rouge">sourcedir</code> attribute in order to inscruct the plugin where to look for source code:</p>
 
-<div class="language-xml highlighter-rouge"><pre class="highlight"><code><span class="nt">&lt;attributes&gt;</span>
+<div class="language-xml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;attributes&gt;</span>
     <span class="nt">&lt;sourcedir&gt;</span>${project.build.sourceDirectory}<span class="nt">&lt;/sourcedir&gt;</span>
 <span class="nt">&lt;/attributes&gt;</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>Then in your documentation you can use this reference to include code snippets:</p>
 
@@ -237,14 +234,13 @@ include::{sourcedir}/eu/leward/asciidocdemo/IdeaController.java[tags=class]
 
 <p>In order to extract a subset of the file you can put tags in the source code:</p>
 
-<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="kn">package</span> <span class="n">eu</span><span class="o">.</span><span class="na">leward</span><span class="o">.</span><span class="na">asciidocdemo</span><span class="o">;</span>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">package</span> <span class="n">eu</span><span class="o">.</span><span class="na">leward</span><span class="o">.</span><span class="na">asciidocdemo</span><span class="o">;</span>
 <span class="kn">import</span> <span class="nn">org.springframework.web.bind.annotation.RestController</span><span class="o">;</span>
 <span class="c1">// tag::class[]</span>
 <span class="nd">@RestController</span>
 <span class="kd">public</span> <span class="kd">class</span> <span class="nc">IdeaController</span> <span class="o">{</span> <span class="o">}</span>
 <span class="c1">// end::class[]</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>By leaving the brackets empty you can display the whole file</p>
 
