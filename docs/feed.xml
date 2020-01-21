@@ -5,9 +5,9 @@
     <description>{&quot;fr&quot;=&gt;&quot;Site web personnel à propos de mon travail en tant que Développer et Consultant IT , de vélo en tant que hobby, et de mon déménagement à venir à Singapour.&quot;, &quot;en&quot;=&gt;&quot;Personnal website about my job as an IT Consultant and Developer, casual Cycling and my relocation to Singapore.&quot;, &quot;de&quot;=&gt;&quot;Persönlich Website über meinen Job als einen IT-Berater und Softwareentwickler, Radfahren und meinen Umzug nach Singapur.&quot;, &quot;jp&quot;=&gt;&quot;じょうほうテクノロジー と じてんしゃ　と　シンガポール についての私のブログ.&quot;}</description>
     <link>http://yourdomain.com/</link>
     <atom:link href="http://yourdomain.com/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sun, 10 Feb 2019 05:47:24 +0800</pubDate>
-    <lastBuildDate>Sun, 10 Feb 2019 05:47:24 +0800</lastBuildDate>
-    <generator>Jekyll v3.8.5</generator>
+    <pubDate>Tue, 21 Jan 2020 11:20:19 +0800</pubDate>
+    <lastBuildDate>Tue, 21 Jan 2020 11:20:19 +0800</lastBuildDate>
+    <generator>Jekyll v3.8.6</generator>
     
       <item>
         <title>Using Nix on Linux Mint</title>

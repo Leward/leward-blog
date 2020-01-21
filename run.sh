@@ -1,2 +1,3 @@
 #!/usr/bin/env bash
-jekyll serve
+
+docker run -ti -v $(pwd):/srv/jekyll jekyll/jekyll:3 jekyll serve

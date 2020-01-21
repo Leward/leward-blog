@@ -24,6 +24,7 @@ exclude:
     - "docs/"
     - Dockerfile
     - "*.sh"
+timezone: Asia/Singapore
 
 # Default permalink format for posts
 permalink: /:year/:month/:day/:title.html
