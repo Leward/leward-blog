@@ -9,11 +9,11 @@ ref:        java-module-slf4j-jlink-javafx
 excerpt_separator: <!--more-->
 ---
 
-I recently tried to upgrade an old JavaFX application I had as a side-project to a more recent version of Java, Java 13 at the time of writing this.
+I recently tried to upgrade an old JavaFX application I had as a side-project to a more recent version of Java: Java 13 at the time of writing this.
 
-Most of my work with Java so far was on Java 8, and I hardly did the switch to Java 9+ besides keeping informed by reading some articles on the matter ([Baeldung](https://www.baeldung.com/) and [Java Annotated](https://blog.jetbrains.com/idea/tag/java-annotated/)). 
+Most of my work with Java so far was on Java 8. I hardly did the switch to Java 9+ besides keeping informed by reading some articles on the matter ([Baeldung](https://www.baeldung.com/) and [Java Annotated](https://blog.jetbrains.com/idea/tag/java-annotated/)). 
 
-One of the issues I had was to use [Java modules](https://blog.codefx.org/java/java-module-system-tutorial/) and produce a runtime image with [jlink](https://docs.oracle.com/en/java/javase/11/tools/jlink.html).
+One of the issues I had during the migration was to use [Java modules](https://blog.codefx.org/java/java-module-system-tutorial/) and produce a runtime image with [jlink](https://docs.oracle.com/en/java/javase/11/tools/jlink.html).
 
 <!--more-->
 
