@@ -5,9 +5,40 @@
     <description>{&quot;fr&quot;=&gt;&quot;Site web personnel à propos de mon travail en tant que Développer et Consultant IT , de vélo en tant que hobby, et de mon déménagement à venir à Singapour.&quot;, &quot;en&quot;=&gt;&quot;Personnal website about my job as an IT Consultant and Developer, casual Cycling and my relocation to Singapore.&quot;, &quot;de&quot;=&gt;&quot;Persönlich Website über meinen Job als einen IT-Berater und Softwareentwickler, Radfahren und meinen Umzug nach Singapur.&quot;, &quot;jp&quot;=&gt;&quot;じょうほうテクノロジー と じてんしゃ　と　シンガポール についての私のブログ.&quot;}</description>
     <link>http://yourdomain.com/</link>
     <atom:link href="http://yourdomain.com/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Tue, 21 Jan 2020 11:36:18 +0800</pubDate>
-    <lastBuildDate>Tue, 21 Jan 2020 11:36:18 +0800</lastBuildDate>
+    <pubDate>Tue, 21 Jan 2020 11:51:33 +0800</pubDate>
+    <lastBuildDate>Tue, 21 Jan 2020 11:51:33 +0800</lastBuildDate>
     <generator>Jekyll v3.8.6</generator>
+    
+      <item>
+        <title>Reviving an old Jekyll Blog thanks to Docker</title>
+        <description>&lt;p&gt;I don’t know if I have any regular reader. Yet, I know I am not a regular writer and only publish to this blog from time to time.&lt;/p&gt;
+
+&lt;p&gt;I recently tried to publish an article about Java modules. I had difficulties rebuilding the blog using the &lt;code class=&quot;highlighter-rouge&quot;&gt;jekyll build&lt;/code&gt; command. Quite some time has passed since my last publication and Jekyll had a few breaking changes.&lt;/p&gt;
+
+&lt;!--more--&gt;
+
+&lt;p&gt;I could have installed an older version of Jekyll on my system. I find this option quite troublesome. In the end, I decided to use Docker. It allows to “simply” use an old version of Jekyll no matter what I have installed on my local system (besides Docker).&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;# Run
+docker run -ti \
+	-p 4000:4000 \
+	-v $(pwd):/srv/jekyll \
+	jekyll/jekyll:3 jekyll serve
+
+# Build
+docker run -ti \
+	-v $(pwd):/srv/jekyll \
+	jekyll/jekyll:3 jekyll build
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;It’s not as simple as &lt;code class=&quot;highlighter-rouge&quot;&gt;jekyll run&lt;/code&gt; or &lt;code class=&quot;highlighter-rouge&quot;&gt;jekyll build&lt;/code&gt;. However it is more reproducible. Conveniently hidden in a &lt;code class=&quot;highlighter-rouge&quot;&gt;[run.sh](http://run.sh)&lt;/code&gt; and &lt;code class=&quot;highlighter-rouge&quot;&gt;[build.sh](http://build.sh)&lt;/code&gt; scripts, it becomes painless to use them.&lt;/p&gt;
+</description>
+        <pubDate>Tue, 21 Jan 2020 11:49:00 +0800</pubDate>
+        <link>http://yourdomain.com/2020/01/21/reviving-an-old-jekyll-blog-docker.html</link>
+        <guid isPermaLink="true">http://yourdomain.com/2020/01/21/reviving-an-old-jekyll-blog-docker.html</guid>
+        
+        
+      </item>
     
       <item>
         <title>Java Modules with JavaFX, Slf4j, Logback and jlink</title>
@@ -1077,126 +1108,6 @@ qui porte pour sur le même vélo, mais dans sa version 10 vitesses.&lt;/p&gt;
         <pubDate>Sat, 16 Jul 2016 02:57:00 +0800</pubDate>
         <link>http://yourdomain.com/2016/07/16/mon-nouveau-velo-triban-540.html</link>
         <guid isPermaLink="true">http://yourdomain.com/2016/07/16/mon-nouveau-velo-triban-540.html</guid>
-        
-        
-      </item>
-    
-      <item>
-        <title>My new bicycle: the B'Twin Triban 540</title>
-        <description>&lt;h2 id=&quot;here-comes-a-new-bicycle&quot;&gt;Here comes a new bicycle&lt;/h2&gt;
-
-&lt;p&gt;Did I absolutly need a new bike? Not neccasary… well maybe… or absolutly. I was going on a rampage by owning so far 
-two Dahon folding bicycles: a red &lt;a href=&quot;http://dahon.com/bikes/eco-c7/&quot;&gt;Dahon Eco C7&lt;/a&gt; and a white &lt;a href=&quot;http://dahon.com/bikes/mu-p24/&quot;&gt;Dahon Mu P24&lt;/a&gt;. 
-Theyre were my all round bicycles for my daily commuting in town, doing some shopping, and go a long ride, usually with a friend. 
-&lt;!--more--&gt;&lt;/p&gt;
-
-&lt;p&gt;I really enjoy riding these bicycles and I should make a post someday to introduce you those two little guys. This sounds 
-like a new member is joining the family. It kind of is :)&lt;/p&gt;
-
-&lt;p&gt;As fun as they can be I started to feel some limitations with these folding bicycles. First as I get more experience riding, 
-my average speed tends to increase and my Dahons are maybe not the best for maintaining a 30+km/h speed. Also my most recent one, 
-the white Mu P24 isn’t rigid engough when I push hard on the pedal: speeding is exausting.&lt;/p&gt;
-
-&lt;p&gt;That’s why I decided to buy a new bicycle, a regular one. I had to negociate a bit to be allowed to bring a new bicycle at home: I 
-had to sell one of my bicycles (plot twist: I still own the two folding bikes, it’s our little secret).&lt;/p&gt;
-
-&lt;h2 id=&quot;the-bicycle&quot;&gt;The bicycle&lt;/h2&gt;
-
-&lt;p&gt;The Triban 540 falls into the category of a road bike. However I’d qualify it as a versatile road bike as I use it for my daily commute, 
-recreational rides and long trips.&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&quot;/assets/2016-07-15-my-new-bike-triban-540/triban_540_official.jpg&quot;&gt;&lt;img src=&quot;/assets/2016-07-15-my-new-bike-triban-540/triban_540_official.jpg&quot; alt=&quot;Triban 540 picture from B'Twin&quot; /&gt;&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;For the transmission it offers Shimano 105 cassette (11 speeds - 11/28), derailleurs and shifters. The compact crank set (52/36) however is not 
-from Shimano but is a “Prowheel Ounce 721”. It sure does the job, but it doesn’t look as cool as the new Shimano cranksets.&lt;/p&gt;
-
-&lt;p&gt;Stock tyres are &lt;a href=&quot;http://www.hutchinsontires.com/en/road/28-equinox-2.html&quot;&gt;Hutchinson Equinox 2&lt;/a&gt;. These are good tyres for a start offert some confort, 
-relative puncture protection without sacrificing too much to rolling resistance.&lt;/p&gt;
-
-&lt;p&gt;The bicycle offers good handling even if you’re not used to road bikes. That’s something I really appreciated having experienced folding 
-bicycles before.&lt;/p&gt;
-
-&lt;p&gt;The frame is an aluminium frame. The fork, however, is a carbon fork with holes that allow mouting a front rack. This is not something very common and I really appreciate 
-it even though I didn’t use this feature yet. I did not check the weight of the bicycle. On the &lt;a href=&quot;http://www.decathlon.fr/velo-route-triban-540-id_8350480.html&quot;&gt;webshop&lt;/a&gt; they announce 9.5 kg 
-in size M without the pedals. So I’d say it’s a 10 kg bike.&lt;/p&gt;
-
-&lt;p&gt;The wheels are &lt;a href=&quot;http://www.mavic.co.uk/wheels-road-triathlon-aksium?&quot;&gt;Mavic Askium&lt;/a&gt; wheels. These are entry level wheels from Mavic but are already 
-good and solid which will make them to last long.&lt;/p&gt;
-
-&lt;h2 id=&quot;modifications-and-equipments&quot;&gt;Modifications and equipments&lt;/h2&gt;
-
-&lt;p&gt;To better suit my needs I added a rear luggage carrier as I am going to use this bike as both a commuting and touring bicycle. 
-I chose a &lt;a href=&quot;https://www.pletscher.ch/index.php/en/products-en/carriers-en/standard-carriers-en&quot;&gt;Pletscher Athlete 4B&lt;/a&gt; that was 
-available at the shop where I bought the bicycle for 26€.&lt;/p&gt;
-
-&lt;p&gt;I also wanted to add SKS fenders, however this leave little space between the tyre and the brake, plus it was finally not possible 
-to mount them on the frame despite what the product web page stated. So I ended up mounting 
-&lt;a href=&quot;http://www.zefal.com/en/mudguards-road/75-croozer-road.html&quot;&gt;Zefal road front&lt;/a&gt; and &lt;a href=&quot;http://www.zefal.com/en/mudguards-road/77-swan-road.html&quot;&gt;rear fenders&lt;/a&gt;.
-They do their job quite decently and provide good value for money (16€ for the fender set).&lt;/p&gt;
-
-&lt;p&gt;I added two Elite bottle cages with their bottle to carry water on the way.&lt;/p&gt;
-
-&lt;p&gt;Living in a big city and having already experienced a bicycle theft opting for a U-lock was not an option. It would have been a pity 
-to have to carry a huge lock with me, that’s why I chose the 
-&lt;a href=&quot;http://www.kryptonitelock.com/en/products/product-information/current-key/000983.html&quot;&gt;Kryptonite Evolution Mini 5&lt;/a&gt; with the flex 
-frame support to hold the lock on the frame while riding. It was quite tricky to find a proper position for the lock support and I 
-decided to put it on the vertical tube above the bottle cage. On my daily commute I wouldn’t need more than one bottle, and on longer 
-trip the small lock easily fit in any bag.&lt;/p&gt;
-
-&lt;p&gt;On the electronic side I went a bit crazy and bought a GPS for my rides: the 
-&lt;a href=&quot;https://buy.garmin.com/fr-FR/FR/sports-outdoor/velo/edge-explore-1000/prod522791.html&quot;&gt;Garmin Edge 1000 Explore&lt;/a&gt;. It does the stuff you’d
-expect from cycling computer which is mainly speed, time, calories, distance, altitude. This model bring the navigation mode which will help 
-you to navigate to your destination without the need of carefully planning your trip. I should make a dedicated review for this GPS.&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&quot;/assets/2016-07-15-my-new-bike-triban-540/triban-540-before-departure-to-lille.jpg&quot;&gt;&lt;img src=&quot;/assets/2016-07-15-my-new-bike-triban-540/triban-540-before-departure-to-lille-mini.jpg&quot; alt=&quot;The Triban 540 before departure to Lille&quot; /&gt;&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;To sumarize the equipements and modiciations:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;strong&gt;Rear luggage carrier:&lt;/strong&gt; &lt;a href=&quot;https://www.pletscher.ch/index.php/en/products-en/carriers-en/standard-carriers-en&quot;&gt;Pletscher Athlete 4B&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;Fenders:&lt;/strong&gt; &lt;a href=&quot;http://www.zefal.com/en/mudguards-road/75-croozer-road.html&quot;&gt;Zefal Croozer Road (front)&lt;/a&gt; 
-and &lt;a href=&quot;http://www.zefal.com/en/mudguards-road/77-swan-road.html&quot;&gt;Zefal Swan Road (rear)&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;Lock:&lt;/strong&gt; &lt;a href=&quot;http://www.kryptonitelock.com/en/products/product-information/current-key/000983.html&quot;&gt;Kryptonite Evolution Mini 5&lt;/a&gt; 
-with &lt;a href=&quot;http://www.kryptonitelock.com/content/kryt-us/en/products/product-information/current-key/000730.html&quot;&gt;Flex Frame Support&lt;/a&gt; + 
-anti thefts wheel axles.&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;Bike computer&lt;/strong&gt;: &lt;a href=&quot;https://buy.garmin.com/fr-FR/FR/sports-outdoor/velo/edge-explore-1000/prod522791.html&quot;&gt;Garmin Edge 1000 Explore&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;Rear tyre&lt;/strong&gt;: &lt;a href=&quot;http://www.continental-tires.com/bicycle/tyres/race-tyres/grand-prix-4-season&quot;&gt;Continental Grand Prix 4-Season &lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&quot;what-i-think-of-this-bicycle&quot;&gt;What I think of this bicycle&lt;/h2&gt;
-
-&lt;p&gt;To cut off any suspense I am quite happy of this bicycle. It behaves well on both city and countryside roads. Whenever it is not a cross bicycle and 
-do not like very much offroading. You can however change the tyres to make it better offroad but will be limited on tyre width (32C max).&lt;/p&gt;
-
-&lt;p&gt;You can fit quite a lot of equipment on this bike, however be aware that the road handle bar with the thick ribbon and cable undearneath it 
-makes it difficult to fit a lot of accessories on the bar. This is true in general for any road bike.&lt;/p&gt;
-
-&lt;p&gt;For the best test ride was my challenge to ride from Paris to Lille (250+ km) within the day. I did it and was glad to ride this bicycle and can 
-confirm it is good at long rides.&lt;/p&gt;
-
-&lt;p&gt;I had recently one problem with the left shifter which breaked. The bicycle is currently under repair at Decathlon. That’s one drawback of this
-bicycle: it can only be bought at Decathlon. Even if they offer good after sale service there are some repair that they do not do at the shop 
-you bought the bike. Indeed to change my shifter they sent the bicycle to their regional workshop. This makes the bike unavailable for at least 
-week. At a local bike shop you’d maybe have to wait for the shifter to arrive but you’d give the bicycle only once the shifter can be mounted on 
-the bicycle and you’d be able to quickly get the bike back and enjoy it.&lt;/p&gt;
-
-&lt;p&gt;Is the Triban serie a good one? Well look at the picture bellow taken at my office: that’s a whooping of 3 triban bicycles on the rack. That was not 
-staged at all and I found it quite amusing.&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&quot;/assets/2016-07-15-my-new-bike-triban-540/tribans_at_work.jpg&quot;&gt;&lt;img src=&quot;/assets/2016-07-15-my-new-bike-triban-540/tribans_at_work_mini.jpg&quot; alt=&quot;Look at all the triban I met at my office. This is not even staged.&quot; /&gt;&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;The triban 540 is a good bicycle, and a very good bicycle if you compare its price to what the competition offers. I bought it for 
-&lt;a href=&quot;http://www.decathlon.fr/velo-route-triban-540-id_8350480.html&quot;&gt;850€ at Decathlon in France&lt;/a&gt;. I got good value for my money I would recommand 
-it my review fits your needs.&lt;/p&gt;
-
-&lt;p&gt;You can also refer to the review from &lt;a href=&quot;http://www.bikeradar.com/road/gear/category/bikes/road/product/review-btwin-triban-540-49953/&quot;&gt;Bike Radar&lt;/a&gt; 
-if you still need to make up your mind.&lt;/p&gt;
-
-&lt;p&gt;Feel free to ask me any question on my &lt;a href=&quot;https://twitter.com/Pj_Leward&quot;&gt;Twitter account&lt;/a&gt;.&lt;/p&gt;
-</description>
-        <pubDate>Sat, 16 Jul 2016 02:57:00 +0800</pubDate>
-        <link>http://yourdomain.com/2016/07/16/my-new-bike-triban-540.html</link>
-        <guid isPermaLink="true">http://yourdomain.com/2016/07/16/my-new-bike-triban-540.html</guid>
         
         
       </item>
