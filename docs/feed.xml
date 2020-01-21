@@ -5,9 +5,73 @@
     <description>{&quot;fr&quot;=&gt;&quot;Site web personnel à propos de mon travail en tant que Développer et Consultant IT , de vélo en tant que hobby, et de mon déménagement à venir à Singapour.&quot;, &quot;en&quot;=&gt;&quot;Personnal website about my job as an IT Consultant and Developer, casual Cycling and my relocation to Singapore.&quot;, &quot;de&quot;=&gt;&quot;Persönlich Website über meinen Job als einen IT-Berater und Softwareentwickler, Radfahren und meinen Umzug nach Singapur.&quot;, &quot;jp&quot;=&gt;&quot;じょうほうテクノロジー と じてんしゃ　と　シンガポール についての私のブログ.&quot;}</description>
     <link>http://yourdomain.com/</link>
     <atom:link href="http://yourdomain.com/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Tue, 21 Jan 2020 11:20:19 +0800</pubDate>
-    <lastBuildDate>Tue, 21 Jan 2020 11:20:19 +0800</lastBuildDate>
+    <pubDate>Tue, 21 Jan 2020 11:28:17 +0800</pubDate>
+    <lastBuildDate>Tue, 21 Jan 2020 11:28:17 +0800</lastBuildDate>
     <generator>Jekyll v3.8.6</generator>
+    
+      <item>
+        <title>Java Modules with JavaFX, Slf4j, Logback and jlink</title>
+        <description>&lt;p&gt;I recently tried to upgrade an old JavaFX application I had as a side-project to a more recent version of Java, Java 13 at the time of writing this.&lt;/p&gt;
+
+&lt;p&gt;Most of my work with Java so far was on Java 8, and I hardly did the switch to Java 9+ besides keeping informed by reading some articles on the matter (&lt;a href=&quot;https://www.baeldung.com/&quot;&gt;Baeldung&lt;/a&gt; and &lt;a href=&quot;https://blog.jetbrains.com/idea/tag/java-annotated/&quot;&gt;Java Annotated&lt;/a&gt;).&lt;/p&gt;
+
+&lt;p&gt;One of the issues I had was to use &lt;a href=&quot;https://blog.codefx.org/java/java-module-system-tutorial/&quot;&gt;Java modules&lt;/a&gt; and produce a runtime image with &lt;a href=&quot;https://docs.oracle.com/en/java/javase/11/tools/jlink.html&quot;&gt;jlink&lt;/a&gt;.&lt;/p&gt;
+
+&lt;!--more--&gt;
+
+&lt;h1 id=&quot;module-infojava&quot;&gt;module-info.java&lt;/h1&gt;
+
+&lt;p&gt;I wanted to have the following &lt;code class=&quot;highlighter-rouge&quot;&gt;module-info.java&lt;/code&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;module graph.designer {
+    requires javafx.controls;
+    requires javafx.fxml;
+    requires org.slf4j;
+
+    opens fr.leward.graphdesigner to javafx.fxml;
+    exports fr.leward.graphdesigner;
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h1 id=&quot;build-with-jlink&quot;&gt;Build with jlink&lt;/h1&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;mvn javafx:run&lt;/code&gt; would run just fine. However &lt;code class=&quot;highlighter-rouge&quot;&gt;mvn javafx:jlink&lt;/code&gt; returned the following error:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Error: automatic module cannot be used with jlink: org.slf4j from file:///home/leward/.m2/repository/org/slf4j/slf4j-api/1.7.30/slf4j-api-1.7.30.jar
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;What happens here is slf4j-api in its version 1.7.30 is not a native java module. It worked with the simple run command because Java automatically converts jars into java modules. However jlink is more particular about it and only want proper Java modules.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Note&lt;/strong&gt;: do not confuse Java modules and Maven modules. They have the same name but are different things.&lt;/p&gt;
+
+&lt;h1 id=&quot;the-fix&quot;&gt;The fix&lt;/h1&gt;
+
+&lt;p&gt;The fix was to simply go for a more recent version, which at the time of writing are not yet stable.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;lt;dependency&amp;gt;
+    &amp;lt;groupId&amp;gt;org.slf4j&amp;lt;/groupId&amp;gt;
+    &amp;lt;artifactId&amp;gt;slf4j-api&amp;lt;/artifactId&amp;gt;
+    &amp;lt;version&amp;gt;2.0.0-alpha1&amp;lt;/version&amp;gt; &amp;lt;!-- 01-Oct-2019 --&amp;gt;
+&amp;lt;/dependency&amp;gt;
+
+&amp;lt;dependency&amp;gt;
+    &amp;lt;groupId&amp;gt;ch.qos.logback&amp;lt;/groupId&amp;gt;
+    &amp;lt;artifactId&amp;gt;logback-classic&amp;lt;/artifactId&amp;gt;
+    &amp;lt;version&amp;gt;1.3.0-alpha5&amp;lt;/version&amp;gt; &amp;lt;!-- 22-Oct-2019 --&amp;gt;
+    &amp;lt;scope&amp;gt;runtime&amp;lt;/scope&amp;gt;
+&amp;lt;/dependency&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Even though though are Alpha versions, slf4j and logback projects are not known for easily breaking compatibilities. So if you want to use them for small projects you don’t risk much. For critical enterprise software it’s a different story…&lt;/p&gt;
+
+&lt;p&gt;Now I can build with &lt;code class=&quot;highlighter-rouge&quot;&gt;mvn javafx:jlink&lt;/code&gt; and run the generated image (&lt;code class=&quot;highlighter-rouge&quot;&gt;target/graph-designer/launcher&lt;/code&gt;). You can read more about this on the &lt;a href=&quot;https://openjfx.io/openjfx-docs/#modular&quot;&gt;OpenJFX Getting Started Guide&lt;/a&gt;.&lt;/p&gt;
+</description>
+        <pubDate>Mon, 20 Jan 2020 05:35:00 +0800</pubDate>
+        <link>http://yourdomain.com/2020/01/20/java-module-slf4j-jlink-javafx.html</link>
+        <guid isPermaLink="true">http://yourdomain.com/2020/01/20/java-module-slf4j-jlink-javafx.html</guid>
+        
+        
+      </item>
     
       <item>
         <title>Using Nix on Linux Mint</title>
@@ -1133,21 +1197,6 @@ if you still need to make up your mind.&lt;/p&gt;
         <pubDate>Sat, 16 Jul 2016 02:57:00 +0800</pubDate>
         <link>http://yourdomain.com/2016/07/16/my-new-bike-triban-540.html</link>
         <guid isPermaLink="true">http://yourdomain.com/2016/07/16/my-new-bike-triban-540.html</guid>
-        
-        
-      </item>
-    
-      <item>
-        <title>私のブログ</title>
-        <description>&lt;p&gt;スタート!&lt;/p&gt;
-
-&lt;p&gt;私は日本語のがくせい。私はしょしんしゃです。&lt;/p&gt;
-
-&lt;p&gt;これは私のブログです。&lt;/p&gt;
-</description>
-        <pubDate>Sun, 03 Apr 2016 05:21:55 +0800</pubDate>
-        <link>http://yourdomain.com/2016/04/03/%E7%A7%81%E3%81%AE%E3%83%96%E3%83%AD%E3%82%B0.html</link>
-        <guid isPermaLink="true">http://yourdomain.com/2016/04/03/%E7%A7%81%E3%81%AE%E3%83%96%E3%83%AD%E3%82%B0.html</guid>
         
         
       </item>
