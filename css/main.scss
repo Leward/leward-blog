@@ -26,20 +26,8 @@ $grey-color-dark:  darken($grey-color, 25%);
 // Width of the content area
 $content-width:    800px;
 
-$on-palm:          600px;
-$on-laptop:        800px;
-
-// General style definitions to be reused
-.card {
-    background: white; 
-    border-radius: 3px;
-    box-shadow: 0px 1px 1px #aaa;
-    padding: $spacing-unit;
-}
-
-.en:lang(en), .fr:lang(fr), .de:lang(de){
-    font-weight: bold;
-}
+$on-palm:          450px;
+$on-laptop:        900px;
 
 // Use media queries like this:
 // @include media-query($on-palm) {
@@ -52,6 +40,22 @@ $on-laptop:        800px;
     @media screen and (max-width: $device) {
         @content;
     }
+}
+
+// General style definitions to be reused
+.card {
+    background: white; 
+    border-radius: 3px;
+    box-shadow: 0px 1px 1px #aaa;
+    padding: $spacing-unit;
+
+    @include media-query($on-palm) {
+        padding: $spacing-unit $spacing-unit / 2;
+    }
+}
+
+.en:lang(en), .fr:lang(fr), .de:lang(de){
+    font-weight: bold;
 }
 
 // Do not display headings in excerpts
