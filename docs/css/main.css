@@ -354,6 +354,9 @@ body {
   @media screen and (max-width: 900px) {
     .post-title {
       font-size: 36px; } }
+  @media screen and (max-width: 450px) {
+    .post-title {
+      font-size: 30px; } }
 
 .post-content {
   margin-bottom: 30px; }

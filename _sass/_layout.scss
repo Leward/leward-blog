@@ -261,6 +261,10 @@ article.post {
     @include media-query($on-laptop) {
         font-size: 36px;
     }
+
+    @include media-query($on-palm) {
+        font-size: 30px;
+    }
 }
 
 .post-content {
