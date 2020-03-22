@@ -214,10 +214,40 @@ fn get_latest_news() -> Vec<News> {
 
 **Note:** When doing a join, diesel returns the result as a tuple. 
 This works great if your struct and your schema have the same fields in the same order. 
-It it quick trickier to do it otherwise.
+It is quick trickier to do it otherwise.
 
 In the [diesel documentation](http://diesel.rs/guides/getting-started/) the snippets often indicates `use schema::cover::dsl::*;`, which I don't like very much as it very easily creates conflicts in the names of my variables. It becomes even more confusing whene joinning tables (both are likely to have an `id` column).
 
 In the snippet above I had to use two structs: `NewsRow` and `News`. The reason is that Diesel does not resolve associations in the structs like an ORM like Hibernate (Java) would do. Maybe that's for the better as a lot of the weird stuff with Hibernate happen when handling associations.
+
+### Alternative version
+
+[@incker](https://github.com/incker) [reached out to me](https://github.com/Leward/leward-blog/issues/3), suggesting a different way of writing the join example. Instead of relying on a `NewsRow` struct, diesel is able to be build the `News` struct **if your `select` contains all the columns required by the structs**.
+
+See the code below:
+
+```rust
+// Don't forget to add #[derive(Debug, Queryable)] to News
+
+fn get_latest_news() -> Vec<News> {
+    use schema::cover;
+    use schema::news;
+    let connection = &*get_pooled_connection();
+
+    news::table
+        .inner_join(cover::table)
+        .limit(5)
+        .select((
+            news::dsl::id,
+            news::dsl::content,
+            news::dsl::date,
+            news::dsl::title,
+            (cover::dsl::id, cover::dsl::name, cover::dsl::url)
+        ))
+        .order(news::date.desc())
+        .load::<News>(connection) // To this point we get the result as a tuple.
+        .expect("Error loading news") // Another panic waiting to happen!
+}
+```
 
 I took me quite a while to wrap my head around all of that. I hope this will be useful to someone. I still feel I am just scratching the surface. Once the *I have no Idea what I'm doing* step is over, it is quite enjoyable to use as like many things in rust: if it compile it is likely to work.
