@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Native GUI app with JavaFX</title>
+  <meta name="description" content="For this guide, I am building the application on Linux. Note that because we will end up compiling a native app, the binary will only work on a Linux system ...">
+
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="canonical" href="http://yourdomain.com/2020/02/19/native-gui-app-with-javafx.html">
+  <link rel="alternate" type="application/rss+xml" title="Paul-Julien Vauthier" href="http://yourdomain.com/feed.xml">
+</head>
+
+
+  <body>
+
+    <header class="site-header">
+
+  <div class="wrapper">
+      
+    <a class="site-title" href="/">
+        <img src="/images/bicycle.svg">
+        Paul-Julien Vauthier
+    </a>
+      
+    <div class="langs">
+        <ul>
+        
+        
+          <li>
+            <a href="/2020/02/19/native-gui-app-with-javafx.html" class="en">en</a>
+          </li>
+        
+
+        
+        
+        </ul>
+    </div>
+      
+    <p class="site-sub-title">
+        Personnal website about my job as an IT Consultant and Developer, casual Cycling and my relocation to Singapore.
+    </p>
+      
+    <nav class="site-nav">
+      <!--<a href="#" class="menu-icon">
+        <svg viewBox="0 0 18 15">
+          <path fill="#424242" d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.031C17.335,0,18,0.665,18,1.484L18,1.484z"/>
+          <path fill="#424242" d="M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0c0-0.82,0.665-1.484,1.484-1.484 h15.031C17.335,6.031,18,6.696,18,7.516L18,7.516z"/>
+          <path fill="#424242" d="M18,13.516C18,14.335,17.335,15,16.516,15H1.484C0.665,15,0,14.335,0,13.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.031C17.335,12.031,18,12.696,18,13.516L18,13.516z"/>
+        </svg>
+      </a>-->
+
+      <div class="trigger">
+        
+        <a class="page-link" href="/">Home</a>
+        
+        <a class="page-link" href="/resume">Resume</a>
+        
+        <!--
+          
+          <a class="page-link" href="/about/">About</a>
+          
+        
+          
+          <a class="page-link" href="/credits/">Credits</a>
+          
+        
+          
+          <a class="page-link" href="/credits-fr/">Crédits</a>
+          
+        
+          
+          <a class="page-link" href="/cv">CV</a>
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+          <a class="page-link" href="/lebenslauf">Lebenslauf</a>
+          
+        
+          
+        
+          
+          <a class="page-link" href="/resume">Resume</a>
+          
+        
+          
+          <a class="page-link" href="/rirekisho">りれきしょ</a>
+          
+        -->
+      </div>
+    </nav>
+    
+    
+
+  </div>
+
+</header>
+
+
+    <div class="page-content">
+      <div class="wrapper">
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">Native GUI app with JavaFX</h1>
+    <p class="post-meta"><time datetime="2020-02-19T09:30:00+08:00" itemprop="datePublished">Feb 19, 2020</time></p>
+  </header>
+
+  <div class="post-content" itemprop="articleBody">
+    <p>For this guide, I am building the application on Linux. Note that because we will end up compiling a native app, the binary will only work on a Linux system with the same architecture.</p>
+
+<p>By doing so, we lose the “build once, run everywhere” of Java. In exchange we get faster start time and lesser memory footprint for our programs. Also, the end users will not be required to have the Java Runtime Environment (JRE) installed on their systems.</p>
+
+<!--more-->
+
+<h2 id="setup">Setup</h2>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Install SDKMAN!</span>
+<span class="nv">$ </span>curl <span class="nt">-s</span> <span class="s2">"https://get.sdkman.io"</span> | bash
+
+<span class="c"># Install GraalVM</span>
+<span class="c"># TODO: a note on graal versioning</span>
+<span class="nv">$ </span>sdk <span class="nb">install </span>20.2.0.r11-grl
+
+<span class="c"># Let`s check which version of java we are using</span>
+<span class="c"># Note: With SDKMAN!, you can install and switch between multiple java versions</span>
+<span class="nv">$ </span>java <span class="nt">-version</span>
+openjdk version <span class="s2">"11.0.8"</span> 2020-07-14
+OpenJDK Runtime Environment GraalVM CE 20.2.0 <span class="o">(</span>build 11.0.8+10-jvmci-20.2-b03<span class="o">)</span>
+OpenJDK 64-Bit Server VM GraalVM CE 20.2.0 <span class="o">(</span>build 11.0.8+10-jvmci-20.2-b03, mixed mode, sharing<span class="o">)</span>
+
+<span class="c"># We will also need the Maven build tool.</span>
+<span class="c"># Note: you can use Gradle too, this tutorial focuses on Maven.</span>
+sdk <span class="nb">install </span>maven
+
+<span class="c"># Native image will be used to compile to a native binary.</span>
+gu <span class="nb">install </span>native-image
+</code></pre></div></div>
+
+<h2 id="minimal-java-fx-project">Minimal Java FX project</h2>
+
+<p>Let’s start by writing a minimal “Hello World!” java program.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Create a basic directory structure</span>
+<span class="nb">mkdir</span> <span class="nt">-p</span> hellofx/src/main/java/eu/leward/hellofx
+</code></pre></div></div>
+
+<p>Create the <code class="highlighter-rouge">pom.xml</code> file, describing our Maven project and build.</p>
+
+<div class="language-xml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">&lt;!-- hellofx/pom.xml --&gt;</span>
+
+<span class="nt">&lt;project</span> <span class="na">xmlns=</span><span class="s">"http://maven.apache.org/POM/4.0.0"</span> <span class="na">xmlns:xsi=</span><span class="s">"http://www.w3.org/2001/XMLSchema-instance"</span>
+  <span class="na">xsi:schemaLocation=</span><span class="s">"http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd"</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;modelVersion&gt;</span>4.0.0<span class="nt">&lt;/modelVersion&gt;</span>
+  <span class="nt">&lt;groupId&gt;</span>eu.leward<span class="nt">&lt;/groupId&gt;</span>
+  <span class="nt">&lt;artifactId&gt;</span>hellofx<span class="nt">&lt;/artifactId&gt;</span>
+  <span class="nt">&lt;packaging&gt;</span>jar<span class="nt">&lt;/packaging&gt;</span>
+  <span class="nt">&lt;version&gt;</span>1.0-SNAPSHOT<span class="nt">&lt;/version&gt;</span>
+  <span class="nt">&lt;name&gt;</span>hellofx<span class="nt">&lt;/name&gt;</span>
+  <span class="nt">&lt;url&gt;</span>http://maven.apache.org<span class="nt">&lt;/url&gt;</span>
+
+  <span class="nt">&lt;properties&gt;</span>
+    <span class="nt">&lt;project.build.sourceEncoding&gt;</span>UTF-8<span class="nt">&lt;/project.build.sourceEncoding&gt;</span>
+    <span class="nt">&lt;maven.compiler.source&gt;</span>1.6<span class="nt">&lt;/maven.compiler.source&gt;</span>
+    <span class="nt">&lt;maven.compiler.target&gt;</span>1.6<span class="nt">&lt;/maven.compiler.target&gt;</span>
+<span class="nt">&lt;/properties&gt;</span>
+
+  <span class="nt">&lt;dependencies&gt;</span>
+    <span class="nt">&lt;dependency&gt;</span>
+      <span class="nt">&lt;groupId&gt;</span>org.openjfx<span class="nt">&lt;/groupId&gt;</span>
+      <span class="nt">&lt;artifactId&gt;</span>javafx-controls<span class="nt">&lt;/artifactId&gt;</span>
+      <span class="nt">&lt;version&gt;</span>15<span class="nt">&lt;/version&gt;</span>
+    <span class="nt">&lt;/dependency&gt;</span>
+  <span class="nt">&lt;/dependencies&gt;</span>
+  <span class="nt">&lt;build&gt;</span>
+    <span class="nt">&lt;plugins&gt;</span>
+      <span class="nt">&lt;plugin&gt;</span>
+        <span class="nt">&lt;groupId&gt;</span>org.openjfx<span class="nt">&lt;/groupId&gt;</span>
+        <span class="nt">&lt;artifactId&gt;</span>javafx-maven-plugin<span class="nt">&lt;/artifactId&gt;</span>
+        <span class="nt">&lt;version&gt;</span>0.0.5<span class="nt">&lt;/version&gt;</span>
+        <span class="nt">&lt;configuration&gt;</span>
+          <span class="nt">&lt;mainClass&gt;</span>eu.leward.hellofx.HelloFX<span class="nt">&lt;/mainClass&gt;</span>
+        <span class="nt">&lt;/configuration&gt;</span>
+      <span class="nt">&lt;/plugin&gt;</span>
+    <span class="nt">&lt;/plugins&gt;</span>
+  <span class="nt">&lt;/build&gt;</span>
+<span class="nt">&lt;/project&gt;</span>
+</code></pre></div></div>
+
+<p>We only need a single Java file for our example.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// hellofx/src/main/java/eu/leward/hellofx/HelloFx.java</span>
+
+<span class="kn">package</span> <span class="n">eu</span><span class="o">.</span><span class="na">leward</span><span class="o">.</span><span class="na">hellofx</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">javafx.application.Application</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">javafx.scene.Scene</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">javafx.scene.control.Label</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">javafx.scene.layout.StackPane</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">javafx.stage.Stage</span><span class="o">;</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">HelloFX</span> <span class="kd">extends</span> <span class="nc">Application</span> <span class="o">{</span>
+
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">start</span><span class="o">(</span><span class="nc">Stage</span> <span class="n">stage</span><span class="o">)</span> <span class="o">{</span>
+        <span class="nc">String</span> <span class="n">javaVersion</span> <span class="o">=</span> <span class="nc">System</span><span class="o">.</span><span class="na">getProperty</span><span class="o">(</span><span class="s">"java.version"</span><span class="o">);</span>
+        <span class="nc">String</span> <span class="n">javafxVersion</span> <span class="o">=</span> <span class="nc">System</span><span class="o">.</span><span class="na">getProperty</span><span class="o">(</span><span class="s">"javafx.version"</span><span class="o">);</span>
+        <span class="nc">Label</span> <span class="n">l</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Label</span><span class="o">(</span><span class="s">"Hello, JavaFX "</span> <span class="o">+</span> <span class="n">javafxVersion</span> <span class="o">+</span> <span class="s">", running on Java "</span> <span class="o">+</span> <span class="n">javaVersion</span> <span class="o">+</span> <span class="s">"."</span><span class="o">);</span>
+        <span class="nc">Scene</span> <span class="n">scene</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Scene</span><span class="o">(</span><span class="k">new</span> <span class="nc">StackPane</span><span class="o">(</span><span class="n">l</span><span class="o">),</span> <span class="mi">640</span><span class="o">,</span> <span class="mi">480</span><span class="o">);</span>
+        <span class="n">stage</span><span class="o">.</span><span class="na">setScene</span><span class="o">(</span><span class="n">scene</span><span class="o">);</span>
+        <span class="n">stage</span><span class="o">.</span><span class="na">show</span><span class="o">();</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="nc">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">launch</span><span class="o">();</span>
+    <span class="o">}</span>
+
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>Some explanation of what’s going on here.</p>
+
+<p>We can run the project as a regular Java application:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mvn clean javafx:run
+</code></pre></div></div>
+
+<p><img src="/assets/2020-10-18-native-gui-app-with-javafx/run-regular-java.png" alt="HelloFX running as a regular Java program" /></p>
+
+<p>That’s the extent of the Java programming we will be doing for this tutorial.</p>
+
+<h2 id="compiling-as-a-native-app">Compiling as a native app</h2>
+
+<p>Until this part, you actually didn’t need to have GraalVM installed, any recent JDK would be good. However, you need GraalVM for compiling the project as a native binary.</p>
+
+<p>In order to achieve this, the folks at <a href="https://gluonhq.com/">Gluon</a> have developed a convenient Maven plugin:</p>
+
+<blockquote>
+  <p>If you have a Java or JavaFX project and you are using Maven as a build tool, you can easily include the plugin to start creating native applications.</p>
+</blockquote>
+
+<p>In order to add the plugin, add the following to your <code class="highlighter-rouge">pom.xml</code> file:</p>
+
+<div class="language-xml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;plugin&gt;</span>
+  <span class="nt">&lt;groupId&gt;</span>com.gluonhq<span class="nt">&lt;/groupId&gt;</span>
+  <span class="nt">&lt;artifactId&gt;</span>client-maven-plugin<span class="nt">&lt;/artifactId&gt;</span>
+  <span class="nt">&lt;version&gt;</span>0.1.31<span class="nt">&lt;/version&gt;</span>
+  <span class="nt">&lt;configuration&gt;</span>
+    <span class="nt">&lt;mainClass&gt;</span>eu.leward.hellofx.HelloFX<span class="nt">&lt;/mainClass&gt;</span>
+  <span class="nt">&lt;/configuration&gt;</span>
+<span class="nt">&lt;/plugin&gt;</span>
+</code></pre></div></div>
+
+<p>You can build the native executable for program using <code class="highlighter-rouge">mvn client:build</code></p>
+
+<p>You will need to have a <code class="highlighter-rouge">GRAALVM_HOME</code> environment variable for the plugin to work. You actually don’t need to run that GraalVM installation as you main java version, since the plugin will use that <code class="highlighter-rouge">GRAALVM_HOME</code> directory to locate the <code class="highlighter-rouge">native-image</code> tool it requires.</p>
+
+<p>If it fails, read carefully the error messages, it may ask you to install some libraries to be able to compile the program.</p>
+
+<p>For the example I am passing the environment variable before running the command:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">GRAALVM_HOME</span><span class="o">=</span>~/.sdkman/candidates/java/20.2.0.r11-grl mvn client:build
+</code></pre></div></div>
+
+<p>Ahead Of Time (AOT) compilation will be taxing on your system.</p>
+
+<p><img src="/assets/2020-10-18-native-gui-app-with-javafx/cpu-usage.png" alt="100% CPU utilization" /></p>
+
+<p>I’m running on an old XPS 13, which is definitely lacking CPU horsepower.</p>
+
+<ul>
+  <li><code class="highlighter-rouge">mvn client:build</code> takes ~ 4 minutes</li>
+  <li><code class="highlighter-rouge">mvn package</code> take a few seconds</li>
+</ul>
+
+<p>Let’s look at the resulting binary.</p>
+
+<div class="language-xml highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ du -h target/client/x86_64-linux/hellofx 
+62M	target/client/x86_64-linux/hellofx
+</code></pre></div></div>
+
+<p>62 Megabytes, that not a small size for an hello world. Keep in mind, this is still Java and bits of the JDK needs to be included in your binary. I did not explore if there are ways to trim this down using the Java module system.</p>
+
+<p>Run it with: <code class="highlighter-rouge">target/client/x86_64-linux/hellofx</code></p>
+
+<p><img src="/assets/2020-10-18-native-gui-app-with-javafx/run-compiled.png" alt="HelloFX running as a native binary" /></p>
+
+<h2 id="final-notes">Final Notes</h2>
+
+<p>This is a simple project, there is no reflection involved. If you use some annotation, it’s very likely reflection is involved at some point. When that’s the case you need to guide the compiler. I may write a following post on that topic.</p>
+
+<p>When the word “native” is used you should understandit as “native binary” that be executing by the target operating system and architecture without a Java Runtime Environment. This is still a JavaFX, using a JavaFX GUI toolkit, not the native GUI toolkit of the system.</p>
+
+  </div>
+
+</article>
+
+      </div>
+    </div>
+
+    <footer class="site-footer">
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Paul-Julien Vauthier</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li>Paul-Julien Vauthier</li>
+          <li><a href="mailto:pj.vauthier@gmail.com">pj.vauthier@gmail.com</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-2">
+        <ul class="social-media-list">
+          
+          <li>
+            <a href="https://github.com/Leward"><span class="icon icon--github"><svg viewBox="0 0 16 16"><path fill="#828282" d="M7.999,0.431c-4.285,0-7.76,3.474-7.76,7.761 c0,3.428,2.223,6.337,5.307,7.363c0.388,0.071,0.53-0.168,0.53-0.374c0-0.184-0.007-0.672-0.01-1.32 c-2.159,0.469-2.614-1.04-2.614-1.04c-0.353-0.896-0.862-1.135-0.862-1.135c-0.705-0.481,0.053-0.472,0.053-0.472 c0.779,0.055,1.189,0.8,1.189,0.8c0.692,1.186,1.816,0.843,2.258,0.645c0.071-0.502,0.271-0.843,0.493-1.037 C4.86,11.425,3.049,10.76,3.049,7.786c0-0.847,0.302-1.54,0.799-2.082C3.768,5.507,3.501,4.718,3.924,3.65 c0,0,0.652-0.209,2.134,0.796C6.677,4.273,7.34,4.187,8,4.184c0.659,0.003,1.323,0.089,1.943,0.261 c1.482-1.004,2.132-0.796,2.132-0.796c0.423,1.068,0.157,1.857,0.077,2.054c0.497,0.542,0.798,1.235,0.798,2.082 c0,2.981-1.814,3.637-3.543,3.829c0.279,0.24,0.527,0.713,0.527,1.437c0,1.037-0.01,1.874-0.01,2.129 c0,0.208,0.14,0.449,0.534,0.373c3.081-1.028,5.302-3.935,5.302-7.362C15.76,3.906,12.285,0.431,7.999,0.431z"/></svg>
+</span><span class="username">Leward</span></a>
+
+          </li>
+          
+
+          
+          <li>
+            <a href="https://twitter.com/Pj_Leward"><span class="icon icon--twitter"><svg viewBox="0 0 16 16"><path fill="#828282" d="M15.969,3.058c-0.586,0.26-1.217,0.436-1.878,0.515c0.675-0.405,1.194-1.045,1.438-1.809c-0.632,0.375-1.332,0.647-2.076,0.793c-0.596-0.636-1.446-1.033-2.387-1.033c-1.806,0-3.27,1.464-3.27,3.27 c0,0.256,0.029,0.506,0.085,0.745C5.163,5.404,2.753,4.102,1.14,2.124C0.859,2.607,0.698,3.168,0.698,3.767 c0,1.134,0.577,2.135,1.455,2.722C1.616,6.472,1.112,6.325,0.671,6.08c0,0.014,0,0.027,0,0.041c0,1.584,1.127,2.906,2.623,3.206 C3.02,9.402,2.731,9.442,2.433,9.442c-0.211,0-0.416-0.021-0.615-0.059c0.416,1.299,1.624,2.245,3.055,2.271 c-1.119,0.877-2.529,1.4-4.061,1.4c-0.264,0-0.524-0.015-0.78-0.046c1.447,0.928,3.166,1.469,5.013,1.469 c6.015,0,9.304-4.983,9.304-9.304c0-0.142-0.003-0.283-0.009-0.423C14.976,4.29,15.531,3.714,15.969,3.058z"/></svg>
+</span><span class="username">Pj_Leward</span></a>
+
+          </li>
+          
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-3">
+        <p><!--{"fr"=>"Site web personnel à propos de mon travail en tant que Développer et Consultant IT , de vélo en tant que hobby, et de mon déménagement à venir à Singapour.", "en"=>"Personnal website about my job as an IT Consultant and Developer, casual Cycling and my relocation to Singapore.", "de"=>"Persönlich Website über meinen Job als einen IT-Berater und Softwareentwickler, Radfahren und meinen Umzug nach Singapur.", "jp"=>"じょうほうテクノロジー と じてんしゃ　と　シンガポール についての私のブログ."}--></p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+
+
+  </body>
+
+  <script>var privalytics_id="PL-8312EE";</script>
+  <script async src="https://cdn.privalytics.io/privalytics.js"></script> 
+
+</html>
