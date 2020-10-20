@@ -95,7 +95,7 @@ Create the `pom.xml` file, describing our Maven project and build.
 We only need a single Java file for our example.
 
 ```java
-// hellofx/src/main/java/eu/leward/hellofx/HelloFx.java
+// hellofx/src/main/java/eu/leward/hellofx/HelloFX.java
 
 package eu.leward.hellofx;
 
