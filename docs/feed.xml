@@ -5,9 +5,46 @@
     <description>{&quot;fr&quot;=&gt;&quot;Site web personnel à propos de mon travail en tant que Développer et Consultant IT , de vélo en tant que hobby, et de mon déménagement à venir à Singapour.&quot;, &quot;en&quot;=&gt;&quot;Personnal website about my job as an IT Consultant and Developer, casual Cycling and my relocation to Singapore.&quot;, &quot;de&quot;=&gt;&quot;Persönlich Website über meinen Job als einen IT-Berater und Softwareentwickler, Radfahren und meinen Umzug nach Singapur.&quot;, &quot;jp&quot;=&gt;&quot;じょうほうテクノロジー と じてんしゃ　と　シンガポール についての私のブログ.&quot;}</description>
     <link>http://yourdomain.com/</link>
     <atom:link href="http://yourdomain.com/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Wed, 21 Oct 2020 11:05:58 +0800</pubDate>
-    <lastBuildDate>Wed, 21 Oct 2020 11:05:58 +0800</lastBuildDate>
+    <pubDate>Wed, 21 Oct 2020 12:19:40 +0800</pubDate>
+    <lastBuildDate>Wed, 21 Oct 2020 12:19:40 +0800</lastBuildDate>
     <generator>Jekyll v3.8.6</generator>
+    
+      <item>
+        <title>100 Days of JavaFX</title>
+        <description>&lt;p&gt;I have to admit I kind of like playing with JavaFX even though I am not expert with it.
+In order to get better at it, I decided to do the &lt;a href=&quot;https://www.100daysofcode.com/&quot;&gt;100 Days of Code&lt;/a&gt; challenge.&lt;/p&gt;
+
+&lt;p&gt;I’ll try to use that learning opportunity to write blog posts about my findings.&lt;/p&gt;
+
+&lt;p&gt;I may not exactly follow the “1 hour a day” rule, but that’s a similar idea.
+I want to do 100 Days of JavaFX blogging.&lt;/p&gt;
+
+&lt;!--more--&gt;
+
+&lt;p&gt;Writing down my findings is a good way to:&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;share&lt;/li&gt;
+  &lt;li&gt;writing help clarify my understanding of things&lt;/li&gt;
+  &lt;li&gt;for future reference&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;log&quot;&gt;Log&lt;/h2&gt;
+
+&lt;ul class=&quot;task-list&quot;&gt;
+  &lt;li class=&quot;task-list-item&quot;&gt;&lt;input type=&quot;checkbox&quot; class=&quot;task-list-item-checkbox&quot; disabled=&quot;disabled&quot; checked=&quot;checked&quot; /&gt;&lt;a href=&quot;/2020/10/19/native-gui-app-with-javafx.html&quot;&gt;Day 1 - Build a simple javafx app to a native executable (Linux)&lt;/a&gt;&lt;/li&gt;
+  &lt;li class=&quot;task-list-item&quot;&gt;&lt;input type=&quot;checkbox&quot; class=&quot;task-list-item-checkbox&quot; disabled=&quot;disabled&quot; checked=&quot;checked&quot; /&gt;&lt;a href=&quot;/2020/10/21/native-gui-app-with-javafx-windows.html&quot;&gt;Day 2 - JavaFx native app on Windows&lt;/a&gt;&lt;/li&gt;
+  &lt;li class=&quot;task-list-item&quot;&gt;&lt;input type=&quot;checkbox&quot; class=&quot;task-list-item-checkbox&quot; disabled=&quot;disabled&quot; /&gt;Day 3 - Paste an image from the clipboard&lt;/li&gt;
+  &lt;li class=&quot;task-list-item&quot;&gt;&lt;input type=&quot;checkbox&quot; class=&quot;task-list-item-checkbox&quot; disabled=&quot;disabled&quot; /&gt;Day 4 - Native executable with FXML and Annotations&lt;/li&gt;
+  &lt;li class=&quot;task-list-item&quot;&gt;&lt;input type=&quot;checkbox&quot; class=&quot;task-list-item-checkbox&quot; disabled=&quot;disabled&quot; /&gt;Day 5 - Project Introduction - JSON Schema Manager&lt;/li&gt;
+  &lt;li class=&quot;task-list-item&quot;&gt;&lt;input type=&quot;checkbox&quot; class=&quot;task-list-item-checkbox&quot; disabled=&quot;disabled&quot; /&gt;Day 6 - Databings Basics&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        <pubDate>Wed, 21 Oct 2020 12:02:00 +0800</pubDate>
+        <link>http://yourdomain.com/2020/10/21/javafx-100-days-of-code.html</link>
+        <guid isPermaLink="true">http://yourdomain.com/2020/10/21/javafx-100-days-of-code.html</guid>
+        
+        
+      </item>
     
       <item>
         <title>Native GUI app with JavaFX on Windows</title>
@@ -118,9 +155,9 @@ This Windows laptop is a bit more powerful than my Linux machine. Build time was
 
 &lt;p&gt;And voilà, you have built and run a JavaFX application as a native binary on Windows.&lt;/p&gt;
 </description>
-        <pubDate>Fri, 21 Feb 2020 10:40:00 +0800</pubDate>
-        <link>http://yourdomain.com/2020/02/21/native-gui-app-with-javafx-windows.html</link>
-        <guid isPermaLink="true">http://yourdomain.com/2020/02/21/native-gui-app-with-javafx-windows.html</guid>
+        <pubDate>Wed, 21 Oct 2020 10:40:00 +0800</pubDate>
+        <link>http://yourdomain.com/2020/10/21/native-gui-app-with-javafx-windows.html</link>
+        <guid isPermaLink="true">http://yourdomain.com/2020/10/21/native-gui-app-with-javafx-windows.html</guid>
         
         
       </item>
@@ -211,7 +248,7 @@ gu &lt;span class=&quot;nb&quot;&gt;install &lt;/span&gt;native-image
 
 &lt;p&gt;We only need a single Java file for our example.&lt;/p&gt;
 
-&lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;// hellofx/src/main/java/eu/leward/hellofx/HelloFx.java&lt;/span&gt;
+&lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;// hellofx/src/main/java/eu/leward/hellofx/HelloFX.java&lt;/span&gt;
 
 &lt;span class=&quot;kn&quot;&gt;package&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;eu&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;leward&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;hellofx&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
 
@@ -313,9 +350,9 @@ gu &lt;span class=&quot;nb&quot;&gt;install &lt;/span&gt;native-image
 
 &lt;p&gt;When the word “native” is used you should understandit as “native binary” that be executing by the target operating system and architecture without a Java Runtime Environment. This is still a JavaFX, using a JavaFX GUI toolkit, not the native GUI toolkit of the system.&lt;/p&gt;
 </description>
-        <pubDate>Wed, 19 Feb 2020 09:30:00 +0800</pubDate>
-        <link>http://yourdomain.com/2020/02/19/native-gui-app-with-javafx.html</link>
-        <guid isPermaLink="true">http://yourdomain.com/2020/02/19/native-gui-app-with-javafx.html</guid>
+        <pubDate>Mon, 19 Oct 2020 09:30:00 +0800</pubDate>
+        <link>http://yourdomain.com/2020/10/19/native-gui-app-with-javafx.html</link>
+        <guid isPermaLink="true">http://yourdomain.com/2020/10/19/native-gui-app-with-javafx.html</guid>
         
         
       </item>
@@ -1377,101 +1414,6 @@ If you use Docker to deploy your applications and print your logs in the standar
         <pubDate>Mon, 18 Dec 2017 00:40:00 +0800</pubDate>
         <link>http://yourdomain.com/2017/12/18/logs-analysis-with-ovh.html</link>
         <guid isPermaLink="true">http://yourdomain.com/2017/12/18/logs-analysis-with-ovh.html</guid>
-        
-        
-      </item>
-    
-      <item>
-        <title>Use Cloudflare HTTPS with Rancher and HA Proxy</title>
-        <description>&lt;p&gt;I have my own personal PaaS platform that is powered by &lt;a href=&quot;https://rancher.com/rancher/&quot;&gt;Rancher&lt;/a&gt;. It consists of 3 &lt;a href=&quot;https://www.ovh.ie/vps/&quot;&gt;cheap VPS
-from OVH&lt;/a&gt; and &lt;a href=&quot;https://aws.amazon.com/rds/&quot;&gt;one database hosted in AWS&lt;/a&gt;. One VPS is used to run Rancher, the two others as 
-Docker hosts to be used by Rancher to run my applications.&lt;/p&gt;
-
-&lt;p&gt;On top of that, I use &lt;a href=&quot;https://www.cloudflare.com&quot;&gt;Cloudflare&lt;/a&gt; as a &lt;a href=&quot;https://en.wikipedia.org/wiki/Name_server&quot;&gt;Name Server&lt;/a&gt; for my personal (leward.eu) domain and domains related to the apps running on my platform.&lt;/p&gt;
-
-&lt;p&gt;Cloudflare is also enabled as an HTTP proxy for some of my services, mainly to easily enable HTTPS.&lt;/p&gt;
-
-&lt;!--more--&gt;
-
-&lt;h2 id=&quot;the-setup&quot;&gt;The Setup&lt;/h2&gt;
-
-&lt;p&gt;I have three domains I want to use:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;leward.eu&lt;/code&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;app-a.leward.eu&lt;/code&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;app-b.leward.eu&lt;/code&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;I have three VPS servers:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Rancher&lt;/li&gt;
-  &lt;li&gt;Docker Host #1&lt;/li&gt;
-  &lt;li&gt;Docker Host #2&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;My domains are configured to point to all my docker hosts. The DNS records looks like this (simplified):&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;;; A Records
-leward.eu           A       IP_DOCKER_HOST_1
-leward.eu           A       IP_DOCKER_HOST_2
-platform.leward.eu  A       IP_RANCHER_HOST
-
-;; CNAME Records
-app-a.leward.eu     CNAME   leward.eu.
-app-b.leward.eu     CNAME   leward.eu.
-
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;On &lt;strong&gt;each&lt;/strong&gt; docker Host I have an &lt;a href=&quot;https://www.digitalocean.com/community/tutorials/an-introduction-to-haproxy-and-load-balancing-concepts&quot;&gt;HA proxy&lt;/a&gt; listening on port 80 and directing the traffic to the proper Docker container based on the HTTP Host Header. This works even if the app is not on the same docker host as the HA proxy instance because &lt;a href=&quot;http://rancher.com/docs/rancher/latest/en/rancher-services/networking/&quot;&gt;Rancher handles the networking between two hosts&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;The domains are managed by Cloudflare, with their HTTP proxy enabled and forcing the traffic to HTTPS.&lt;/p&gt;
-
-&lt;p&gt;A request made to one of my application actually going throught the following layers:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;User --[HTTPS]--&amp;gt; Cloudflare --[HTTP]--&amp;gt; HA proxy --[HTTP]--&amp;gt; App
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;This not perfect, but it is quite convenient and removes the hassle of having to deal myself with certificates.&lt;/p&gt;
-
-&lt;p&gt;I would like in the future to be able to have HTTPS all the way (maybe using &lt;a href=&quot;https://letsencrypt.org/&quot;&gt;Let’s Encrypt&lt;/a&gt;):&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;User --[HTTPS]--&amp;gt; HA Proxy --[HTTPS]--&amp;gt; App
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;&lt;a href=&quot;/assets/2017-12-03-https-with-cloudflare-rancher-and-haproxy/Rancher.svg&quot;&gt;&lt;img src=&quot;/assets/2017-12-03-https-with-cloudflare-rancher-and-haproxy/Rancher.svg&quot; alt=&quot;Diagram of my personal PaaS&quot; /&gt;&lt;/a&gt;
-&lt;em&gt;Diagram made with &lt;a href=&quot;https://www.draw.io&quot;&gt;draw.io&lt;/a&gt; and their amazing SVG export feature&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;When relying on &lt;a href=&quot;https://en.wikipedia.org/wiki/Round-robin_DNS&quot;&gt;Round-robin DNS&lt;/a&gt; to achieve load balancing and high-availability, it is good to use &lt;a href=&quot;https://blog.digitalocean.com/floating-ips-start-architecting-your-applications-for-high-availability/&quot;&gt;Floating IP&lt;/a&gt; addresses that you can easily map to another host.&lt;/p&gt;
-
-&lt;h2 id=&quot;the-application-believes-it-is-accessed-through-http&quot;&gt;The Application believes it is accessed through HTTP&lt;/h2&gt;
-
-&lt;p&gt;I have a &lt;a href=&quot;https://grails.org&quot;&gt;Grails&lt;/a&gt; application running with this configuration. And when I used the Grails &lt;code class=&quot;highlighter-rouge&quot;&gt;redirect&lt;/code&gt; method it did not work because the URL built was using HTTP and not HTTPS.&lt;/p&gt;
-
-&lt;p&gt;The issue is that HA Proxy itself is listening in HTTP, so when forwarding the traffic in indicates it is running expose and exposed through plain HTTP.&lt;/p&gt;
-
-&lt;p&gt;There is a trick that solved the problem: adding an &lt;code class=&quot;highlighter-rouge&quot;&gt;X-Forwarded-Port&lt;/code&gt; HTTP header at the HA Proxy level.&lt;/p&gt;
-
-&lt;h3 id=&quot;configure-ha-proxy-with-rancher&quot;&gt;Configure HA proxy with Rancher&lt;/h3&gt;
-
-&lt;p&gt;Custom configuration can be added to HA Proxy on Rancher. However, figuring out how to properly apply the configuration was not straightforward.&lt;/p&gt;
-
-&lt;p&gt;Let’s say &lt;strong&gt;App B&lt;/strong&gt; is the application on which I want to correct that behavior.&lt;/p&gt;
-
-&lt;p&gt;Then I have to add in my custom &lt;code class=&quot;highlighter-rouge&quot;&gt;haproxy.cfg&lt;/code&gt;:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;backend 80_app_b_leward_sg_
-    http-request add-header X-Forwarded-Port 443
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;80_app_b_leward_sg_&lt;/code&gt; is a value generated by Rancher. You can verify which one Rancher has generated for your application by running a Shell into the HA Proxy container and inspect the configuration using &lt;code class=&quot;highlighter-rouge&quot;&gt;vi /etc/haproxy/haproxy.cfg&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;After the configuration being applied, my Grails app could properly perform the redirect using HTTPS.&lt;/p&gt;
-</description>
-        <pubDate>Sun, 03 Dec 2017 23:23:00 +0800</pubDate>
-        <link>http://yourdomain.com/2017/12/03/use-cloudflare-https-with-rancher-and-ha-proxy.html</link>
-        <guid isPermaLink="true">http://yourdomain.com/2017/12/03/use-cloudflare-https-with-rancher-and-ha-proxy.html</guid>
         
         
       </item>

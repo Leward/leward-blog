@@ -2,7 +2,7 @@
 layout:     post
 title:      "Native GUI app with JavaFX"
 slug:       native-gui-app-with-javafx
-date:       2020-02-18 21:30:00 -0400
+date:       2020-10-18 21:30:00 -0400
 categories:
 lang:       en
 ref:        native-gui-app-with-javafx
