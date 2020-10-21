@@ -135,17 +135,17 @@
   </li>
 </ul>
 
-<p>Where module <code class="highlighter-rouge">app</code> depends on (requires) module <code class="highlighter-rouge">configs</code>.</p>
+<p>Where module <code class="language-plaintext highlighter-rouge">app</code> depends on (requires) module <code class="language-plaintext highlighter-rouge">configs</code>.</p>
 
 <p>Even though I am using Java 13 in this example, this should apply to a Java 11+ project.</p>
 
 <h1 id="using-java-13-no-module-configured">Using Java 13, no module configured</h1>
 
-<p>When you have a Maven project without any <code class="highlighter-rouge">module-info.java</code> file, the good old classpath mechanism (as opposed to java modules) is used.</p>
+<p>When you have a Maven project without any <code class="language-plaintext highlighter-rouge">module-info.java</code> file, the good old classpath mechanism (as opposed to java modules) is used.</p>
 
 <p>File structure:</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>.
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>.
 ├── app
 │   ├── pom.xml
 │   ├── src
@@ -167,7 +167,7 @@
 </code></pre></div></div>
 
 <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// Main.java</span>
-<span class="kn">package</span> <span class="n">org</span><span class="o">.</span><span class="na">example</span><span class="o">.</span><span class="na">app</span><span class="o">;</span>
+<span class="kn">package</span> <span class="nn">org.example.app</span><span class="o">;</span>
 
 <span class="kn">import</span> <span class="nn">java.io.IOException</span><span class="o">;</span>
 <span class="kn">import</span> <span class="nn">java.net.URL</span><span class="o">;</span>
@@ -185,7 +185,7 @@
 
 <p>This results in:</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Hello, let me read the config!
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Hello, let me read the config!
 value=test
 </code></pre></div></div>
 
@@ -205,11 +205,11 @@ value=test
 <span class="o">}</span>
 </code></pre></div></div>
 
-<p><strong>On module names:</strong> I don’t have name my modules <code class="highlighter-rouge">org.example.app</code>, you could just name it <code class="highlighter-rouge">app</code>. I believe it’s a good practice to have some kind of qualifier to differenciate your module over modules outside your project. It’s kind of the same reasoning that we used to use to name java packages.</p>
+<p><strong>On module names:</strong> I don’t have name my modules <code class="language-plaintext highlighter-rouge">org.example.app</code>, you could just name it <code class="language-plaintext highlighter-rouge">app</code>. I believe it’s a good practice to have some kind of qualifier to differenciate your module over modules outside your project. It’s kind of the same reasoning that we used to use to name java packages.</p>
 
-<p>Now, running <code class="highlighter-rouge">Main</code> gives the following error:</p>
+<p>Now, running <code class="language-plaintext highlighter-rouge">Main</code> gives the following error:</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Hello, let me read the config!
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Hello, let me read the config!
 Exception in thread "main" java.lang.NullPointerException
 	at app/org.example.app.Main.main(Main.java:12)
 </code></pre></div></div>
@@ -218,13 +218,13 @@ Exception in thread "main" java.lang.NullPointerException
 
 <ul>
   <li>The resource has to be in a exported package.</li>
-  <li>Moreover, to load the resource with <code class="highlighter-rouge">module.getResourceAsStream()</code>, the package should be opened, not simply exported.</li>
-  <li>It’s OK if there is no class in <code class="highlighter-rouge">src/main/java</code></li>
+  <li>Moreover, to load the resource with <code class="language-plaintext highlighter-rouge">module.getResourceAsStream()</code>, the package should be opened, not simply exported.</li>
+  <li>It’s OK if there is no class in <code class="language-plaintext highlighter-rouge">src/main/java</code></li>
 </ul>
 
-<p>Note how the <code class="highlighter-rouge">configs/src/main/resources</code> folder has changed.</p>
+<p>Note how the <code class="language-plaintext highlighter-rouge">configs/src/main/resources</code> folder has changed.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>.
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>.
 ├── app
 │   ├── pom.xml
 │   └── src
@@ -252,7 +252,7 @@ Exception in thread "main" java.lang.NullPointerException
 └── pom.xml
 </code></pre></div></div>
 
-<p>Some modifications have to be made to our module defnitions and <code class="highlighter-rouge">Main.java</code>:</p>
+<p>Some modifications have to be made to our module defnitions and <code class="language-plaintext highlighter-rouge">Main.java</code>:</p>
 
 <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// app/src/main/java/module-info.java</span>
 <span class="n">module</span> <span class="n">org</span><span class="o">.</span><span class="na">example</span><span class="o">.</span><span class="na">app</span> <span class="o">{</span>
@@ -266,7 +266,7 @@ Exception in thread "main" java.lang.NullPointerException
 </code></pre></div></div>
 
 <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// Main.java</span>
-<span class="kn">package</span> <span class="n">org</span><span class="o">.</span><span class="na">example</span><span class="o">.</span><span class="na">app</span><span class="o">;</span>
+<span class="kn">package</span> <span class="nn">org.example.app</span><span class="o">;</span>
 
 <span class="kn">import</span> <span class="nn">java.io.IOException</span><span class="o">;</span>
 <span class="kn">import</span> <span class="nn">java.io.InputStream</span><span class="o">;</span>
@@ -288,7 +288,7 @@ Exception in thread "main" java.lang.NullPointerException
 
 <p>Now it’s all working as I wanted:</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Hello, let me read the config!
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Hello, let me read the config!
 value=test
 </code></pre></div></div>
 
@@ -296,11 +296,11 @@ value=test
 
 <h2 id="alternative-way-to-read-resource-from-a-module">Alternative way to read resource from a module</h2>
 
-<p>By using <code class="highlighter-rouge">ClassLoader.getSystemResources</code> it is possible to get multiple matches depending on what is on your module path.</p>
+<p>By using <code class="language-plaintext highlighter-rouge">ClassLoader.getSystemResources</code> it is possible to get multiple matches depending on what is on your module path.</p>
 
 <p>You can aim for a resource in a particular module, using the following snippet.</p>
 
-<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">package</span> <span class="n">org</span><span class="o">.</span><span class="na">example</span><span class="o">.</span><span class="na">app</span><span class="o">;</span>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">package</span> <span class="nn">org.example.app</span><span class="o">;</span>
 
 <span class="kn">import</span> <span class="nn">java.io.IOException</span><span class="o">;</span>
 <span class="kn">import</span> <span class="nn">java.io.InputStream</span><span class="o">;</span>

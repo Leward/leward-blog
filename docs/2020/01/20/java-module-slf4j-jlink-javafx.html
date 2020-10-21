@@ -130,9 +130,9 @@
 
 <h1 id="module-infojava">module-info.java</h1>
 
-<p>I wanted to have the following <code class="highlighter-rouge">module-info.java</code>:</p>
+<p>I wanted to have the following <code class="language-plaintext highlighter-rouge">module-info.java</code>:</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>module graph.designer {
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>module graph.designer {
     requires javafx.controls;
     requires javafx.fxml;
     requires org.slf4j;
@@ -145,9 +145,9 @@
 
 <h1 id="build-with-jlink">Build with jlink</h1>
 
-<p><code class="highlighter-rouge">mvn javafx:run</code> would run just fine. However <code class="highlighter-rouge">mvn javafx:jlink</code> returned the following error:</p>
+<p><code class="language-plaintext highlighter-rouge">mvn javafx:run</code> would run just fine. However <code class="language-plaintext highlighter-rouge">mvn javafx:jlink</code> returned the following error:</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Error: automatic module cannot be used with jlink: org.slf4j from file:///home/leward/.m2/repository/org/slf4j/slf4j-api/1.7.30/slf4j-api-1.7.30.jar
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Error: automatic module cannot be used with jlink: org.slf4j from file:///home/leward/.m2/repository/org/slf4j/slf4j-api/1.7.30/slf4j-api-1.7.30.jar
 </code></pre></div></div>
 
 <p>What happens here is slf4j-api in its version 1.7.30 is not a native java module. It worked with the simple run command because Java automatically converts jars into java modules. However jlink is more particular about it and only want proper Java modules.</p>
@@ -158,7 +158,7 @@
 
 <p>The fix was to simply go for a more recent version, which at the time of writing are not yet stable.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;dependency&gt;
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;dependency&gt;
     &lt;groupId&gt;org.slf4j&lt;/groupId&gt;
     &lt;artifactId&gt;slf4j-api&lt;/artifactId&gt;
     &lt;version&gt;2.0.0-alpha1&lt;/version&gt; &lt;!-- 01-Oct-2019 --&gt;
@@ -175,7 +175,7 @@
 
 <p>Note: You’d usually put the logback pendency as a runtime dependency, but here we need it to build the image and run it. Runtime dependency is a Maven construct, which is different from the Java Module System. An alternative is to have an image without logback and add the logback module when launchin the app. However I went for convinience and simplicity here.</p>
 
-<p>Now I can build with <code class="highlighter-rouge">mvn javafx:jlink</code> and run the generated image (<code class="highlighter-rouge">target/graph-designer/launcher</code>). You can read more about this on the <a href="https://openjfx.io/openjfx-docs/#modular">OpenJFX Getting Started Guide</a>.</p>
+<p>Now I can build with <code class="language-plaintext highlighter-rouge">mvn javafx:jlink</code> and run the generated image (<code class="language-plaintext highlighter-rouge">target/graph-designer/launcher</code>). You can read more about this on the <a href="https://openjfx.io/openjfx-docs/#modular">OpenJFX Getting Started Guide</a>.</p>
 
 <table>
   <tbody>

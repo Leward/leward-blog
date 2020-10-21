@@ -143,10 +143,10 @@
 
 <p>To install Nix, run the following command (this is the <a href="https://nixos.org/nix/manual/#sect-multi-user-installation">multi-user installation</a>):</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sh &lt;(curl https://nixos.org/nix/install) --daemon
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sh &lt;(curl https://nixos.org/nix/install) --daemon
 </code></pre></div></div>
 
-<p>Always be careful when you install a downloaded script with <code class="highlighter-rouge">curl</code>. Verify the source is trusted, and do not hesitate to review the installation script.</p>
+<p>Always be careful when you install a downloaded script with <code class="language-plaintext highlighter-rouge">curl</code>. Verify the source is trusted, and do not hesitate to review the installation script.</p>
 
 <p>I like that the installation process tries its best being transparent about the different steps it is performing.</p>
 
@@ -164,15 +164,15 @@
 
 <h2 id="common-commands">Common Commands</h2>
 
-<p>Searching for a package: <code class="highlighter-rouge">nix search packagename</code></p>
+<p>Searching for a package: <code class="language-plaintext highlighter-rouge">nix search packagename</code></p>
 
-<p>Installing a package: <code class="highlighter-rouge">nix-env -i packagename</code></p>
+<p>Installing a package: <code class="language-plaintext highlighter-rouge">nix-env -i packagename</code></p>
 
-<p>Removing a package: <code class="highlighter-rouge">nix-env -e packagename</code></p>
+<p>Removing a package: <code class="language-plaintext highlighter-rouge">nix-env -e packagename</code></p>
 
-<p>List installed packages: <code class="highlighter-rouge">nix-env -q</code></p>
+<p>List installed packages: <code class="language-plaintext highlighter-rouge">nix-env -q</code></p>
 
-<p>Upgrade packages: <code class="highlighter-rouge">nix-env -u</code></p>
+<p>Upgrade packages: <code class="language-plaintext highlighter-rouge">nix-env -u</code></p>
 
 <h2 id="caveats">Caveats</h2>
 
@@ -182,16 +182,16 @@
 
 <h3 id="entries-in-the-start-menu">Entries in the start menu</h3>
 
-<p>Entries in the desktop menu are not added. For this to work you need to configure the <code class="highlighter-rouge">XDG_DATA_DIR</code> environment variable. You can add to your <code class="highlighter-rouge">.profile</code> file:</p>
+<p>Entries in the desktop menu are not added. For this to work you need to configure the <code class="language-plaintext highlighter-rouge">XDG_DATA_DIR</code> environment variable. You can add to your <code class="language-plaintext highlighter-rouge">.profile</code> file:</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>export XDG_DATA_DIRS=$HOME/.nix-profile/share/applications:"${XDG_DATA_DIRS:-/usr/local/share/:/usr/share/}"
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>export XDG_DATA_DIRS=$HOME/.nix-profile/share/applications:"${XDG_DATA_DIRS:-/usr/local/share/:/usr/share/}"
 </code></pre></div></div>
 
-<p>Still doing so, does not make the entry appear after installing a new package with <code class="highlighter-rouge">nix-env -i</code>. However at the next restart, the entry is there. If you open the menu editor you should also see the icon</p>
+<p>Still doing so, does not make the entry appear after installing a new package with <code class="language-plaintext highlighter-rouge">nix-env -i</code>. However at the next restart, the entry is there. If you open the menu editor you should also see the icon</p>
 
 <h3 id="nix-for-other-users">Nix for other users</h3>
 
-<p>Logging-in as a different user, <code class="highlighter-rouge">nix</code> and <code class="highlighter-rouge">nix-env</code> may not be immediately  available. Running <code class="highlighter-rouge">source /etc/profile</code> should resolve it.</p>
+<p>Logging-in as a different user, <code class="language-plaintext highlighter-rouge">nix</code> and <code class="language-plaintext highlighter-rouge">nix-env</code> may not be immediately  available. Running <code class="language-plaintext highlighter-rouge">source /etc/profile</code> should resolve it.</p>
 
 <h2 id="running-two-versions-side-by-side">Running two versions side-by-side</h2>
 
@@ -206,7 +206,7 @@
 
 <p>Nix is said to allow to have several installations of a package installed. Let’s try it:</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ nix-env -i ruby
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ nix-env -i ruby
 installing 'ruby-2.6.1'
 
 $ ruby -v
@@ -222,24 +222,24 @@ ruby 2.3.8p459 (2018-10-18) [x86_64-linux]
 
 <p>What has happened here? The first installation of ruby is quite straightforward and works as expected. Where things are a little bit trickier is when installing an older version of ruby.</p>
 
-<p>To install ruby 2.3 we had to add the <code class="highlighter-rouge">-A</code> option and specify the package name as <code class="highlighter-rouge">nixpkgs.ruby_2_3</code>.</p>
+<p>To install ruby 2.3 we had to add the <code class="language-plaintext highlighter-rouge">-A</code> option and specify the package name as <code class="language-plaintext highlighter-rouge">nixpkgs.ruby_2_3</code>.</p>
 
-<p>The following two commands are similar (as long as <code class="highlighter-rouge">nixpkgs.ruby_2_3</code> points to the version 2.3.8 of ruby):</p>
+<p>The following two commands are similar (as long as <code class="language-plaintext highlighter-rouge">nixpkgs.ruby_2_3</code> points to the version 2.3.8 of ruby):</p>
 
 <ul>
-  <li><code class="highlighter-rouge">nix-env -iA nixpkgs.ruby_2_3</code></li>
-  <li><code class="highlighter-rouge">nix-env -i ruby-2.3.8</code></li>
+  <li><code class="language-plaintext highlighter-rouge">nix-env -iA nixpkgs.ruby_2_3</code></li>
+  <li><code class="language-plaintext highlighter-rouge">nix-env -i ruby-2.3.8</code></li>
 </ul>
 
-<p>However note that running <code class="highlighter-rouge">nix-env -i ruby-2.3.7</code> does not work, because that version is not targeted by any nix package. The versions which work are the ones returned one running <code class="highlighter-rouge">nix-env -qa ruby</code></p>
+<p>However note that running <code class="language-plaintext highlighter-rouge">nix-env -i ruby-2.3.7</code> does not work, because that version is not targeted by any nix package. The versions which work are the ones returned one running <code class="language-plaintext highlighter-rouge">nix-env -qa ruby</code></p>
 
-<p>General rule of thumb is to install with <code class="highlighter-rouge">niv-env -i</code> only applications that you want to be available globally for a particular user. As a developer, to make the most of out of nix, you will need to create your own nix expressions in order to ensure your build are replicable using <code class="highlighter-rouge">nix-shell</code>.</p>
+<p>General rule of thumb is to install with <code class="language-plaintext highlighter-rouge">niv-env -i</code> only applications that you want to be available globally for a particular user. As a developer, to make the most of out of nix, you will need to create your own nix expressions in order to ensure your build are replicable using <code class="language-plaintext highlighter-rouge">nix-shell</code>.</p>
 
 <p>The philosophy in Nix is not to pinpoint to a specific version of a library or application, but to have a set dependencies which can be easily reproduced between environment. <a href="https://github.com/NixOS/nixpkgs/issues/9682#issuecomment-138105069">Multiple versions are kept in nixpkgs (default Nix package repository) if there is a good reason to</a>. This does not mean you can’t do it, there are ways of doing it, playing with nix channels, but I would not consider it to be straightforward.</p>
 
 <p>For this reasons, nix is not always ideal, nor the silver bullet for developers needing to troubleshot and target a specific version.</p>
 
-<p>Also here in our example, ruby2.6 has disappeared from the list when you run <code class="highlighter-rouge">nix-env -q</code>. For a given package, only one can be resolved at runtime. If you need ruby 2.3 for a specific build, nix-shell is there for that purpose. It creates a shell with all the required dependencies to run the build.</p>
+<p>Also here in our example, ruby2.6 has disappeared from the list when you run <code class="language-plaintext highlighter-rouge">nix-env -q</code>. For a given package, only one can be resolved at runtime. If you need ruby 2.3 for a specific build, nix-shell is there for that purpose. It creates a shell with all the required dependencies to run the build.</p>
 
 <p>Nix-shell is more useful when you need system libraries to be present such as when working in C. This is a bit less the case when you are already using a build and package manager such as Maven for Java, Cargo for Rust, NPM for Javascript.</p>
 
@@ -261,7 +261,7 @@ ruby 2.3.8p459 (2018-10-18) [x86_64-linux]
 
 <p>When I finished writing this blog post, here are the packages I have installed (I just reinstalled my system):</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ nix-env -q
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ nix-env -q
 bat-0.9.0
 git-2.19.2
 htop-2.2.0

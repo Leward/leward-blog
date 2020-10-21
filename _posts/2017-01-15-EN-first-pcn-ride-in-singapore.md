@@ -10,7 +10,7 @@ excerpt_separator: <!--more-->
 ---
 
 I recently received my 
- [bicycle]({{ site.baseurl }}{% link _posts/2016-07-15-my-new-bike-triban-540/EN-my-new-bike-triban-540.md %})
+ [bicycle]({{ site.baseurl }}{% post_url 2016-07-15-EN-my-new-bike-triban-540 %})
  from France. Almost a month without riding my legs urged me to have a ride. 
  
 I needed to buy a few stuff for my bike, as I left some of bike equipments to a colleague in France.  So I decided to have a ride to one of the [Singapore's Decathlon store](https://www.decathlon.sg/content/465_store-locations). Then, let's ride to the City Square Mall!

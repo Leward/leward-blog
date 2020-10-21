@@ -122,13 +122,13 @@
   <div class="post-content" itemprop="articleBody">
     <p>I don’t know if I have any regular reader. Yet, I know I am not a regular writer and only publish to this blog from time to time.</p>
 
-<p>I recently tried to publish an article about Java modules. I had difficulties rebuilding the blog using the <code class="highlighter-rouge">jekyll build</code> command. Quite some time has passed since my last publication and Jekyll had a few breaking changes.</p>
+<p>I recently tried to publish an article about Java modules. I had difficulties rebuilding the blog using the <code class="language-plaintext highlighter-rouge">jekyll build</code> command. Quite some time has passed since my last publication and Jekyll had a few breaking changes.</p>
 
 <!--more-->
 
 <p>I could have installed an older version of Jekyll on my system. I find this option quite troublesome. In the end, I decided to use Docker. It allows to “simply” use an old version of Jekyll no matter what I have installed on my local system (besides Docker).</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code># Run
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># Run
 docker run -ti \
 	-p 4000:4000 \
 	-v $(pwd):/srv/jekyll \
@@ -140,7 +140,7 @@ docker run -ti \
 	jekyll/jekyll:3 jekyll build
 </code></pre></div></div>
 
-<p>It’s not as simple as <code class="highlighter-rouge">jekyll run</code> or <code class="highlighter-rouge">jekyll build</code>. However it is more reproducible. Conveniently hidden in a <code class="highlighter-rouge">[run.sh](http://run.sh)</code> and <code class="highlighter-rouge">[build.sh](http://build.sh)</code> scripts, it becomes painless to use them.</p>
+<p>It’s not as simple as <code class="language-plaintext highlighter-rouge">jekyll run</code> or <code class="language-plaintext highlighter-rouge">jekyll build</code>. However it is more reproducible. Conveniently hidden in a <code class="language-plaintext highlighter-rouge">[run.sh](http://run.sh)</code> and <code class="language-plaintext highlighter-rouge">[build.sh](http://build.sh)</code> scripts, it becomes painless to use them.</p>
 
   </div>
 

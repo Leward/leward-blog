@@ -182,13 +182,13 @@ OpenJDK 64-Bit Server VM GraalVM CE 20.2.0 <span class="o">(</span>build 11.0.8+
 <p>Steps to create the minimal project are available in <a href="/2020/02/19/native-gui-app-with-javafx.html">my previous post</a>. 
 I’ll highlight here the differences between Windows and Linux.</p>
 
-<p>As far as creating the project, the only difference is the way you create a directory hierarchy on Windows (you don’t need the <code class="highlighter-rouge">-p</code> option):</p>
+<p>As far as creating the project, the only difference is the way you create a directory hierarchy on Windows (you don’t need the <code class="language-plaintext highlighter-rouge">-p</code> option):</p>
 
 <div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Create a basic directory structure</span>
 <span class="o">&gt;</span> <span class="nb">mkdir </span>hellofx<span class="se">\s</span>rc<span class="se">\m</span>ain<span class="se">\j</span>ava<span class="se">\e</span>u<span class="se">\l</span>eward<span class="se">\h</span>ellofx
 </code></pre></div></div>
 
-<p>Because we already have <code class="highlighter-rouge">java</code> and <code class="highlighter-rouge">mvn</code> in our path, we can run: <code class="highlighter-rouge">mvn javafx:run</code> to launch the program as a regular Java application.</p>
+<p>Because we already have <code class="language-plaintext highlighter-rouge">java</code> and <code class="language-plaintext highlighter-rouge">mvn</code> in our path, we can run: <code class="language-plaintext highlighter-rouge">mvn javafx:run</code> to launch the program as a regular Java application.</p>
 
 <p><img src="/assets/2020-10-20-native-gui-app-with-javafx-windows/javafx-run-traditional.png" alt="The JavaFX application running on Windows" /></p>
 
@@ -205,7 +205,7 @@ mvn cient:build
 
 <p>If you get the following error:</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[ERROR] Failed to execute goal com.gluonhq:client-maven-plugin:0.1.31:compile (default-cli) on project hellofx: Error: Cannot run program "cl"
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[ERROR] Failed to execute goal com.gluonhq:client-maven-plugin:0.1.31:compile (default-cli) on project hellofx: Error: Cannot run program "cl"
 </code></pre></div></div>
 
 <p>You need to check that</p>
@@ -219,7 +219,7 @@ mvn cient:build
 <p>The compilation will make good use of your CPU cores. 
 This Windows laptop is a bit more powerful than my Linux machine. Build time was 2 minutes and 30 seconds instead of 4 minutes with my slower machine.</p>
 
-<p>You will now have an hello.exe file in <code class="highlighter-rouge">target\client\x86_64-windows</code> that you can click on to run your program.</p>
+<p>You will now have an hello.exe file in <code class="language-plaintext highlighter-rouge">target\client\x86_64-windows</code> that you can click on to run your program.</p>
 
 <p><img src="/assets/2020-10-20-native-gui-app-with-javafx-windows/exe-file.png" alt="The .exe file in File Explorer" /></p>
 

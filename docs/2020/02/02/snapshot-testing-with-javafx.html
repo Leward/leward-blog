@@ -157,30 +157,30 @@
 
 <p>Running a modular JavaFX application with Java 13 I ran into a few hiccups when running my tests.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>java.lang.IllegalAccessError: class org.testfx.toolkit.impl.ToolkitServiceImpl (in unnamed module @0x7dcf94f8) cannot access class com.sun.javafx.application.ParametersImpl (in module javafx.graphics) because module javafx.graphics does not export com.sun.javafx.application to unnamed module @0x7dcf94f8
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>java.lang.IllegalAccessError: class org.testfx.toolkit.impl.ToolkitServiceImpl (in unnamed module @0x7dcf94f8) cannot access class com.sun.javafx.application.ParametersImpl (in module javafx.graphics) because module javafx.graphics does not export com.sun.javafx.application to unnamed module @0x7dcf94f8
 	org.testfx.toolkit.impl.ToolkitServiceImpl.registerApplicationParameters(ToolkitServiceImpl.java:142)
 </code></pre></div></div>
 
-<p>This can be “fixed” by opening the module when launching the program with <code class="highlighter-rouge">--add-exports javafx.graphics/com.sun.javafx.application=ALL-UNNAMED</code>.</p>
+<p>This can be “fixed” by opening the module when launching the program with <code class="language-plaintext highlighter-rouge">--add-exports javafx.graphics/com.sun.javafx.application=ALL-UNNAMED</code>.</p>
 
 <p>Then I ran into a different error:</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>java.lang.reflect.InaccessibleObjectException: Unable to make void fr.leward.graphdesigner.ui.drawingpane.DrawingPaneSnapshotTest.testSomething() accessible: module graph.designer.drawing.pane does not "opens fr.leward.graphdesigner.ui.drawingpane" to unnamed module @5f9b2141
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>java.lang.reflect.InaccessibleObjectException: Unable to make void fr.leward.graphdesigner.ui.drawingpane.DrawingPaneSnapshotTest.testSomething() accessible: module graph.designer.drawing.pane does not "opens fr.leward.graphdesigner.ui.drawingpane" to unnamed module @5f9b2141
 </code></pre></div></div>
 
-<p>Which I fixed by adding the launch option <code class="highlighter-rouge">--add-opens graph.designer.drawing.pane/fr.leward.graphdesigner.ui.drawingpane=ALL-UNNAMED</code>.</p>
+<p>Which I fixed by adding the launch option <code class="language-plaintext highlighter-rouge">--add-opens graph.designer.drawing.pane/fr.leward.graphdesigner.ui.drawingpane=ALL-UNNAMED</code>.</p>
 
-<p>Later on, while implementing my <code class="highlighter-rouge">Snapshot</code> utility class I ran into some more trouble:</p>
+<p>Later on, while implementing my <code class="language-plaintext highlighter-rouge">Snapshot</code> utility class I ran into some more trouble:</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>java.lang.IllegalAccessError: 
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>java.lang.IllegalAccessError: 
 class fr.leward.graphdesigner.ui.drawingpane.Snapshot (in module graph.designer.drawing.pane) 
 	cannot access class javax.imageio.ImageIO (in module java.desktop) 
 	because module graph.designer.drawing.pane does not read module java.desktop
 </code></pre></div></div>
 
-<p>Which could be fixed by adding <code class="highlighter-rouge">--add-reads graph.designer.drawing.pane=java.desktop</code> to the launch options.</p>
+<p>Which could be fixed by adding <code class="language-plaintext highlighter-rouge">--add-reads graph.designer.drawing.pane=java.desktop</code> to the launch options.</p>
 
-<p>I can now run <code class="highlighter-rouge">mvn test</code>. IntelliJ integrates well with Maven and will pickup the launch options I specified in my <code class="highlighter-rouge">pom.xml</code> :</p>
+<p>I can now run <code class="language-plaintext highlighter-rouge">mvn test</code>. IntelliJ integrates well with Maven and will pickup the launch options I specified in my <code class="language-plaintext highlighter-rouge">pom.xml</code> :</p>
 
 <div class="language-xml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;plugin&gt;</span>
   <span class="nt">&lt;groupId&gt;</span>org.apache.maven.plugins<span class="nt">&lt;/groupId&gt;</span>
@@ -204,7 +204,7 @@ class fr.leward.graphdesigner.ui.drawingpane.Snapshot (in module graph.designer.
 
 <p>Below, you can find the implementation I went with.</p>
 
-<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">package</span> <span class="n">fr</span><span class="o">.</span><span class="na">leward</span><span class="o">.</span><span class="na">graphdesigner</span><span class="o">.</span><span class="na">ui</span><span class="o">.</span><span class="na">drawingpane</span><span class="o">;</span>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">package</span> <span class="nn">fr.leward.graphdesigner.ui.drawingpane</span><span class="o">;</span>
 
 <span class="kn">import</span> <span class="nn">javafx.embed.swing.SwingFXUtils</span><span class="o">;</span>
 <span class="kn">import</span> <span class="nn">javafx.scene.Scene</span><span class="o">;</span>
@@ -276,7 +276,7 @@ class fr.leward.graphdesigner.ui.drawingpane.Snapshot (in module graph.designer.
 
 <p>And to write a Snapshot Test:</p>
 
-<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">package</span> <span class="n">fr</span><span class="o">.</span><span class="na">leward</span><span class="o">.</span><span class="na">graphdesigner</span><span class="o">.</span><span class="na">ui</span><span class="o">.</span><span class="na">drawingpane</span><span class="o">;</span>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">package</span> <span class="nn">fr.leward.graphdesigner.ui.drawingpane</span><span class="o">;</span>
 
 <span class="kn">import</span> <span class="nn">fr.leward.graphdesigner.core.IdGenerator</span><span class="o">;</span>
 <span class="kn">import</span> <span class="nn">javafx.scene.Scene</span><span class="o">;</span>
@@ -327,7 +327,7 @@ class fr.leward.graphdesigner.ui.drawingpane.Snapshot (in module graph.designer.
 <span class="o">}</span>
 </code></pre></div></div>
 
-<p>Note that all the JavaFX interactions have to be made from the JavaFX thread, hence the use of <code class="highlighter-rouge">interact()</code>.</p>
+<p>Note that all the JavaFX interactions have to be made from the JavaFX thread, hence the use of <code class="language-plaintext highlighter-rouge">interact()</code>.</p>
 
 <h1 id="links">Links</h1>
 

@@ -5,9 +5,9 @@
     <description>{&quot;fr&quot;=&gt;&quot;Site web personnel à propos de mon travail en tant que Développer et Consultant IT , de vélo en tant que hobby, et de mon déménagement à venir à Singapour.&quot;, &quot;en&quot;=&gt;&quot;Personnal website about my job as an IT Consultant and Developer, casual Cycling and my relocation to Singapore.&quot;, &quot;de&quot;=&gt;&quot;Persönlich Website über meinen Job als einen IT-Berater und Softwareentwickler, Radfahren und meinen Umzug nach Singapur.&quot;, &quot;jp&quot;=&gt;&quot;じょうほうテクノロジー と じてんしゃ　と　シンガポール についての私のブログ.&quot;}</description>
     <link>http://yourdomain.com/</link>
     <atom:link href="http://yourdomain.com/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Wed, 21 Oct 2020 12:19:40 +0800</pubDate>
-    <lastBuildDate>Wed, 21 Oct 2020 12:19:40 +0800</lastBuildDate>
-    <generator>Jekyll v3.8.6</generator>
+    <pubDate>Wed, 21 Oct 2020 12:34:55 +0800</pubDate>
+    <lastBuildDate>Wed, 21 Oct 2020 12:34:55 +0800</lastBuildDate>
+    <generator>Jekyll v4.1.0</generator>
     
       <item>
         <title>100 Days of JavaFX</title>
@@ -110,13 +110,13 @@ OpenJDK 64-Bit Server VM GraalVM CE 20.2.0 &lt;span class=&quot;o&quot;&gt;(&lt;
 &lt;p&gt;Steps to create the minimal project are available in &lt;a href=&quot;/2020/02/19/native-gui-app-with-javafx.html&quot;&gt;my previous post&lt;/a&gt;. 
 I’ll highlight here the differences between Windows and Linux.&lt;/p&gt;
 
-&lt;p&gt;As far as creating the project, the only difference is the way you create a directory hierarchy on Windows (you don’t need the &lt;code class=&quot;highlighter-rouge&quot;&gt;-p&lt;/code&gt; option):&lt;/p&gt;
+&lt;p&gt;As far as creating the project, the only difference is the way you create a directory hierarchy on Windows (you don’t need the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;-p&lt;/code&gt; option):&lt;/p&gt;
 
 &lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# Create a basic directory structure&lt;/span&gt;
 &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;mkdir &lt;/span&gt;hellofx&lt;span class=&quot;se&quot;&gt;\s&lt;/span&gt;rc&lt;span class=&quot;se&quot;&gt;\m&lt;/span&gt;ain&lt;span class=&quot;se&quot;&gt;\j&lt;/span&gt;ava&lt;span class=&quot;se&quot;&gt;\e&lt;/span&gt;u&lt;span class=&quot;se&quot;&gt;\l&lt;/span&gt;eward&lt;span class=&quot;se&quot;&gt;\h&lt;/span&gt;ellofx
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;p&gt;Because we already have &lt;code class=&quot;highlighter-rouge&quot;&gt;java&lt;/code&gt; and &lt;code class=&quot;highlighter-rouge&quot;&gt;mvn&lt;/code&gt; in our path, we can run: &lt;code class=&quot;highlighter-rouge&quot;&gt;mvn javafx:run&lt;/code&gt; to launch the program as a regular Java application.&lt;/p&gt;
+&lt;p&gt;Because we already have &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;java&lt;/code&gt; and &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;mvn&lt;/code&gt; in our path, we can run: &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;mvn javafx:run&lt;/code&gt; to launch the program as a regular Java application.&lt;/p&gt;
 
 &lt;p&gt;&lt;img src=&quot;/assets/2020-10-20-native-gui-app-with-javafx-windows/javafx-run-traditional.png&quot; alt=&quot;The JavaFX application running on Windows&quot; /&gt;&lt;/p&gt;
 
@@ -133,7 +133,7 @@ mvn cient:build
 
 &lt;p&gt;If you get the following error:&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;[ERROR] Failed to execute goal com.gluonhq:client-maven-plugin:0.1.31:compile (default-cli) on project hellofx: Error: Cannot run program &quot;cl&quot;
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;[ERROR] Failed to execute goal com.gluonhq:client-maven-plugin:0.1.31:compile (default-cli) on project hellofx: Error: Cannot run program &quot;cl&quot;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;p&gt;You need to check that&lt;/p&gt;
@@ -147,7 +147,7 @@ mvn cient:build
 &lt;p&gt;The compilation will make good use of your CPU cores. 
 This Windows laptop is a bit more powerful than my Linux machine. Build time was 2 minutes and 30 seconds instead of 4 minutes with my slower machine.&lt;/p&gt;
 
-&lt;p&gt;You will now have an hello.exe file in &lt;code class=&quot;highlighter-rouge&quot;&gt;target\client\x86_64-windows&lt;/code&gt; that you can click on to run your program.&lt;/p&gt;
+&lt;p&gt;You will now have an hello.exe file in &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;target\client\x86_64-windows&lt;/code&gt; that you can click on to run your program.&lt;/p&gt;
 
 &lt;p&gt;&lt;img src=&quot;/assets/2020-10-20-native-gui-app-with-javafx-windows/exe-file.png&quot; alt=&quot;The .exe file in File Explorer&quot; /&gt;&lt;/p&gt;
 
@@ -204,7 +204,7 @@ gu &lt;span class=&quot;nb&quot;&gt;install &lt;/span&gt;native-image
 &lt;span class=&quot;nb&quot;&gt;mkdir&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-p&lt;/span&gt; hellofx/src/main/java/eu/leward/hellofx
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;p&gt;Create the &lt;code class=&quot;highlighter-rouge&quot;&gt;pom.xml&lt;/code&gt; file, describing our Maven project and build.&lt;/p&gt;
+&lt;p&gt;Create the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;pom.xml&lt;/code&gt; file, describing our Maven project and build.&lt;/p&gt;
 
 &lt;div class=&quot;language-xml highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;&amp;lt;!-- hellofx/pom.xml --&amp;gt;&lt;/span&gt;
 
@@ -250,7 +250,7 @@ gu &lt;span class=&quot;nb&quot;&gt;install &lt;/span&gt;native-image
 
 &lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;// hellofx/src/main/java/eu/leward/hellofx/HelloFX.java&lt;/span&gt;
 
-&lt;span class=&quot;kn&quot;&gt;package&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;eu&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;leward&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;hellofx&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;kn&quot;&gt;package&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;eu.leward.hellofx&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
 
 &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;javafx.application.Application&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
 &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;javafx.scene.Scene&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
@@ -298,7 +298,7 @@ gu &lt;span class=&quot;nb&quot;&gt;install &lt;/span&gt;native-image
   &lt;p&gt;If you have a Java or JavaFX project and you are using Maven as a build tool, you can easily include the plugin to start creating native applications.&lt;/p&gt;
 &lt;/blockquote&gt;
 
-&lt;p&gt;In order to add the plugin, add the following to your &lt;code class=&quot;highlighter-rouge&quot;&gt;pom.xml&lt;/code&gt; file:&lt;/p&gt;
+&lt;p&gt;In order to add the plugin, add the following to your &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;pom.xml&lt;/code&gt; file:&lt;/p&gt;
 
 &lt;div class=&quot;language-xml highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nt&quot;&gt;&amp;lt;plugin&amp;gt;&lt;/span&gt;
   &lt;span class=&quot;nt&quot;&gt;&amp;lt;groupId&amp;gt;&lt;/span&gt;com.gluonhq&lt;span class=&quot;nt&quot;&gt;&amp;lt;/groupId&amp;gt;&lt;/span&gt;
@@ -310,9 +310,9 @@ gu &lt;span class=&quot;nb&quot;&gt;install &lt;/span&gt;native-image
 &lt;span class=&quot;nt&quot;&gt;&amp;lt;/plugin&amp;gt;&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;p&gt;You can build the native executable for program using &lt;code class=&quot;highlighter-rouge&quot;&gt;mvn client:build&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;You can build the native executable for program using &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;mvn client:build&lt;/code&gt;&lt;/p&gt;
 
-&lt;p&gt;You will need to have a &lt;code class=&quot;highlighter-rouge&quot;&gt;GRAALVM_HOME&lt;/code&gt; environment variable for the plugin to work. You actually don’t need to run that GraalVM installation as you main java version, since the plugin will use that &lt;code class=&quot;highlighter-rouge&quot;&gt;GRAALVM_HOME&lt;/code&gt; directory to locate the &lt;code class=&quot;highlighter-rouge&quot;&gt;native-image&lt;/code&gt; tool it requires.&lt;/p&gt;
+&lt;p&gt;You will need to have a &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;GRAALVM_HOME&lt;/code&gt; environment variable for the plugin to work. You actually don’t need to run that GraalVM installation as you main java version, since the plugin will use that &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;GRAALVM_HOME&lt;/code&gt; directory to locate the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;native-image&lt;/code&gt; tool it requires.&lt;/p&gt;
 
 &lt;p&gt;If it fails, read carefully the error messages, it may ask you to install some libraries to be able to compile the program.&lt;/p&gt;
 
@@ -328,8 +328,8 @@ gu &lt;span class=&quot;nb&quot;&gt;install &lt;/span&gt;native-image
 &lt;p&gt;I’m running on an old XPS 13, which is definitely lacking CPU horsepower.&lt;/p&gt;
 
 &lt;ul&gt;
-  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;mvn client:build&lt;/code&gt; takes ~ 4 minutes&lt;/li&gt;
-  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;mvn package&lt;/code&gt; take a few seconds&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;mvn client:build&lt;/code&gt; takes ~ 4 minutes&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;mvn package&lt;/code&gt; take a few seconds&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;p&gt;Let’s look at the resulting binary.&lt;/p&gt;
@@ -340,7 +340,7 @@ gu &lt;span class=&quot;nb&quot;&gt;install &lt;/span&gt;native-image
 
 &lt;p&gt;62 Megabytes, that not a small size for an hello world. Keep in mind, this is still Java and bits of the JDK needs to be included in your binary. I did not explore if there are ways to trim this down using the Java module system.&lt;/p&gt;
 
-&lt;p&gt;Run it with: &lt;code class=&quot;highlighter-rouge&quot;&gt;target/client/x86_64-linux/hellofx&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;Run it with: &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;target/client/x86_64-linux/hellofx&lt;/code&gt;&lt;/p&gt;
 
 &lt;p&gt;&lt;img src=&quot;/assets/2020-10-18-native-gui-app-with-javafx/run-compiled.png&quot; alt=&quot;HelloFX running as a native binary&quot; /&gt;&lt;/p&gt;
 
@@ -374,17 +374,17 @@ gu &lt;span class=&quot;nb&quot;&gt;install &lt;/span&gt;native-image
   &lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;p&gt;Where module &lt;code class=&quot;highlighter-rouge&quot;&gt;app&lt;/code&gt; depends on (requires) module &lt;code class=&quot;highlighter-rouge&quot;&gt;configs&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;Where module &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;app&lt;/code&gt; depends on (requires) module &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;configs&lt;/code&gt;.&lt;/p&gt;
 
 &lt;p&gt;Even though I am using Java 13 in this example, this should apply to a Java 11+ project.&lt;/p&gt;
 
 &lt;h1 id=&quot;using-java-13-no-module-configured&quot;&gt;Using Java 13, no module configured&lt;/h1&gt;
 
-&lt;p&gt;When you have a Maven project without any &lt;code class=&quot;highlighter-rouge&quot;&gt;module-info.java&lt;/code&gt; file, the good old classpath mechanism (as opposed to java modules) is used.&lt;/p&gt;
+&lt;p&gt;When you have a Maven project without any &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;module-info.java&lt;/code&gt; file, the good old classpath mechanism (as opposed to java modules) is used.&lt;/p&gt;
 
 &lt;p&gt;File structure:&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;.
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;.
 ├── app
 │   ├── pom.xml
 │   ├── src
@@ -406,7 +406,7 @@ gu &lt;span class=&quot;nb&quot;&gt;install &lt;/span&gt;native-image
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;// Main.java&lt;/span&gt;
-&lt;span class=&quot;kn&quot;&gt;package&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;org&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;example&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;app&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;kn&quot;&gt;package&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;org.example.app&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
 
 &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;java.io.IOException&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
 &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;java.net.URL&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
@@ -424,7 +424,7 @@ gu &lt;span class=&quot;nb&quot;&gt;install &lt;/span&gt;native-image
 
 &lt;p&gt;This results in:&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Hello, let me read the config!
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Hello, let me read the config!
 value=test
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
@@ -444,11 +444,11 @@ value=test
 &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;p&gt;&lt;strong&gt;On module names:&lt;/strong&gt; I don’t have name my modules &lt;code class=&quot;highlighter-rouge&quot;&gt;org.example.app&lt;/code&gt;, you could just name it &lt;code class=&quot;highlighter-rouge&quot;&gt;app&lt;/code&gt;. I believe it’s a good practice to have some kind of qualifier to differenciate your module over modules outside your project. It’s kind of the same reasoning that we used to use to name java packages.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;On module names:&lt;/strong&gt; I don’t have name my modules &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;org.example.app&lt;/code&gt;, you could just name it &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;app&lt;/code&gt;. I believe it’s a good practice to have some kind of qualifier to differenciate your module over modules outside your project. It’s kind of the same reasoning that we used to use to name java packages.&lt;/p&gt;
 
-&lt;p&gt;Now, running &lt;code class=&quot;highlighter-rouge&quot;&gt;Main&lt;/code&gt; gives the following error:&lt;/p&gt;
+&lt;p&gt;Now, running &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Main&lt;/code&gt; gives the following error:&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Hello, let me read the config!
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Hello, let me read the config!
 Exception in thread &quot;main&quot; java.lang.NullPointerException
 	at app/org.example.app.Main.main(Main.java:12)
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
@@ -457,13 +457,13 @@ Exception in thread &quot;main&quot; java.lang.NullPointerException
 
 &lt;ul&gt;
   &lt;li&gt;The resource has to be in a exported package.&lt;/li&gt;
-  &lt;li&gt;Moreover, to load the resource with &lt;code class=&quot;highlighter-rouge&quot;&gt;module.getResourceAsStream()&lt;/code&gt;, the package should be opened, not simply exported.&lt;/li&gt;
-  &lt;li&gt;It’s OK if there is no class in &lt;code class=&quot;highlighter-rouge&quot;&gt;src/main/java&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;Moreover, to load the resource with &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;module.getResourceAsStream()&lt;/code&gt;, the package should be opened, not simply exported.&lt;/li&gt;
+  &lt;li&gt;It’s OK if there is no class in &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;src/main/java&lt;/code&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;p&gt;Note how the &lt;code class=&quot;highlighter-rouge&quot;&gt;configs/src/main/resources&lt;/code&gt; folder has changed.&lt;/p&gt;
+&lt;p&gt;Note how the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;configs/src/main/resources&lt;/code&gt; folder has changed.&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;.
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;.
 ├── app
 │   ├── pom.xml
 │   └── src
@@ -491,7 +491,7 @@ Exception in thread &quot;main&quot; java.lang.NullPointerException
 └── pom.xml
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;p&gt;Some modifications have to be made to our module defnitions and &lt;code class=&quot;highlighter-rouge&quot;&gt;Main.java&lt;/code&gt;:&lt;/p&gt;
+&lt;p&gt;Some modifications have to be made to our module defnitions and &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Main.java&lt;/code&gt;:&lt;/p&gt;
 
 &lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;// app/src/main/java/module-info.java&lt;/span&gt;
 &lt;span class=&quot;n&quot;&gt;module&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;org&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;example&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;app&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
@@ -505,7 +505,7 @@ Exception in thread &quot;main&quot; java.lang.NullPointerException
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;// Main.java&lt;/span&gt;
-&lt;span class=&quot;kn&quot;&gt;package&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;org&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;example&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;app&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;kn&quot;&gt;package&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;org.example.app&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
 
 &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;java.io.IOException&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
 &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;java.io.InputStream&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
@@ -527,7 +527,7 @@ Exception in thread &quot;main&quot; java.lang.NullPointerException
 
 &lt;p&gt;Now it’s all working as I wanted:&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Hello, let me read the config!
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Hello, let me read the config!
 value=test
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
@@ -535,11 +535,11 @@ value=test
 
 &lt;h2 id=&quot;alternative-way-to-read-resource-from-a-module&quot;&gt;Alternative way to read resource from a module&lt;/h2&gt;
 
-&lt;p&gt;By using &lt;code class=&quot;highlighter-rouge&quot;&gt;ClassLoader.getSystemResources&lt;/code&gt; it is possible to get multiple matches depending on what is on your module path.&lt;/p&gt;
+&lt;p&gt;By using &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ClassLoader.getSystemResources&lt;/code&gt; it is possible to get multiple matches depending on what is on your module path.&lt;/p&gt;
 
 &lt;p&gt;You can aim for a resource in a particular module, using the following snippet.&lt;/p&gt;
 
-&lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kn&quot;&gt;package&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;org&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;example&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;app&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+&lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kn&quot;&gt;package&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;org.example.app&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
 
 &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;java.io.IOException&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
 &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;java.io.InputStream&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
@@ -606,30 +606,30 @@ value=test
 
 &lt;p&gt;Running a modular JavaFX application with Java 13 I ran into a few hiccups when running my tests.&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;java.lang.IllegalAccessError: class org.testfx.toolkit.impl.ToolkitServiceImpl (in unnamed module @0x7dcf94f8) cannot access class com.sun.javafx.application.ParametersImpl (in module javafx.graphics) because module javafx.graphics does not export com.sun.javafx.application to unnamed module @0x7dcf94f8
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;java.lang.IllegalAccessError: class org.testfx.toolkit.impl.ToolkitServiceImpl (in unnamed module @0x7dcf94f8) cannot access class com.sun.javafx.application.ParametersImpl (in module javafx.graphics) because module javafx.graphics does not export com.sun.javafx.application to unnamed module @0x7dcf94f8
 	org.testfx.toolkit.impl.ToolkitServiceImpl.registerApplicationParameters(ToolkitServiceImpl.java:142)
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;p&gt;This can be “fixed” by opening the module when launching the program with &lt;code class=&quot;highlighter-rouge&quot;&gt;--add-exports javafx.graphics/com.sun.javafx.application=ALL-UNNAMED&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;This can be “fixed” by opening the module when launching the program with &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;--add-exports javafx.graphics/com.sun.javafx.application=ALL-UNNAMED&lt;/code&gt;.&lt;/p&gt;
 
 &lt;p&gt;Then I ran into a different error:&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;java.lang.reflect.InaccessibleObjectException: Unable to make void fr.leward.graphdesigner.ui.drawingpane.DrawingPaneSnapshotTest.testSomething() accessible: module graph.designer.drawing.pane does not &quot;opens fr.leward.graphdesigner.ui.drawingpane&quot; to unnamed module @5f9b2141
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;java.lang.reflect.InaccessibleObjectException: Unable to make void fr.leward.graphdesigner.ui.drawingpane.DrawingPaneSnapshotTest.testSomething() accessible: module graph.designer.drawing.pane does not &quot;opens fr.leward.graphdesigner.ui.drawingpane&quot; to unnamed module @5f9b2141
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;p&gt;Which I fixed by adding the launch option &lt;code class=&quot;highlighter-rouge&quot;&gt;--add-opens graph.designer.drawing.pane/fr.leward.graphdesigner.ui.drawingpane=ALL-UNNAMED&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;Which I fixed by adding the launch option &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;--add-opens graph.designer.drawing.pane/fr.leward.graphdesigner.ui.drawingpane=ALL-UNNAMED&lt;/code&gt;.&lt;/p&gt;
 
-&lt;p&gt;Later on, while implementing my &lt;code class=&quot;highlighter-rouge&quot;&gt;Snapshot&lt;/code&gt; utility class I ran into some more trouble:&lt;/p&gt;
+&lt;p&gt;Later on, while implementing my &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Snapshot&lt;/code&gt; utility class I ran into some more trouble:&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;java.lang.IllegalAccessError: 
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;java.lang.IllegalAccessError: 
 class fr.leward.graphdesigner.ui.drawingpane.Snapshot (in module graph.designer.drawing.pane) 
 	cannot access class javax.imageio.ImageIO (in module java.desktop) 
 	because module graph.designer.drawing.pane does not read module java.desktop
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;p&gt;Which could be fixed by adding &lt;code class=&quot;highlighter-rouge&quot;&gt;--add-reads graph.designer.drawing.pane=java.desktop&lt;/code&gt; to the launch options.&lt;/p&gt;
+&lt;p&gt;Which could be fixed by adding &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;--add-reads graph.designer.drawing.pane=java.desktop&lt;/code&gt; to the launch options.&lt;/p&gt;
 
-&lt;p&gt;I can now run &lt;code class=&quot;highlighter-rouge&quot;&gt;mvn test&lt;/code&gt;. IntelliJ integrates well with Maven and will pickup the launch options I specified in my &lt;code class=&quot;highlighter-rouge&quot;&gt;pom.xml&lt;/code&gt; :&lt;/p&gt;
+&lt;p&gt;I can now run &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;mvn test&lt;/code&gt;. IntelliJ integrates well with Maven and will pickup the launch options I specified in my &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;pom.xml&lt;/code&gt; :&lt;/p&gt;
 
 &lt;div class=&quot;language-xml highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nt&quot;&gt;&amp;lt;plugin&amp;gt;&lt;/span&gt;
   &lt;span class=&quot;nt&quot;&gt;&amp;lt;groupId&amp;gt;&lt;/span&gt;org.apache.maven.plugins&lt;span class=&quot;nt&quot;&gt;&amp;lt;/groupId&amp;gt;&lt;/span&gt;
@@ -653,7 +653,7 @@ class fr.leward.graphdesigner.ui.drawingpane.Snapshot (in module graph.designer.
 
 &lt;p&gt;Below, you can find the implementation I went with.&lt;/p&gt;
 
-&lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kn&quot;&gt;package&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;fr&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;leward&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;graphdesigner&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;ui&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;drawingpane&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+&lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kn&quot;&gt;package&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;fr.leward.graphdesigner.ui.drawingpane&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
 
 &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;javafx.embed.swing.SwingFXUtils&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
 &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;javafx.scene.Scene&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
@@ -725,7 +725,7 @@ class fr.leward.graphdesigner.ui.drawingpane.Snapshot (in module graph.designer.
 
 &lt;p&gt;And to write a Snapshot Test:&lt;/p&gt;
 
-&lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kn&quot;&gt;package&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;fr&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;leward&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;graphdesigner&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;ui&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;drawingpane&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+&lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kn&quot;&gt;package&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;fr.leward.graphdesigner.ui.drawingpane&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
 
 &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;fr.leward.graphdesigner.core.IdGenerator&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
 &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;javafx.scene.Scene&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
@@ -776,7 +776,7 @@ class fr.leward.graphdesigner.ui.drawingpane.Snapshot (in module graph.designer.
 &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;p&gt;Note that all the JavaFX interactions have to be made from the JavaFX thread, hence the use of &lt;code class=&quot;highlighter-rouge&quot;&gt;interact()&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;Note that all the JavaFX interactions have to be made from the JavaFX thread, hence the use of &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;interact()&lt;/code&gt;.&lt;/p&gt;
 
 &lt;h1 id=&quot;links&quot;&gt;Links&lt;/h1&gt;
 
@@ -797,13 +797,13 @@ class fr.leward.graphdesigner.ui.drawingpane.Snapshot (in module graph.designer.
         <title>Reviving an old Jekyll Blog thanks to Docker</title>
         <description>&lt;p&gt;I don’t know if I have any regular reader. Yet, I know I am not a regular writer and only publish to this blog from time to time.&lt;/p&gt;
 
-&lt;p&gt;I recently tried to publish an article about Java modules. I had difficulties rebuilding the blog using the &lt;code class=&quot;highlighter-rouge&quot;&gt;jekyll build&lt;/code&gt; command. Quite some time has passed since my last publication and Jekyll had a few breaking changes.&lt;/p&gt;
+&lt;p&gt;I recently tried to publish an article about Java modules. I had difficulties rebuilding the blog using the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;jekyll build&lt;/code&gt; command. Quite some time has passed since my last publication and Jekyll had a few breaking changes.&lt;/p&gt;
 
 &lt;!--more--&gt;
 
 &lt;p&gt;I could have installed an older version of Jekyll on my system. I find this option quite troublesome. In the end, I decided to use Docker. It allows to “simply” use an old version of Jekyll no matter what I have installed on my local system (besides Docker).&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;# Run
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;# Run
 docker run -ti \
 	-p 4000:4000 \
 	-v $(pwd):/srv/jekyll \
@@ -815,7 +815,7 @@ docker run -ti \
 	jekyll/jekyll:3 jekyll build
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;p&gt;It’s not as simple as &lt;code class=&quot;highlighter-rouge&quot;&gt;jekyll run&lt;/code&gt; or &lt;code class=&quot;highlighter-rouge&quot;&gt;jekyll build&lt;/code&gt;. However it is more reproducible. Conveniently hidden in a &lt;code class=&quot;highlighter-rouge&quot;&gt;[run.sh](http://run.sh)&lt;/code&gt; and &lt;code class=&quot;highlighter-rouge&quot;&gt;[build.sh](http://build.sh)&lt;/code&gt; scripts, it becomes painless to use them.&lt;/p&gt;
+&lt;p&gt;It’s not as simple as &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;jekyll run&lt;/code&gt; or &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;jekyll build&lt;/code&gt;. However it is more reproducible. Conveniently hidden in a &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;[run.sh](http://run.sh)&lt;/code&gt; and &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;[build.sh](http://build.sh)&lt;/code&gt; scripts, it becomes painless to use them.&lt;/p&gt;
 </description>
         <pubDate>Tue, 21 Jan 2020 11:49:00 +0800</pubDate>
         <link>http://yourdomain.com/2020/01/21/reviving-an-old-jekyll-blog-docker.html</link>
@@ -836,9 +836,9 @@ docker run -ti \
 
 &lt;h1 id=&quot;module-infojava&quot;&gt;module-info.java&lt;/h1&gt;
 
-&lt;p&gt;I wanted to have the following &lt;code class=&quot;highlighter-rouge&quot;&gt;module-info.java&lt;/code&gt;:&lt;/p&gt;
+&lt;p&gt;I wanted to have the following &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;module-info.java&lt;/code&gt;:&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;module graph.designer {
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;module graph.designer {
     requires javafx.controls;
     requires javafx.fxml;
     requires org.slf4j;
@@ -851,9 +851,9 @@ docker run -ti \
 
 &lt;h1 id=&quot;build-with-jlink&quot;&gt;Build with jlink&lt;/h1&gt;
 
-&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;mvn javafx:run&lt;/code&gt; would run just fine. However &lt;code class=&quot;highlighter-rouge&quot;&gt;mvn javafx:jlink&lt;/code&gt; returned the following error:&lt;/p&gt;
+&lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;mvn javafx:run&lt;/code&gt; would run just fine. However &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;mvn javafx:jlink&lt;/code&gt; returned the following error:&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Error: automatic module cannot be used with jlink: org.slf4j from file:///home/leward/.m2/repository/org/slf4j/slf4j-api/1.7.30/slf4j-api-1.7.30.jar
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Error: automatic module cannot be used with jlink: org.slf4j from file:///home/leward/.m2/repository/org/slf4j/slf4j-api/1.7.30/slf4j-api-1.7.30.jar
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;p&gt;What happens here is slf4j-api in its version 1.7.30 is not a native java module. It worked with the simple run command because Java automatically converts jars into java modules. However jlink is more particular about it and only want proper Java modules.&lt;/p&gt;
@@ -864,7 +864,7 @@ docker run -ti \
 
 &lt;p&gt;The fix was to simply go for a more recent version, which at the time of writing are not yet stable.&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;lt;dependency&amp;gt;
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;lt;dependency&amp;gt;
     &amp;lt;groupId&amp;gt;org.slf4j&amp;lt;/groupId&amp;gt;
     &amp;lt;artifactId&amp;gt;slf4j-api&amp;lt;/artifactId&amp;gt;
     &amp;lt;version&amp;gt;2.0.0-alpha1&amp;lt;/version&amp;gt; &amp;lt;!-- 01-Oct-2019 --&amp;gt;
@@ -881,7 +881,7 @@ docker run -ti \
 
 &lt;p&gt;Note: You’d usually put the logback pendency as a runtime dependency, but here we need it to build the image and run it. Runtime dependency is a Maven construct, which is different from the Java Module System. An alternative is to have an image without logback and add the logback module when launchin the app. However I went for convinience and simplicity here.&lt;/p&gt;
 
-&lt;p&gt;Now I can build with &lt;code class=&quot;highlighter-rouge&quot;&gt;mvn javafx:jlink&lt;/code&gt; and run the generated image (&lt;code class=&quot;highlighter-rouge&quot;&gt;target/graph-designer/launcher&lt;/code&gt;). You can read more about this on the &lt;a href=&quot;https://openjfx.io/openjfx-docs/#modular&quot;&gt;OpenJFX Getting Started Guide&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Now I can build with &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;mvn javafx:jlink&lt;/code&gt; and run the generated image (&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;target/graph-designer/launcher&lt;/code&gt;). You can read more about this on the &lt;a href=&quot;https://openjfx.io/openjfx-docs/#modular&quot;&gt;OpenJFX Getting Started Guide&lt;/a&gt;.&lt;/p&gt;
 
 &lt;table&gt;
   &lt;tbody&gt;
@@ -924,10 +924,10 @@ docker run -ti \
 
 &lt;p&gt;To install Nix, run the following command (this is the &lt;a href=&quot;https://nixos.org/nix/manual/#sect-multi-user-installation&quot;&gt;multi-user installation&lt;/a&gt;):&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;sh &amp;lt;(curl https://nixos.org/nix/install) --daemon
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;sh &amp;lt;(curl https://nixos.org/nix/install) --daemon
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;p&gt;Always be careful when you install a downloaded script with &lt;code class=&quot;highlighter-rouge&quot;&gt;curl&lt;/code&gt;. Verify the source is trusted, and do not hesitate to review the installation script.&lt;/p&gt;
+&lt;p&gt;Always be careful when you install a downloaded script with &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;curl&lt;/code&gt;. Verify the source is trusted, and do not hesitate to review the installation script.&lt;/p&gt;
 
 &lt;p&gt;I like that the installation process tries its best being transparent about the different steps it is performing.&lt;/p&gt;
 
@@ -945,15 +945,15 @@ docker run -ti \
 
 &lt;h2 id=&quot;common-commands&quot;&gt;Common Commands&lt;/h2&gt;
 
-&lt;p&gt;Searching for a package: &lt;code class=&quot;highlighter-rouge&quot;&gt;nix search packagename&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;Searching for a package: &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;nix search packagename&lt;/code&gt;&lt;/p&gt;
 
-&lt;p&gt;Installing a package: &lt;code class=&quot;highlighter-rouge&quot;&gt;nix-env -i packagename&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;Installing a package: &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;nix-env -i packagename&lt;/code&gt;&lt;/p&gt;
 
-&lt;p&gt;Removing a package: &lt;code class=&quot;highlighter-rouge&quot;&gt;nix-env -e packagename&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;Removing a package: &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;nix-env -e packagename&lt;/code&gt;&lt;/p&gt;
 
-&lt;p&gt;List installed packages: &lt;code class=&quot;highlighter-rouge&quot;&gt;nix-env -q&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;List installed packages: &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;nix-env -q&lt;/code&gt;&lt;/p&gt;
 
-&lt;p&gt;Upgrade packages: &lt;code class=&quot;highlighter-rouge&quot;&gt;nix-env -u&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;Upgrade packages: &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;nix-env -u&lt;/code&gt;&lt;/p&gt;
 
 &lt;h2 id=&quot;caveats&quot;&gt;Caveats&lt;/h2&gt;
 
@@ -963,16 +963,16 @@ docker run -ti \
 
 &lt;h3 id=&quot;entries-in-the-start-menu&quot;&gt;Entries in the start menu&lt;/h3&gt;
 
-&lt;p&gt;Entries in the desktop menu are not added. For this to work you need to configure the &lt;code class=&quot;highlighter-rouge&quot;&gt;XDG_DATA_DIR&lt;/code&gt; environment variable. You can add to your &lt;code class=&quot;highlighter-rouge&quot;&gt;.profile&lt;/code&gt; file:&lt;/p&gt;
+&lt;p&gt;Entries in the desktop menu are not added. For this to work you need to configure the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;XDG_DATA_DIR&lt;/code&gt; environment variable. You can add to your &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;.profile&lt;/code&gt; file:&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;export XDG_DATA_DIRS=$HOME/.nix-profile/share/applications:&quot;${XDG_DATA_DIRS:-/usr/local/share/:/usr/share/}&quot;
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;export XDG_DATA_DIRS=$HOME/.nix-profile/share/applications:&quot;${XDG_DATA_DIRS:-/usr/local/share/:/usr/share/}&quot;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;p&gt;Still doing so, does not make the entry appear after installing a new package with &lt;code class=&quot;highlighter-rouge&quot;&gt;nix-env -i&lt;/code&gt;. However at the next restart, the entry is there. If you open the menu editor you should also see the icon&lt;/p&gt;
+&lt;p&gt;Still doing so, does not make the entry appear after installing a new package with &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;nix-env -i&lt;/code&gt;. However at the next restart, the entry is there. If you open the menu editor you should also see the icon&lt;/p&gt;
 
 &lt;h3 id=&quot;nix-for-other-users&quot;&gt;Nix for other users&lt;/h3&gt;
 
-&lt;p&gt;Logging-in as a different user, &lt;code class=&quot;highlighter-rouge&quot;&gt;nix&lt;/code&gt; and &lt;code class=&quot;highlighter-rouge&quot;&gt;nix-env&lt;/code&gt; may not be immediately  available. Running &lt;code class=&quot;highlighter-rouge&quot;&gt;source /etc/profile&lt;/code&gt; should resolve it.&lt;/p&gt;
+&lt;p&gt;Logging-in as a different user, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;nix&lt;/code&gt; and &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;nix-env&lt;/code&gt; may not be immediately  available. Running &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;source /etc/profile&lt;/code&gt; should resolve it.&lt;/p&gt;
 
 &lt;h2 id=&quot;running-two-versions-side-by-side&quot;&gt;Running two versions side-by-side&lt;/h2&gt;
 
@@ -987,7 +987,7 @@ docker run -ti \
 
 &lt;p&gt;Nix is said to allow to have several installations of a package installed. Let’s try it:&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ nix-env -i ruby
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ nix-env -i ruby
 installing 'ruby-2.6.1'
 
 $ ruby -v
@@ -1003,24 +1003,24 @@ ruby 2.3.8p459 (2018-10-18) [x86_64-linux]
 
 &lt;p&gt;What has happened here? The first installation of ruby is quite straightforward and works as expected. Where things are a little bit trickier is when installing an older version of ruby.&lt;/p&gt;
 
-&lt;p&gt;To install ruby 2.3 we had to add the &lt;code class=&quot;highlighter-rouge&quot;&gt;-A&lt;/code&gt; option and specify the package name as &lt;code class=&quot;highlighter-rouge&quot;&gt;nixpkgs.ruby_2_3&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;To install ruby 2.3 we had to add the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;-A&lt;/code&gt; option and specify the package name as &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;nixpkgs.ruby_2_3&lt;/code&gt;.&lt;/p&gt;
 
-&lt;p&gt;The following two commands are similar (as long as &lt;code class=&quot;highlighter-rouge&quot;&gt;nixpkgs.ruby_2_3&lt;/code&gt; points to the version 2.3.8 of ruby):&lt;/p&gt;
+&lt;p&gt;The following two commands are similar (as long as &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;nixpkgs.ruby_2_3&lt;/code&gt; points to the version 2.3.8 of ruby):&lt;/p&gt;
 
 &lt;ul&gt;
-  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;nix-env -iA nixpkgs.ruby_2_3&lt;/code&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;nix-env -i ruby-2.3.8&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;nix-env -iA nixpkgs.ruby_2_3&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;nix-env -i ruby-2.3.8&lt;/code&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;p&gt;However note that running &lt;code class=&quot;highlighter-rouge&quot;&gt;nix-env -i ruby-2.3.7&lt;/code&gt; does not work, because that version is not targeted by any nix package. The versions which work are the ones returned one running &lt;code class=&quot;highlighter-rouge&quot;&gt;nix-env -qa ruby&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;However note that running &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;nix-env -i ruby-2.3.7&lt;/code&gt; does not work, because that version is not targeted by any nix package. The versions which work are the ones returned one running &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;nix-env -qa ruby&lt;/code&gt;&lt;/p&gt;
 
-&lt;p&gt;General rule of thumb is to install with &lt;code class=&quot;highlighter-rouge&quot;&gt;niv-env -i&lt;/code&gt; only applications that you want to be available globally for a particular user. As a developer, to make the most of out of nix, you will need to create your own nix expressions in order to ensure your build are replicable using &lt;code class=&quot;highlighter-rouge&quot;&gt;nix-shell&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;General rule of thumb is to install with &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;niv-env -i&lt;/code&gt; only applications that you want to be available globally for a particular user. As a developer, to make the most of out of nix, you will need to create your own nix expressions in order to ensure your build are replicable using &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;nix-shell&lt;/code&gt;.&lt;/p&gt;
 
 &lt;p&gt;The philosophy in Nix is not to pinpoint to a specific version of a library or application, but to have a set dependencies which can be easily reproduced between environment. &lt;a href=&quot;https://github.com/NixOS/nixpkgs/issues/9682#issuecomment-138105069&quot;&gt;Multiple versions are kept in nixpkgs (default Nix package repository) if there is a good reason to&lt;/a&gt;. This does not mean you can’t do it, there are ways of doing it, playing with nix channels, but I would not consider it to be straightforward.&lt;/p&gt;
 
 &lt;p&gt;For this reasons, nix is not always ideal, nor the silver bullet for developers needing to troubleshot and target a specific version.&lt;/p&gt;
 
-&lt;p&gt;Also here in our example, ruby2.6 has disappeared from the list when you run &lt;code class=&quot;highlighter-rouge&quot;&gt;nix-env -q&lt;/code&gt;. For a given package, only one can be resolved at runtime. If you need ruby 2.3 for a specific build, nix-shell is there for that purpose. It creates a shell with all the required dependencies to run the build.&lt;/p&gt;
+&lt;p&gt;Also here in our example, ruby2.6 has disappeared from the list when you run &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;nix-env -q&lt;/code&gt;. For a given package, only one can be resolved at runtime. If you need ruby 2.3 for a specific build, nix-shell is there for that purpose. It creates a shell with all the required dependencies to run the build.&lt;/p&gt;
 
 &lt;p&gt;Nix-shell is more useful when you need system libraries to be present such as when working in C. This is a bit less the case when you are already using a build and package manager such as Maven for Java, Cargo for Rust, NPM for Javascript.&lt;/p&gt;
 
@@ -1042,7 +1042,7 @@ ruby 2.3.8p459 (2018-10-18) [x86_64-linux]
 
 &lt;p&gt;When I finished writing this blog post, here are the packages I have installed (I just reinstalled my system):&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ nix-env -q
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ nix-env -q
 bat-0.9.0
 git-2.19.2
 htop-2.2.0
@@ -1071,7 +1071,7 @@ vscode-1.30.2
 
 &lt;h2 id=&quot;schema-generation&quot;&gt;Schema generation&lt;/h2&gt;
 
-&lt;p&gt;Diesel uses a schema definition (usually called &lt;code class=&quot;highlighter-rouge&quot;&gt;schema.rs&lt;/code&gt;) to ensure the type-safety of its API.&lt;/p&gt;
+&lt;p&gt;Diesel uses a schema definition (usually called &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;schema.rs&lt;/code&gt;) to ensure the type-safety of its API.&lt;/p&gt;
 
 &lt;p&gt;When started such a project there are usually two options:&lt;/p&gt;
 
@@ -1082,10 +1082,10 @@ vscode-1.30.2
  the DB schema into your code. For many reasons there may be a lot of things your application does not care about in the DB schema&lt;/li&gt;
 &lt;/ol&gt;
 
-&lt;p&gt;As I have an existing database, I generated my schema using the &lt;code class=&quot;highlighter-rouge&quot;&gt;diesel print-schema&lt;/code&gt; command. 
-The command dumps the DB structure into my &lt;code class=&quot;highlighter-rouge&quot;&gt;schema.rs&lt;/code&gt; file.&lt;/p&gt;
+&lt;p&gt;As I have an existing database, I generated my schema using the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;diesel print-schema&lt;/code&gt; command. 
+The command dumps the DB structure into my &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;schema.rs&lt;/code&gt; file.&lt;/p&gt;
 
-&lt;p&gt;&lt;strong&gt;Note:&lt;/strong&gt; Don’t forget to add the generated &lt;code class=&quot;highlighter-rouge&quot;&gt;schema&lt;/code&gt; module to your &lt;code class=&quot;highlighter-rouge&quot;&gt;main.rs&lt;/code&gt; using &lt;code class=&quot;highlighter-rouge&quot;&gt;mod schema;&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Note:&lt;/strong&gt; Don’t forget to add the generated &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;schema&lt;/code&gt; module to your &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;main.rs&lt;/code&gt; using &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;mod schema;&lt;/code&gt;&lt;/p&gt;
 
 &lt;h2 id=&quot;schema-mapping&quot;&gt;Schema Mapping&lt;/h2&gt;
 
@@ -1113,9 +1113,9 @@ The command dumps the DB structure into my &lt;code class=&quot;highlighter-roug
 &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;p&gt;Note that in my schema I commented out the &lt;code class=&quot;highlighter-rouge&quot;&gt;version&lt;/code&gt; column. Indeed, at this current stage, I don’t really care about that field.&lt;/p&gt;
+&lt;p&gt;Note that in my schema I commented out the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;version&lt;/code&gt; column. Indeed, at this current stage, I don’t really care about that field.&lt;/p&gt;
 
-&lt;p&gt;&lt;strong&gt;Note:&lt;/strong&gt; If a field is in your &lt;code class=&quot;highlighter-rouge&quot;&gt;schema.rs&lt;/code&gt;, it should be in your struct as well. If the field is not in the struct, requests will have to specify all the columns every time, which is a bit cumbersome.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Note:&lt;/strong&gt; If a field is in your &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;schema.rs&lt;/code&gt;, it should be in your struct as well. If the field is not in the struct, requests will have to specify all the columns every time, which is a bit cumbersome.&lt;/p&gt;
 
 &lt;p&gt;&lt;strong&gt;Note:&lt;/strong&gt; Make sure the order of the fields in your schema and your struct is the same. Diesel does its mapping using tuples, so the order of the fields matters.&lt;/p&gt;
 
@@ -1267,13 +1267,13 @@ The snippet below fetches the 5 latest news.&lt;/p&gt;
 This works great if your struct and your schema have the same fields in the same order. 
 It is quick trickier to do it otherwise.&lt;/p&gt;
 
-&lt;p&gt;In the &lt;a href=&quot;http://diesel.rs/guides/getting-started/&quot;&gt;diesel documentation&lt;/a&gt; the snippets often indicates &lt;code class=&quot;highlighter-rouge&quot;&gt;use schema::cover::dsl::*;&lt;/code&gt;, which I don’t like very much as it very easily creates conflicts in the names of my variables. It becomes even more confusing whene joinning tables (both are likely to have an &lt;code class=&quot;highlighter-rouge&quot;&gt;id&lt;/code&gt; column).&lt;/p&gt;
+&lt;p&gt;In the &lt;a href=&quot;http://diesel.rs/guides/getting-started/&quot;&gt;diesel documentation&lt;/a&gt; the snippets often indicates &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;use schema::cover::dsl::*;&lt;/code&gt;, which I don’t like very much as it very easily creates conflicts in the names of my variables. It becomes even more confusing whene joinning tables (both are likely to have an &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;id&lt;/code&gt; column).&lt;/p&gt;
 
-&lt;p&gt;In the snippet above I had to use two structs: &lt;code class=&quot;highlighter-rouge&quot;&gt;NewsRow&lt;/code&gt; and &lt;code class=&quot;highlighter-rouge&quot;&gt;News&lt;/code&gt;. The reason is that Diesel does not resolve associations in the structs like an ORM like Hibernate (Java) would do. Maybe that’s for the better as a lot of the weird stuff with Hibernate happen when handling associations.&lt;/p&gt;
+&lt;p&gt;In the snippet above I had to use two structs: &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;NewsRow&lt;/code&gt; and &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;News&lt;/code&gt;. The reason is that Diesel does not resolve associations in the structs like an ORM like Hibernate (Java) would do. Maybe that’s for the better as a lot of the weird stuff with Hibernate happen when handling associations.&lt;/p&gt;
 
 &lt;h3 id=&quot;alternative-version&quot;&gt;Alternative version&lt;/h3&gt;
 
-&lt;p&gt;&lt;a href=&quot;https://github.com/incker&quot;&gt;@incker&lt;/a&gt; &lt;a href=&quot;https://github.com/Leward/leward-blog/issues/3&quot;&gt;reached out to me&lt;/a&gt;, suggesting a different way of writing the join example. Instead of relying on a &lt;code class=&quot;highlighter-rouge&quot;&gt;NewsRow&lt;/code&gt; struct, diesel is able to be build the &lt;code class=&quot;highlighter-rouge&quot;&gt;News&lt;/code&gt; struct &lt;strong&gt;if your &lt;code class=&quot;highlighter-rouge&quot;&gt;select&lt;/code&gt; contains all the columns required by the structs&lt;/strong&gt;.&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;https://github.com/incker&quot;&gt;@incker&lt;/a&gt; &lt;a href=&quot;https://github.com/Leward/leward-blog/issues/3&quot;&gt;reached out to me&lt;/a&gt;, suggesting a different way of writing the join example. Instead of relying on a &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;NewsRow&lt;/code&gt; struct, diesel is able to be build the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;News&lt;/code&gt; struct &lt;strong&gt;if your &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;select&lt;/code&gt; contains all the columns required by the structs&lt;/strong&gt;.&lt;/p&gt;
 
 &lt;p&gt;See the code below:&lt;/p&gt;
 
@@ -1347,13 +1347,13 @@ If you use Docker to deploy your applications and print your logs in the standar
 
 &lt;p&gt;In order to proceed you will need to know:&lt;/p&gt;
 &lt;ul&gt;
-  &lt;li&gt;The endpoint to collect GELF logs over UDP (&lt;code class=&quot;highlighter-rouge&quot;&gt;udp://gra2.logs.ovh.com:2202&lt;/code&gt; for me)&lt;/li&gt;
+  &lt;li&gt;The endpoint to collect GELF logs over UDP (&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;udp://gra2.logs.ovh.com:2202&lt;/code&gt; for me)&lt;/li&gt;
   &lt;li&gt;The token for your stream&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;p&gt;Then, run the docker container with the following configuration:&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;docker run \
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;docker run \
   -e X-OVH-TOKEN=&quot;7982bbc4-9a66-4426-9de3-33d6eb201ed6&quot; \
   --log-driver gelf \
   --log-opt gelf-address=udp://gra2.logs.ovh.com:2202 \
@@ -1361,9 +1361,9 @@ If you use Docker to deploy your applications and print your logs in the standar
   -d busybox
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;p&gt;Replace &lt;code class=&quot;highlighter-rouge&quot;&gt;7982bbc4-9a66-4426-9de3-33d6eb201ed6&lt;/code&gt; by your actual Stream token.&lt;/p&gt;
+&lt;p&gt;Replace &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;7982bbc4-9a66-4426-9de3-33d6eb201ed6&lt;/code&gt; by your actual Stream token.&lt;/p&gt;
 
-&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;--log-opt env=X-OVH-TOKEN&lt;/code&gt; for the gelf log driver will put the specified environment variable as a custom field in the GELF message (prefixed by an underscore &lt;code class=&quot;highlighter-rouge&quot;&gt;_&lt;/code&gt;). That’s how OVH can accept and properly route the incoming logs.&lt;/p&gt;
+&lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;--log-opt env=X-OVH-TOKEN&lt;/code&gt; for the gelf log driver will put the specified environment variable as a custom field in the GELF message (prefixed by an underscore &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;_&lt;/code&gt;). That’s how OVH can accept and properly route the incoming logs.&lt;/p&gt;
 
 &lt;p&gt;It works, however the main drawback is that the logs will be made from the Docker perspective. The reported log levels are the ones from Docker, not from the java app. Docker will only consider for log levels the standard and error outputs, so you will note have the same granulary as the java logs (DEBUG, INFO, WARN, ERROR, etc.) without doing intermediate processing.&lt;/p&gt;
 
@@ -1378,38 +1378,38 @@ If you use Docker to deploy your applications and print your logs in the standar
 
 &lt;p&gt;From logback you can send the logs to to Greylogs by adding a new Appender:&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;cp&quot;&gt;&amp;lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&amp;gt;&lt;/span&gt;
-&lt;span class=&quot;nt&quot;&gt;&amp;lt;configuration&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;debug=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;true&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&amp;gt;
+&amp;lt;configuration debug=&quot;true&quot;&amp;gt;
 
-  &lt;span class=&quot;nt&quot;&gt;&amp;lt;appender&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;name=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;STDOUT&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;class=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;ch.qos.logback.core.ConsoleAppender&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
-    &lt;span class=&quot;nt&quot;&gt;&amp;lt;layout&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;class=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;ch.qos.logback.classic.PatternLayout&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
-      &lt;span class=&quot;nt&quot;&gt;&amp;lt;Pattern&amp;gt;&lt;/span&gt;
+  &amp;lt;appender name=&quot;STDOUT&quot; class=&quot;ch.qos.logback.core.ConsoleAppender&quot;&amp;gt;
+    &amp;lt;layout class=&quot;ch.qos.logback.classic.PatternLayout&quot;&amp;gt;
+      &amp;lt;Pattern&amp;gt;
         %level %logger - %msg%n
-      &lt;span class=&quot;nt&quot;&gt;&amp;lt;/Pattern&amp;gt;&lt;/span&gt;
-    &lt;span class=&quot;nt&quot;&gt;&amp;lt;/layout&amp;gt;&lt;/span&gt;
-  &lt;span class=&quot;nt&quot;&gt;&amp;lt;/appender&amp;gt;&lt;/span&gt;
+      &amp;lt;/Pattern&amp;gt;
+    &amp;lt;/layout&amp;gt;
+  &amp;lt;/appender&amp;gt;
 
-  &lt;span class=&quot;nt&quot;&gt;&amp;lt;appender&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;name=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;GELF&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;class=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;de.siegmar.logbackgelf.GelfUdpAppender&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
-    &lt;span class=&quot;nt&quot;&gt;&amp;lt;graylogHost&amp;gt;&lt;/span&gt;gra2.logs.ovh.com&lt;span class=&quot;nt&quot;&gt;&amp;lt;/graylogHost&amp;gt;&lt;/span&gt;
-    &lt;span class=&quot;nt&quot;&gt;&amp;lt;graylogPort&amp;gt;&lt;/span&gt;2202&lt;span class=&quot;nt&quot;&gt;&amp;lt;/graylogPort&amp;gt;&lt;/span&gt;
-    &lt;span class=&quot;nt&quot;&gt;&amp;lt;layout&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;class=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;de.siegmar.logbackgelf.GelfLayout&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
-        &lt;span class=&quot;nt&quot;&gt;&amp;lt;staticField&amp;gt;&lt;/span&gt;X-OVH-TOKEN:7982bbc4-9a66-4426-9de3-33d6eb201ed6&lt;span class=&quot;nt&quot;&gt;&amp;lt;/staticField&amp;gt;&lt;/span&gt;
-    &lt;span class=&quot;nt&quot;&gt;&amp;lt;/layout&amp;gt;&lt;/span&gt;
-  &lt;span class=&quot;nt&quot;&gt;&amp;lt;/appender&amp;gt;&lt;/span&gt;
+  &amp;lt;appender name=&quot;GELF&quot; class=&quot;de.siegmar.logbackgelf.GelfUdpAppender&quot;&amp;gt;
+    &amp;lt;graylogHost&amp;gt;gra2.logs.ovh.com&amp;lt;/graylogHost&amp;gt;
+    &amp;lt;graylogPort&amp;gt;2202&amp;lt;/graylogPort&amp;gt;
+    &amp;lt;layout class=&quot;de.siegmar.logbackgelf.GelfLayout&quot;&amp;gt;
+        &amp;lt;staticField&amp;gt;X-OVH-TOKEN:7982bbc4-9a66-4426-9de3-33d6eb201ed6&amp;lt;/staticField&amp;gt;
+    &amp;lt;/layout&amp;gt;
+  &amp;lt;/appender&amp;gt;
 
-  &lt;span class=&quot;nt&quot;&gt;&amp;lt;root&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;level=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;INFO&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
-    &lt;span class=&quot;nt&quot;&gt;&amp;lt;appender-ref&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;ref=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;STDOUT&quot;&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;/&amp;gt;&lt;/span&gt;
-    &lt;span class=&quot;nt&quot;&gt;&amp;lt;appender-ref&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;ref=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;GELF&quot;&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;/&amp;gt;&lt;/span&gt;
-  &lt;span class=&quot;nt&quot;&gt;&amp;lt;/root&amp;gt;&lt;/span&gt;
+  &amp;lt;root level=&quot;INFO&quot;&amp;gt;
+    &amp;lt;appender-ref ref=&quot;STDOUT&quot; /&amp;gt;
+    &amp;lt;appender-ref ref=&quot;GELF&quot; /&amp;gt;
+  &amp;lt;/root&amp;gt;
 
-&lt;span class=&quot;nt&quot;&gt;&amp;lt;/configuration&amp;gt;&lt;/span&gt;
+&amp;lt;/configuration&amp;gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;p&gt;Replace &lt;code class=&quot;highlighter-rouge&quot;&gt;7982bbc4-9a66-4426-9de3-33d6eb201ed6&lt;/code&gt; by your actual Stream token.&lt;/p&gt;
+&lt;p&gt;Replace &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;7982bbc4-9a66-4426-9de3-33d6eb201ed6&lt;/code&gt; by your actual Stream token.&lt;/p&gt;
 
-&lt;p&gt;You’ll need to add the following dependency to you project: &lt;code class=&quot;highlighter-rouge&quot;&gt;compile 'de.siegmar:logback-gelf:1.0.4'&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;You’ll need to add the following dependency to you project: &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;compile 'de.siegmar:logback-gelf:1.0.4'&lt;/code&gt;&lt;/p&gt;
 
-&lt;p&gt;There is logback appender &lt;a href=&quot;https://github.com/mp911de/logstash-gelf&quot;&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;biz.paluch.logging:logstash-gelf&lt;/code&gt;&lt;/a&gt; that is quite popular, but I did not manage to make it work. So I went for &lt;a href=&quot;https://github.com/osiegmar/logback-gelf&quot;&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;de.siegmar:logback-gelf&lt;/code&gt;&lt;/a&gt; instead.&lt;/p&gt;
+&lt;p&gt;There is logback appender &lt;a href=&quot;https://github.com/mp911de/logstash-gelf&quot;&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;biz.paluch.logging:logstash-gelf&lt;/code&gt;&lt;/a&gt; that is quite popular, but I did not manage to make it work. So I went for &lt;a href=&quot;https://github.com/osiegmar/logback-gelf&quot;&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;de.siegmar:logback-gelf&lt;/code&gt;&lt;/a&gt; instead.&lt;/p&gt;
 </description>
         <pubDate>Mon, 18 Dec 2017 00:40:00 +0800</pubDate>
         <link>http://yourdomain.com/2017/12/18/logs-analysis-with-ovh.html</link>

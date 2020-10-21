@@ -140,7 +140,7 @@
 
 <p>The project is a Spring project and we use Maven to build the project. It turns out that Spring themesevles write <a href="http://cloud.spring.io/spring-cloud-static/spring-cloud-config/1.3.1.RELEASE/">some of their documentations</a> using <a href="http://asciidoctor.org">Asciidoctor</a> and their is an <a href="https://github.com/asciidoctor/asciidoctor-maven-plugin">Asciidoctor Maven plugin</a> available.</p>
 
-<p>To start with Asciidoctor on your existing Maven project add the asciidoctor plugin in your <code class="highlighter-rouge">pom.xml</code>:</p>
+<p>To start with Asciidoctor on your existing Maven project add the asciidoctor plugin in your <code class="language-plaintext highlighter-rouge">pom.xml</code>:</p>
 
 <div class="language-xml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;plugin&gt;</span>
     <span class="nt">&lt;groupId&gt;</span>org.asciidoctor<span class="nt">&lt;/groupId&gt;</span>
@@ -161,11 +161,11 @@
 <span class="nt">&lt;/plugin&gt;</span>
 </code></pre></div></div>
 
-<p>We add <code class="highlighter-rouge">asciidoctor-maven-plugin</code> to our build and configure it to attach the generation of the documentation to the Maven <code class="highlighter-rouge">generate-resources</code> phase. The only configuration we need to specify is that we want the documentation generated in HTML.</p>
+<p>We add <code class="language-plaintext highlighter-rouge">asciidoctor-maven-plugin</code> to our build and configure it to attach the generation of the documentation to the Maven <code class="language-plaintext highlighter-rouge">generate-resources</code> phase. The only configuration we need to specify is that we want the documentation generated in HTML.</p>
 
-<p>The maven build being configured, we can now right the documentation. By default the documation as to be located under the <code class="highlighter-rouge">src/main/asciidoc</code> directory.</p>
+<p>The maven build being configured, we can now right the documentation. By default the documation as to be located under the <code class="language-plaintext highlighter-rouge">src/main/asciidoc</code> directory.</p>
 
-<p>Then create an <code class="highlighter-rouge">index.adoc</code> file with the following content:</p>
+<p>Then create an <code class="language-plaintext highlighter-rouge">index.adoc</code> file with the following content:</p>
 
 <pre><code class="language-asciidoc">= MyIdeas User Guide
 
@@ -177,7 +177,7 @@ This project does something.
 We just haven't decided what that is yet.
 </code></pre>
 
-<p>To generate the documentation in HTML format, run: <code class="highlighter-rouge">mvn clean package</code> and you should have a <code class="highlighter-rouge">target/generated-docs/index.html</code> file generated.</p>
+<p>To generate the documentation in HTML format, run: <code class="language-plaintext highlighter-rouge">mvn clean package</code> and you should have a <code class="language-plaintext highlighter-rouge">target/generated-docs/index.html</code> file generated.</p>
 
 <p><a href="/assets/2017-08-05-write-user-guide-in-maven-project-with-asciidoctor/first-doc-generated.png"><img src="/assets/2017-08-05-write-user-guide-in-maven-project-with-asciidoctor/first-doc-generated.png" alt="Our first generated documentation" /></a></p>
 
@@ -212,7 +212,7 @@ We just haven't decided what that is yet.
 
 <p>You can also link actual code snippets from the project without having to copy them. This means your documentation never get out of sync if a code example change.</p>
 
-<p>First, define the <code class="highlighter-rouge">sourcedir</code> attribute in order to inscruct the plugin where to look for source code:</p>
+<p>First, define the <code class="language-plaintext highlighter-rouge">sourcedir</code> attribute in order to inscruct the plugin where to look for source code:</p>
 
 <div class="language-xml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;attributes&gt;</span>
     <span class="nt">&lt;sourcedir&gt;</span>${project.build.sourceDirectory}<span class="nt">&lt;/sourcedir&gt;</span>
@@ -230,11 +230,11 @@ include::{sourcedir}/eu/leward/asciidocdemo/IdeaController.java[tags=class]
 ----
 </code></pre>
 
-<p>Noticed the <code class="highlighter-rouge">[tags=class]</code>? The brackets after the file you want to include give more details about how the inclusion should be done. Here we don’t want to show the whole file as we are not interested in the java imports.</p>
+<p>Noticed the <code class="language-plaintext highlighter-rouge">[tags=class]</code>? The brackets after the file you want to include give more details about how the inclusion should be done. Here we don’t want to show the whole file as we are not interested in the java imports.</p>
 
 <p>In order to extract a subset of the file you can put tags in the source code:</p>
 
-<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">package</span> <span class="n">eu</span><span class="o">.</span><span class="na">leward</span><span class="o">.</span><span class="na">asciidocdemo</span><span class="o">;</span>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">package</span> <span class="nn">eu.leward.asciidocdemo</span><span class="o">;</span>
 <span class="kn">import</span> <span class="nn">org.springframework.web.bind.annotation.RestController</span><span class="o">;</span>
 <span class="c1">// tag::class[]</span>
 <span class="nd">@RestController</span>

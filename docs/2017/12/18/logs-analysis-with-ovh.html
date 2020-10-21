@@ -156,13 +156,13 @@ If you use Docker to deploy your applications and print your logs in the standar
 
 <p>In order to proceed you will need to know:</p>
 <ul>
-  <li>The endpoint to collect GELF logs over UDP (<code class="highlighter-rouge">udp://gra2.logs.ovh.com:2202</code> for me)</li>
+  <li>The endpoint to collect GELF logs over UDP (<code class="language-plaintext highlighter-rouge">udp://gra2.logs.ovh.com:2202</code> for me)</li>
   <li>The token for your stream</li>
 </ul>
 
 <p>Then, run the docker container with the following configuration:</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker run \
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker run \
   -e X-OVH-TOKEN="7982bbc4-9a66-4426-9de3-33d6eb201ed6" \
   --log-driver gelf \
   --log-opt gelf-address=udp://gra2.logs.ovh.com:2202 \
@@ -170,9 +170,9 @@ If you use Docker to deploy your applications and print your logs in the standar
   -d busybox
 </code></pre></div></div>
 
-<p>Replace <code class="highlighter-rouge">7982bbc4-9a66-4426-9de3-33d6eb201ed6</code> by your actual Stream token.</p>
+<p>Replace <code class="language-plaintext highlighter-rouge">7982bbc4-9a66-4426-9de3-33d6eb201ed6</code> by your actual Stream token.</p>
 
-<p><code class="highlighter-rouge">--log-opt env=X-OVH-TOKEN</code> for the gelf log driver will put the specified environment variable as a custom field in the GELF message (prefixed by an underscore <code class="highlighter-rouge">_</code>). That’s how OVH can accept and properly route the incoming logs.</p>
+<p><code class="language-plaintext highlighter-rouge">--log-opt env=X-OVH-TOKEN</code> for the gelf log driver will put the specified environment variable as a custom field in the GELF message (prefixed by an underscore <code class="language-plaintext highlighter-rouge">_</code>). That’s how OVH can accept and properly route the incoming logs.</p>
 
 <p>It works, however the main drawback is that the logs will be made from the Docker perspective. The reported log levels are the ones from Docker, not from the java app. Docker will only consider for log levels the standard and error outputs, so you will note have the same granulary as the java logs (DEBUG, INFO, WARN, ERROR, etc.) without doing intermediate processing.</p>
 
@@ -187,38 +187,38 @@ If you use Docker to deploy your applications and print your logs in the standar
 
 <p>From logback you can send the logs to to Greylogs by adding a new Appender:</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</span>
-<span class="nt">&lt;configuration</span> <span class="na">debug=</span><span class="s">"true"</span><span class="nt">&gt;</span>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;configuration debug="true"&gt;
 
-  <span class="nt">&lt;appender</span> <span class="na">name=</span><span class="s">"STDOUT"</span> <span class="na">class=</span><span class="s">"ch.qos.logback.core.ConsoleAppender"</span><span class="nt">&gt;</span>
-    <span class="nt">&lt;layout</span> <span class="na">class=</span><span class="s">"ch.qos.logback.classic.PatternLayout"</span><span class="nt">&gt;</span>
-      <span class="nt">&lt;Pattern&gt;</span>
+  &lt;appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender"&gt;
+    &lt;layout class="ch.qos.logback.classic.PatternLayout"&gt;
+      &lt;Pattern&gt;
         %level %logger - %msg%n
-      <span class="nt">&lt;/Pattern&gt;</span>
-    <span class="nt">&lt;/layout&gt;</span>
-  <span class="nt">&lt;/appender&gt;</span>
+      &lt;/Pattern&gt;
+    &lt;/layout&gt;
+  &lt;/appender&gt;
 
-  <span class="nt">&lt;appender</span> <span class="na">name=</span><span class="s">"GELF"</span> <span class="na">class=</span><span class="s">"de.siegmar.logbackgelf.GelfUdpAppender"</span><span class="nt">&gt;</span>
-    <span class="nt">&lt;graylogHost&gt;</span>gra2.logs.ovh.com<span class="nt">&lt;/graylogHost&gt;</span>
-    <span class="nt">&lt;graylogPort&gt;</span>2202<span class="nt">&lt;/graylogPort&gt;</span>
-    <span class="nt">&lt;layout</span> <span class="na">class=</span><span class="s">"de.siegmar.logbackgelf.GelfLayout"</span><span class="nt">&gt;</span>
-        <span class="nt">&lt;staticField&gt;</span>X-OVH-TOKEN:7982bbc4-9a66-4426-9de3-33d6eb201ed6<span class="nt">&lt;/staticField&gt;</span>
-    <span class="nt">&lt;/layout&gt;</span>
-  <span class="nt">&lt;/appender&gt;</span>
+  &lt;appender name="GELF" class="de.siegmar.logbackgelf.GelfUdpAppender"&gt;
+    &lt;graylogHost&gt;gra2.logs.ovh.com&lt;/graylogHost&gt;
+    &lt;graylogPort&gt;2202&lt;/graylogPort&gt;
+    &lt;layout class="de.siegmar.logbackgelf.GelfLayout"&gt;
+        &lt;staticField&gt;X-OVH-TOKEN:7982bbc4-9a66-4426-9de3-33d6eb201ed6&lt;/staticField&gt;
+    &lt;/layout&gt;
+  &lt;/appender&gt;
 
-  <span class="nt">&lt;root</span> <span class="na">level=</span><span class="s">"INFO"</span><span class="nt">&gt;</span>
-    <span class="nt">&lt;appender-ref</span> <span class="na">ref=</span><span class="s">"STDOUT"</span> <span class="nt">/&gt;</span>
-    <span class="nt">&lt;appender-ref</span> <span class="na">ref=</span><span class="s">"GELF"</span> <span class="nt">/&gt;</span>
-  <span class="nt">&lt;/root&gt;</span>
+  &lt;root level="INFO"&gt;
+    &lt;appender-ref ref="STDOUT" /&gt;
+    &lt;appender-ref ref="GELF" /&gt;
+  &lt;/root&gt;
 
-<span class="nt">&lt;/configuration&gt;</span>
+&lt;/configuration&gt;
 </code></pre></div></div>
 
-<p>Replace <code class="highlighter-rouge">7982bbc4-9a66-4426-9de3-33d6eb201ed6</code> by your actual Stream token.</p>
+<p>Replace <code class="language-plaintext highlighter-rouge">7982bbc4-9a66-4426-9de3-33d6eb201ed6</code> by your actual Stream token.</p>
 
-<p>You’ll need to add the following dependency to you project: <code class="highlighter-rouge">compile 'de.siegmar:logback-gelf:1.0.4'</code></p>
+<p>You’ll need to add the following dependency to you project: <code class="language-plaintext highlighter-rouge">compile 'de.siegmar:logback-gelf:1.0.4'</code></p>
 
-<p>There is logback appender <a href="https://github.com/mp911de/logstash-gelf"><code class="highlighter-rouge">biz.paluch.logging:logstash-gelf</code></a> that is quite popular, but I did not manage to make it work. So I went for <a href="https://github.com/osiegmar/logback-gelf"><code class="highlighter-rouge">de.siegmar:logback-gelf</code></a> instead.</p>
+<p>There is logback appender <a href="https://github.com/mp911de/logstash-gelf"><code class="language-plaintext highlighter-rouge">biz.paluch.logging:logstash-gelf</code></a> that is quite popular, but I did not manage to make it work. So I went for <a href="https://github.com/osiegmar/logback-gelf"><code class="language-plaintext highlighter-rouge">de.siegmar:logback-gelf</code></a> instead.</p>
 
   </div>
 

@@ -160,7 +160,7 @@ gu <span class="nb">install </span>native-image
 <span class="nb">mkdir</span> <span class="nt">-p</span> hellofx/src/main/java/eu/leward/hellofx
 </code></pre></div></div>
 
-<p>Create the <code class="highlighter-rouge">pom.xml</code> file, describing our Maven project and build.</p>
+<p>Create the <code class="language-plaintext highlighter-rouge">pom.xml</code> file, describing our Maven project and build.</p>
 
 <div class="language-xml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">&lt;!-- hellofx/pom.xml --&gt;</span>
 
@@ -206,7 +206,7 @@ gu <span class="nb">install </span>native-image
 
 <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// hellofx/src/main/java/eu/leward/hellofx/HelloFX.java</span>
 
-<span class="kn">package</span> <span class="n">eu</span><span class="o">.</span><span class="na">leward</span><span class="o">.</span><span class="na">hellofx</span><span class="o">;</span>
+<span class="kn">package</span> <span class="nn">eu.leward.hellofx</span><span class="o">;</span>
 
 <span class="kn">import</span> <span class="nn">javafx.application.Application</span><span class="o">;</span>
 <span class="kn">import</span> <span class="nn">javafx.scene.Scene</span><span class="o">;</span>
@@ -254,7 +254,7 @@ gu <span class="nb">install </span>native-image
   <p>If you have a Java or JavaFX project and you are using Maven as a build tool, you can easily include the plugin to start creating native applications.</p>
 </blockquote>
 
-<p>In order to add the plugin, add the following to your <code class="highlighter-rouge">pom.xml</code> file:</p>
+<p>In order to add the plugin, add the following to your <code class="language-plaintext highlighter-rouge">pom.xml</code> file:</p>
 
 <div class="language-xml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;plugin&gt;</span>
   <span class="nt">&lt;groupId&gt;</span>com.gluonhq<span class="nt">&lt;/groupId&gt;</span>
@@ -266,9 +266,9 @@ gu <span class="nb">install </span>native-image
 <span class="nt">&lt;/plugin&gt;</span>
 </code></pre></div></div>
 
-<p>You can build the native executable for program using <code class="highlighter-rouge">mvn client:build</code></p>
+<p>You can build the native executable for program using <code class="language-plaintext highlighter-rouge">mvn client:build</code></p>
 
-<p>You will need to have a <code class="highlighter-rouge">GRAALVM_HOME</code> environment variable for the plugin to work. You actually don’t need to run that GraalVM installation as you main java version, since the plugin will use that <code class="highlighter-rouge">GRAALVM_HOME</code> directory to locate the <code class="highlighter-rouge">native-image</code> tool it requires.</p>
+<p>You will need to have a <code class="language-plaintext highlighter-rouge">GRAALVM_HOME</code> environment variable for the plugin to work. You actually don’t need to run that GraalVM installation as you main java version, since the plugin will use that <code class="language-plaintext highlighter-rouge">GRAALVM_HOME</code> directory to locate the <code class="language-plaintext highlighter-rouge">native-image</code> tool it requires.</p>
 
 <p>If it fails, read carefully the error messages, it may ask you to install some libraries to be able to compile the program.</p>
 
@@ -284,8 +284,8 @@ gu <span class="nb">install </span>native-image
 <p>I’m running on an old XPS 13, which is definitely lacking CPU horsepower.</p>
 
 <ul>
-  <li><code class="highlighter-rouge">mvn client:build</code> takes ~ 4 minutes</li>
-  <li><code class="highlighter-rouge">mvn package</code> take a few seconds</li>
+  <li><code class="language-plaintext highlighter-rouge">mvn client:build</code> takes ~ 4 minutes</li>
+  <li><code class="language-plaintext highlighter-rouge">mvn package</code> take a few seconds</li>
 </ul>
 
 <p>Let’s look at the resulting binary.</p>
@@ -296,7 +296,7 @@ gu <span class="nb">install </span>native-image
 
 <p>62 Megabytes, that not a small size for an hello world. Keep in mind, this is still Java and bits of the JDK needs to be included in your binary. I did not explore if there are ways to trim this down using the Java module system.</p>
 
-<p>Run it with: <code class="highlighter-rouge">target/client/x86_64-linux/hellofx</code></p>
+<p>Run it with: <code class="language-plaintext highlighter-rouge">target/client/x86_64-linux/hellofx</code></p>
 
 <p><img src="/assets/2020-10-18-native-gui-app-with-javafx/run-compiled.png" alt="HelloFX running as a native binary" /></p>
 

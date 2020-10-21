@@ -126,7 +126,7 @@
 
 <h2 id="schema-generation">Schema generation</h2>
 
-<p>Diesel uses a schema definition (usually called <code class="highlighter-rouge">schema.rs</code>) to ensure the type-safety of its API.</p>
+<p>Diesel uses a schema definition (usually called <code class="language-plaintext highlighter-rouge">schema.rs</code>) to ensure the type-safety of its API.</p>
 
 <p>When started such a project there are usually two options:</p>
 
@@ -137,10 +137,10 @@
  the DB schema into your code. For many reasons there may be a lot of things your application does not care about in the DB schema</li>
 </ol>
 
-<p>As I have an existing database, I generated my schema using the <code class="highlighter-rouge">diesel print-schema</code> command. 
-The command dumps the DB structure into my <code class="highlighter-rouge">schema.rs</code> file.</p>
+<p>As I have an existing database, I generated my schema using the <code class="language-plaintext highlighter-rouge">diesel print-schema</code> command. 
+The command dumps the DB structure into my <code class="language-plaintext highlighter-rouge">schema.rs</code> file.</p>
 
-<p><strong>Note:</strong> Don’t forget to add the generated <code class="highlighter-rouge">schema</code> module to your <code class="highlighter-rouge">main.rs</code> using <code class="highlighter-rouge">mod schema;</code></p>
+<p><strong>Note:</strong> Don’t forget to add the generated <code class="language-plaintext highlighter-rouge">schema</code> module to your <code class="language-plaintext highlighter-rouge">main.rs</code> using <code class="language-plaintext highlighter-rouge">mod schema;</code></p>
 
 <h2 id="schema-mapping">Schema Mapping</h2>
 
@@ -168,9 +168,9 @@ The command dumps the DB structure into my <code class="highlighter-rouge">schem
 <span class="p">}</span>
 </code></pre></div></div>
 
-<p>Note that in my schema I commented out the <code class="highlighter-rouge">version</code> column. Indeed, at this current stage, I don’t really care about that field.</p>
+<p>Note that in my schema I commented out the <code class="language-plaintext highlighter-rouge">version</code> column. Indeed, at this current stage, I don’t really care about that field.</p>
 
-<p><strong>Note:</strong> If a field is in your <code class="highlighter-rouge">schema.rs</code>, it should be in your struct as well. If the field is not in the struct, requests will have to specify all the columns every time, which is a bit cumbersome.</p>
+<p><strong>Note:</strong> If a field is in your <code class="language-plaintext highlighter-rouge">schema.rs</code>, it should be in your struct as well. If the field is not in the struct, requests will have to specify all the columns every time, which is a bit cumbersome.</p>
 
 <p><strong>Note:</strong> Make sure the order of the fields in your schema and your struct is the same. Diesel does its mapping using tuples, so the order of the fields matters.</p>
 
@@ -322,13 +322,13 @@ The snippet below fetches the 5 latest news.</p>
 This works great if your struct and your schema have the same fields in the same order. 
 It is quick trickier to do it otherwise.</p>
 
-<p>In the <a href="http://diesel.rs/guides/getting-started/">diesel documentation</a> the snippets often indicates <code class="highlighter-rouge">use schema::cover::dsl::*;</code>, which I don’t like very much as it very easily creates conflicts in the names of my variables. It becomes even more confusing whene joinning tables (both are likely to have an <code class="highlighter-rouge">id</code> column).</p>
+<p>In the <a href="http://diesel.rs/guides/getting-started/">diesel documentation</a> the snippets often indicates <code class="language-plaintext highlighter-rouge">use schema::cover::dsl::*;</code>, which I don’t like very much as it very easily creates conflicts in the names of my variables. It becomes even more confusing whene joinning tables (both are likely to have an <code class="language-plaintext highlighter-rouge">id</code> column).</p>
 
-<p>In the snippet above I had to use two structs: <code class="highlighter-rouge">NewsRow</code> and <code class="highlighter-rouge">News</code>. The reason is that Diesel does not resolve associations in the structs like an ORM like Hibernate (Java) would do. Maybe that’s for the better as a lot of the weird stuff with Hibernate happen when handling associations.</p>
+<p>In the snippet above I had to use two structs: <code class="language-plaintext highlighter-rouge">NewsRow</code> and <code class="language-plaintext highlighter-rouge">News</code>. The reason is that Diesel does not resolve associations in the structs like an ORM like Hibernate (Java) would do. Maybe that’s for the better as a lot of the weird stuff with Hibernate happen when handling associations.</p>
 
 <h3 id="alternative-version">Alternative version</h3>
 
-<p><a href="https://github.com/incker">@incker</a> <a href="https://github.com/Leward/leward-blog/issues/3">reached out to me</a>, suggesting a different way of writing the join example. Instead of relying on a <code class="highlighter-rouge">NewsRow</code> struct, diesel is able to be build the <code class="highlighter-rouge">News</code> struct <strong>if your <code class="highlighter-rouge">select</code> contains all the columns required by the structs</strong>.</p>
+<p><a href="https://github.com/incker">@incker</a> <a href="https://github.com/Leward/leward-blog/issues/3">reached out to me</a>, suggesting a different way of writing the join example. Instead of relying on a <code class="language-plaintext highlighter-rouge">NewsRow</code> struct, diesel is able to be build the <code class="language-plaintext highlighter-rouge">News</code> struct <strong>if your <code class="language-plaintext highlighter-rouge">select</code> contains all the columns required by the structs</strong>.</p>
 
 <p>See the code below:</p>
 
