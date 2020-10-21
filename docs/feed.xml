@@ -5,9 +5,125 @@
     <description>{&quot;fr&quot;=&gt;&quot;Site web personnel à propos de mon travail en tant que Développer et Consultant IT , de vélo en tant que hobby, et de mon déménagement à venir à Singapour.&quot;, &quot;en&quot;=&gt;&quot;Personnal website about my job as an IT Consultant and Developer, casual Cycling and my relocation to Singapore.&quot;, &quot;de&quot;=&gt;&quot;Persönlich Website über meinen Job als einen IT-Berater und Softwareentwickler, Radfahren und meinen Umzug nach Singapur.&quot;, &quot;jp&quot;=&gt;&quot;じょうほうテクノロジー と じてんしゃ　と　シンガポール についての私のブログ.&quot;}</description>
     <link>http://yourdomain.com/</link>
     <atom:link href="http://yourdomain.com/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Mon, 19 Oct 2020 10:09:35 +0800</pubDate>
-    <lastBuildDate>Mon, 19 Oct 2020 10:09:35 +0800</lastBuildDate>
+    <pubDate>Wed, 21 Oct 2020 11:05:58 +0800</pubDate>
+    <lastBuildDate>Wed, 21 Oct 2020 11:05:58 +0800</lastBuildDate>
     <generator>Jekyll v3.8.6</generator>
+    
+      <item>
+        <title>Native GUI app with JavaFX on Windows</title>
+        <description>&lt;p&gt;This is a following post on my previous &lt;a href=&quot;/2020/02/19/native-gui-app-with-javafx.html&quot;&gt;“Native GUI app with JavaFX”&lt;/a&gt; guide. Examples and instructions on that guide are targeted for Linux.&lt;/p&gt;
+
+&lt;p&gt;You could run the guide from the previous article if you are using the Windows Subsystem for Linux (WSL 2). However, because it runs in a Linux VM, it will not produce a native windows binary.&lt;/p&gt;
+
+&lt;p&gt;In this post we will see how to compile a JavaFX app as a Windows binary.&lt;/p&gt;
+
+&lt;!--more--&gt;
+
+&lt;h2 id=&quot;graalvm-and-maven-with-chocolatey&quot;&gt;GraalVM and Maven with Chocolatey&lt;/h2&gt;
+
+&lt;p&gt;If you don’t already use it, you can manage some of your software installations and updates on Windows using Chocolatey.&lt;/p&gt;
+
+&lt;p&gt;To install it, visit &lt;a href=&quot;https://chocolatey.org/install&quot;&gt;chocolatey.org/install&lt;/a&gt; and follow the instructions.&lt;/p&gt;
+
+&lt;p&gt;The following must be executed with admin privileges.&lt;/p&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# Install GraalVM&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; choco &lt;span class=&quot;nb&quot;&gt;install &lt;/span&gt;graalvm
+
+&lt;span class=&quot;c&quot;&gt;# Let`s check which version of java we are using&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# The coco command has updated are PATH to include binaries from the GraalVM installation&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# You may need to restart your shell after running `choco install`.&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; java &lt;span class=&quot;nt&quot;&gt;-version&lt;/span&gt;
+openjdk version &lt;span class=&quot;s2&quot;&gt;&quot;11.0.8&quot;&lt;/span&gt; 2020-07-14
+OpenJDK Runtime Environment GraalVM CE 20.2.0 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;build 11.0.8+10-jvmci-20.2-b03&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+OpenJDK 64-Bit Server VM GraalVM CE 20.2.0 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;build 11.0.8+10-jvmci-20.2-b03, mixed mode, sharing&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;# We will also need the Maven build tool.&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# Note: you can use Gradle too, this tutorial focuses on Maven.&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; choco &lt;span class=&quot;nb&quot;&gt;install &lt;/span&gt;maven
+
+&lt;span class=&quot;c&quot;&gt;# Native image will be used to compile to a native binary.&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; gu &lt;span class=&quot;nb&quot;&gt;install &lt;/span&gt;native-image
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;visual-studio-community&quot;&gt;Visual Studio Community&lt;/h2&gt;
+
+&lt;p&gt;My Windows installation being in French, the following screenshots are in French.&lt;/p&gt;
+
+&lt;p&gt;You can find the updated versions of installation requirements on the Gluon Client documentation: &lt;a href=&quot;http://docs.gluonhq.com/client/&quot;&gt;docs.gluonhq.com/client/&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;In order to build a native binary on Windows, you will need Visual Studio. Visual Studio offers a free &lt;a href=&quot;https://visualstudio.microsoft.com/vs/&quot;&gt;Community Version&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;At the time I am writing this, the requirements to select during the Visual Studio installation process are the following:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Choose the &lt;strong&gt;English Language Pack only&lt;/strong&gt;&lt;/li&gt;
+  &lt;li&gt;C++/CLI support for v142 build tools (14.25 or later)&lt;/li&gt;
+  &lt;li&gt;MSVC v142 - VS 2019 C++ x64/x86 build tools (v14.25 or later)&lt;/li&gt;
+  &lt;li&gt;Windows Universal CRT SDK&lt;/li&gt;
+  &lt;li&gt;Windows 10 SDK (10.0.19041.0 or later)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;strong&gt;When you will run the commands to build the project, you must do it using the shell provided by Visual Studio: x64 Native Tools Command Prompt for VS 2019.&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/2020-10-20-native-gui-app-with-javafx-windows/run-native-tools-command.png&quot; alt=&quot;Run &amp;quot;x64 Native Tools Command Prompt for VS 2019&amp;quot; from start menu&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;minimal-javafx-project&quot;&gt;Minimal JavaFX project&lt;/h2&gt;
+
+&lt;p&gt;Steps to create the minimal project are available in &lt;a href=&quot;/2020/02/19/native-gui-app-with-javafx.html&quot;&gt;my previous post&lt;/a&gt;. 
+I’ll highlight here the differences between Windows and Linux.&lt;/p&gt;
+
+&lt;p&gt;As far as creating the project, the only difference is the way you create a directory hierarchy on Windows (you don’t need the &lt;code class=&quot;highlighter-rouge&quot;&gt;-p&lt;/code&gt; option):&lt;/p&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# Create a basic directory structure&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;mkdir &lt;/span&gt;hellofx&lt;span class=&quot;se&quot;&gt;\s&lt;/span&gt;rc&lt;span class=&quot;se&quot;&gt;\m&lt;/span&gt;ain&lt;span class=&quot;se&quot;&gt;\j&lt;/span&gt;ava&lt;span class=&quot;se&quot;&gt;\e&lt;/span&gt;u&lt;span class=&quot;se&quot;&gt;\l&lt;/span&gt;eward&lt;span class=&quot;se&quot;&gt;\h&lt;/span&gt;ellofx
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Because we already have &lt;code class=&quot;highlighter-rouge&quot;&gt;java&lt;/code&gt; and &lt;code class=&quot;highlighter-rouge&quot;&gt;mvn&lt;/code&gt; in our path, we can run: &lt;code class=&quot;highlighter-rouge&quot;&gt;mvn javafx:run&lt;/code&gt; to launch the program as a regular Java application.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/2020-10-20-native-gui-app-with-javafx-windows/javafx-run-traditional.png&quot; alt=&quot;The JavaFX application running on Windows&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;compiling-as-a-native-app&quot;&gt;Compiling as a native app&lt;/h2&gt;
+
+&lt;p&gt;Once you have all the pre-requisites installed, the process building the application doesn’t not differ much between Windows and Linux.&lt;/p&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# You need to have a GRAALVM_HOME environment variable for the plugin to work. &lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;set &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;GRAALVM_HOME&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;C:/Program Files/GraalVM/graalvm-ce-java11-20.2.0
+
+&lt;span class=&quot;c&quot;&gt;# Build the application as a native binary&lt;/span&gt;
+mvn cient:build
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;If you get the following error:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;[ERROR] Failed to execute goal com.gluonhq:client-maven-plugin:0.1.31:compile (default-cli) on project hellofx: Error: Cannot run program &quot;cl&quot;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;You need to check that&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;Visual Studio Community has been properly installed&lt;/li&gt;
+  &lt;li&gt;and &lt;strong&gt;you are running the command prompt “x64 Native Tools Command Prompt for VS 2019”&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/2020-10-20-native-gui-app-with-javafx-windows/task-manager.png&quot; alt=&quot;Windows Task Manager during the compilation of the program&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;The compilation will make good use of your CPU cores. 
+This Windows laptop is a bit more powerful than my Linux machine. Build time was 2 minutes and 30 seconds instead of 4 minutes with my slower machine.&lt;/p&gt;
+
+&lt;p&gt;You will now have an hello.exe file in &lt;code class=&quot;highlighter-rouge&quot;&gt;target\client\x86_64-windows&lt;/code&gt; that you can click on to run your program.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/2020-10-20-native-gui-app-with-javafx-windows/exe-file.png&quot; alt=&quot;The .exe file in File Explorer&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/2020-10-20-native-gui-app-with-javafx-windows/javafx-run-compiled.png&quot; alt=&quot;The JavaFX application running from a native binary&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;And voilà, you have built and run a JavaFX application as a native binary on Windows.&lt;/p&gt;
+</description>
+        <pubDate>Fri, 21 Feb 2020 10:40:00 +0800</pubDate>
+        <link>http://yourdomain.com/2020/02/21/native-gui-app-with-javafx-windows.html</link>
+        <guid isPermaLink="true">http://yourdomain.com/2020/02/21/native-gui-app-with-javafx-windows.html</guid>
+        
+        
+      </item>
     
       <item>
         <title>Native GUI app with JavaFX</title>
@@ -16,6 +132,8 @@
 &lt;p&gt;By doing so, we lose the “build once, run everywhere” of Java. In exchange we get faster start time and lesser memory footprint for our programs. Also, the end users will not be required to have the Java Runtime Environment (JRE) installed on their systems.&lt;/p&gt;
 
 &lt;!--more--&gt;
+
+&lt;p&gt;If you are running Windows, you can check out &lt;a href=&quot;/2020/02/21/native-gui-app-with-javafx-windows.html&quot;&gt;my follow-up post on how to compile a native JavaFX application on Windows&lt;/a&gt;.&lt;/p&gt;
 
 &lt;h2 id=&quot;setup&quot;&gt;Setup&lt;/h2&gt;
 
@@ -1354,165 +1472,6 @@ app-b.leward.eu     CNAME   leward.eu.
         <pubDate>Sun, 03 Dec 2017 23:23:00 +0800</pubDate>
         <link>http://yourdomain.com/2017/12/03/use-cloudflare-https-with-rancher-and-ha-proxy.html</link>
         <guid isPermaLink="true">http://yourdomain.com/2017/12/03/use-cloudflare-https-with-rancher-and-ha-proxy.html</guid>
-        
-        
-      </item>
-    
-      <item>
-        <title>Write a user guide in a Maven project using Asciidoctor</title>
-        <description>&lt;p&gt;On my current engagement for a client at &lt;a href=&quot;http://www.zenika.sg&quot;&gt;Zenika&lt;/a&gt; I work on an authentication module that is going to be used by many applications.&lt;/p&gt;
-
-&lt;p&gt;The fact that many applications are going to rely on us makes documentation what we do quite important. So far we used Swagger in order to document our REST API thanks to &lt;a href=&quot;http://springfox.github.io/springfox/&quot;&gt;Springfox&lt;/a&gt; and some documentation that we tried to maintain in Confluence.&lt;/p&gt;
-
-&lt;!--more--&gt;
-
-&lt;h2 id=&quot;our-documentation-problem&quot;&gt;Our documentation problem&lt;/h2&gt;
-
-&lt;p&gt;The Swagger documentation overall can always be improved but it did quite a good job at documenting our API contracts and people used it quite a lot. What was lacking, however, was a proper user guide, gor users to properly understand what our authentication module is about and how to integrate with it. I had to explain the workflow to every consumer and that is far from ideal.&lt;/p&gt;
-
-&lt;p&gt;We also lacked documentation explaining how to setup the project and all the possible configurations such as the external systems to connect to, the database configuration, the authentication flow (groovy DSL to configure authentication screens - I should write an article about this) and whether to use mocks or not.&lt;/p&gt;
-
-&lt;p&gt;We actually to put some documentation in Confluence, but it is not easy to organize, is used by many people for different purpose. The documentation we put there was eventually behind the god and not versionned. Versionning of the documentation is useful if you have multiple deployments of the same software which could be of different versions.&lt;/p&gt;
-
-&lt;p&gt;That’s why in the team we decided to try to tight our documentation into our codebase. So that it will follow the code evolutions, can be compiled and published automatically. From now on we can also more easily integrate documentation tasks and review as part of our Pull Requests and code reviews.&lt;/p&gt;
-
-&lt;h2 id=&quot;implementation-of-documentation-in-code-using-asciidoctor&quot;&gt;Implementation of documentation in code using Asciidoctor&lt;/h2&gt;
-
-&lt;p&gt;The project is a Spring project and we use Maven to build the project. It turns out that Spring themesevles write &lt;a href=&quot;http://cloud.spring.io/spring-cloud-static/spring-cloud-config/1.3.1.RELEASE/&quot;&gt;some of their documentations&lt;/a&gt; using &lt;a href=&quot;http://asciidoctor.org&quot;&gt;Asciidoctor&lt;/a&gt; and their is an &lt;a href=&quot;https://github.com/asciidoctor/asciidoctor-maven-plugin&quot;&gt;Asciidoctor Maven plugin&lt;/a&gt; available.&lt;/p&gt;
-
-&lt;p&gt;To start with Asciidoctor on your existing Maven project add the asciidoctor plugin in your &lt;code class=&quot;highlighter-rouge&quot;&gt;pom.xml&lt;/code&gt;:&lt;/p&gt;
-
-&lt;div class=&quot;language-xml highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nt&quot;&gt;&amp;lt;plugin&amp;gt;&lt;/span&gt;
-    &lt;span class=&quot;nt&quot;&gt;&amp;lt;groupId&amp;gt;&lt;/span&gt;org.asciidoctor&lt;span class=&quot;nt&quot;&gt;&amp;lt;/groupId&amp;gt;&lt;/span&gt;
-    &lt;span class=&quot;nt&quot;&gt;&amp;lt;artifactId&amp;gt;&lt;/span&gt;asciidoctor-maven-plugin&lt;span class=&quot;nt&quot;&gt;&amp;lt;/artifactId&amp;gt;&lt;/span&gt;
-    &lt;span class=&quot;nt&quot;&gt;&amp;lt;version&amp;gt;&lt;/span&gt;1.5.5&lt;span class=&quot;nt&quot;&gt;&amp;lt;/version&amp;gt;&lt;/span&gt;
-    &lt;span class=&quot;nt&quot;&gt;&amp;lt;executions&amp;gt;&lt;/span&gt;
-        &lt;span class=&quot;nt&quot;&gt;&amp;lt;execution&amp;gt;&lt;/span&gt;
-            &lt;span class=&quot;nt&quot;&gt;&amp;lt;id&amp;gt;&lt;/span&gt;asciidoc-html&lt;span class=&quot;nt&quot;&gt;&amp;lt;/id&amp;gt;&lt;/span&gt;
-            &lt;span class=&quot;nt&quot;&gt;&amp;lt;phase&amp;gt;&lt;/span&gt;generate-resources&lt;span class=&quot;nt&quot;&gt;&amp;lt;/phase&amp;gt;&lt;/span&gt;
-            &lt;span class=&quot;nt&quot;&gt;&amp;lt;goals&amp;gt;&lt;/span&gt;
-                &lt;span class=&quot;nt&quot;&gt;&amp;lt;goal&amp;gt;&lt;/span&gt;process-asciidoc&lt;span class=&quot;nt&quot;&gt;&amp;lt;/goal&amp;gt;&lt;/span&gt;
-            &lt;span class=&quot;nt&quot;&gt;&amp;lt;/goals&amp;gt;&lt;/span&gt;
-            &lt;span class=&quot;nt&quot;&gt;&amp;lt;configuration&amp;gt;&lt;/span&gt;
-                &lt;span class=&quot;nt&quot;&gt;&amp;lt;backend&amp;gt;&lt;/span&gt;html&lt;span class=&quot;nt&quot;&gt;&amp;lt;/backend&amp;gt;&lt;/span&gt;
-            &lt;span class=&quot;nt&quot;&gt;&amp;lt;/configuration&amp;gt;&lt;/span&gt;
-        &lt;span class=&quot;nt&quot;&gt;&amp;lt;/execution&amp;gt;&lt;/span&gt;
-    &lt;span class=&quot;nt&quot;&gt;&amp;lt;/executions&amp;gt;&lt;/span&gt;
-&lt;span class=&quot;nt&quot;&gt;&amp;lt;/plugin&amp;gt;&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;We add &lt;code class=&quot;highlighter-rouge&quot;&gt;asciidoctor-maven-plugin&lt;/code&gt; to our build and configure it to attach the generation of the documentation to the Maven &lt;code class=&quot;highlighter-rouge&quot;&gt;generate-resources&lt;/code&gt; phase. The only configuration we need to specify is that we want the documentation generated in HTML.&lt;/p&gt;
-
-&lt;p&gt;The maven build being configured, we can now right the documentation. By default the documation as to be located under the &lt;code class=&quot;highlighter-rouge&quot;&gt;src/main/asciidoc&lt;/code&gt; directory.&lt;/p&gt;
-
-&lt;p&gt;Then create an &lt;code class=&quot;highlighter-rouge&quot;&gt;index.adoc&lt;/code&gt; file with the following content:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&quot;language-asciidoc&quot;&gt;= MyIdeas User Guide
-
-This is a user manual for an example project.
-
-== Introduction
-
-This project does something.
-We just haven't decided what that is yet.
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;To generate the documentation in HTML format, run: &lt;code class=&quot;highlighter-rouge&quot;&gt;mvn clean package&lt;/code&gt; and you should have a &lt;code class=&quot;highlighter-rouge&quot;&gt;target/generated-docs/index.html&lt;/code&gt; file generated.&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&quot;/assets/2017-08-05-write-user-guide-in-maven-project-with-asciidoctor/first-doc-generated.png&quot;&gt;&lt;img src=&quot;/assets/2017-08-05-write-user-guide-in-maven-project-with-asciidoctor/first-doc-generated.png&quot; alt=&quot;Our first generated documentation&quot; /&gt;&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;We can already see that it comes with a neat default theme and the footer includes the generation date.&lt;/p&gt;
-
-&lt;h2 id=&quot;tips-and-tricks&quot;&gt;Tips and tricks&lt;/h2&gt;
-
-&lt;h3 id=&quot;include-project-version-number&quot;&gt;Include project version number&lt;/h3&gt;
-
-&lt;p&gt;To track which version of the software the generated document it is possible to include the version of the Maven project in the header of the generated document. The &lt;a href=&quot;https://github.com/asciidoctor/asciidoctor-maven-plugin#add-version-and-build-date-to-the-header&quot;&gt;plugin’s documentation&lt;/a&gt; describes how to configure it:&lt;/p&gt;
-
-&lt;div class=&quot;language-xml highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nt&quot;&gt;&amp;lt;properties&amp;gt;&lt;/span&gt;
-   &lt;span class=&quot;c&quot;&gt;&amp;lt;!-- Custom date format to be displayed --&amp;gt;&lt;/span&gt;
-   &lt;span class=&quot;nt&quot;&gt;&amp;lt;maven.build.timestamp.format&amp;gt;&lt;/span&gt;dd MMMM yyyy HH&lt;span class=&quot;nt&quot;&gt;&amp;lt;/maven.build.timestamp.format&amp;gt;&lt;/span&gt;
-&lt;span class=&quot;nt&quot;&gt;&amp;lt;/properties&amp;gt;&lt;/span&gt;
-
-&lt;span class=&quot;nt&quot;&gt;&amp;lt;configuration&amp;gt;&lt;/span&gt;
-    ...
-    &lt;span class=&quot;nt&quot;&gt;&amp;lt;attributes&amp;gt;&lt;/span&gt;
-        ...
-        &lt;span class=&quot;nt&quot;&gt;&amp;lt;revnumber&amp;gt;&lt;/span&gt;${project.version}&lt;span class=&quot;nt&quot;&gt;&amp;lt;/revnumber&amp;gt;&lt;/span&gt;
-        &lt;span class=&quot;nt&quot;&gt;&amp;lt;revdate&amp;gt;&lt;/span&gt;${maven.build.timestamp}&lt;span class=&quot;nt&quot;&gt;&amp;lt;/revdate&amp;gt;&lt;/span&gt;
-        &lt;span class=&quot;nt&quot;&gt;&amp;lt;organization&amp;gt;&lt;/span&gt;${project.organization.name}&lt;span class=&quot;nt&quot;&gt;&amp;lt;/organization&amp;gt;&lt;/span&gt;
-    &lt;span class=&quot;nt&quot;&gt;&amp;lt;/attributes&amp;gt;&lt;/span&gt;
-    ...
-&lt;span class=&quot;nt&quot;&gt;&amp;lt;/configuration&amp;gt;&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;&lt;a href=&quot;/assets/2017-08-05-write-user-guide-in-maven-project-with-asciidoctor/doc-with-version-number.png&quot;&gt;&lt;img src=&quot;/assets/2017-08-05-write-user-guide-in-maven-project-with-asciidoctor/doc-with-version-number.png&quot; alt=&quot;Maven version number in the header&quot; /&gt;&lt;/a&gt;&lt;/p&gt;
-
-&lt;h3 id=&quot;include-code-snippets-from-actual-code&quot;&gt;Include code snippets from actual code&lt;/h3&gt;
-
-&lt;p&gt;You can also link actual code snippets from the project without having to copy them. This means your documentation never get out of sync if a code example change.&lt;/p&gt;
-
-&lt;p&gt;First, define the &lt;code class=&quot;highlighter-rouge&quot;&gt;sourcedir&lt;/code&gt; attribute in order to inscruct the plugin where to look for source code:&lt;/p&gt;
-
-&lt;div class=&quot;language-xml highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nt&quot;&gt;&amp;lt;attributes&amp;gt;&lt;/span&gt;
-    &lt;span class=&quot;nt&quot;&gt;&amp;lt;sourcedir&amp;gt;&lt;/span&gt;${project.build.sourceDirectory}&lt;span class=&quot;nt&quot;&gt;&amp;lt;/sourcedir&amp;gt;&lt;/span&gt;
-&lt;span class=&quot;nt&quot;&gt;&amp;lt;/attributes&amp;gt;&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Then in your documentation you can use this reference to include code snippets:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&quot;language-asciidoc&quot;&gt;== Code from the project
-
-[source,java]
-.Java code from project
-----
-include::{sourcedir}/eu/leward/asciidocdemo/IdeaController.java[tags=class]
-----
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;Noticed the &lt;code class=&quot;highlighter-rouge&quot;&gt;[tags=class]&lt;/code&gt;? The brackets after the file you want to include give more details about how the inclusion should be done. Here we don’t want to show the whole file as we are not interested in the java imports.&lt;/p&gt;
-
-&lt;p&gt;In order to extract a subset of the file you can put tags in the source code:&lt;/p&gt;
-
-&lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kn&quot;&gt;package&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;eu&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;leward&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;asciidocdemo&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;org.springframework.web.bind.annotation.RestController&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;c1&quot;&gt;// tag::class[]&lt;/span&gt;
-&lt;span class=&quot;nd&quot;&gt;@RestController&lt;/span&gt;
-&lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;IdeaController&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-&lt;span class=&quot;c1&quot;&gt;// end::class[]&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;By leaving the brackets empty you can display the whole file&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&quot;language-asciidoc&quot;&gt;include::{sourcedir}/eu/leward/asciidocdemo/IdeaController.java[]
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;a href=&quot;/assets/2017-08-05-write-user-guide-in-maven-project-with-asciidoctor/doc-with-code-snippet.png&quot;&gt;&lt;img src=&quot;/assets/2017-08-05-write-user-guide-in-maven-project-with-asciidoctor/doc-with-code-snippet.png&quot; alt=&quot;Documentation with code snippet from the actual project source code&quot; /&gt;&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;A good usecases would be to have in the documentation some snippets that are unit tests. They are often short example and the project will benefits from the automatic tests.&lt;/p&gt;
-
-&lt;h2 id=&quot;about-the-asciidoc-syntax&quot;&gt;About the Asciidoc syntax&lt;/h2&gt;
-
-&lt;p&gt;The Asciidoc syntax is, like Markdown, lightweight and aims at making the document written in Asciidoc easily readable without beiing processed or converted.&lt;/p&gt;
-
-&lt;p&gt;When using Asciidoctor, a lot of the syntax elements &lt;a href=&quot;http://asciidoctor.org/docs/asciidoc-syntax-quick-reference/#markdown-compatibility&quot;&gt;are the same as in markdown&lt;/a&gt; such as headings, paragraphs, formatting, links, images, source code, etc.&lt;/p&gt;
-
-&lt;p&gt;However there are some differences and more important Asciidoc comes more possibilities in its syntax than regular Markdown or even GitHub flavoured markdown.&lt;/p&gt;
-
-&lt;p&gt;You can find a &lt;a href=&quot;http://asciidoctor.org/docs/asciidoc-syntax-quick-reference/&quot;&gt;reference of Asciidoc syntax on the official documentation&lt;/a&gt;.&lt;/p&gt;
-
-&lt;h2 id=&quot;links&quot;&gt;Links&lt;/h2&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;a href=&quot;https://github.com/Leward/swagger-asciidoc-demo&quot;&gt;Examples used in this article on Github&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://asciidoctor.org/docs/asciidoc-syntax-quick-reference/&quot;&gt;AsciiDoc Syntax Quick Reference&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;http://asciidoctor.org&quot;&gt;Asciidoctor website&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://github.com/asciidoctor/asciidoctor-maven-plugin&quot;&gt;Asciidoctor Maven plugin&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-</description>
-        <pubDate>Sat, 05 Aug 2017 14:24:00 +0800</pubDate>
-        <link>http://yourdomain.com/2017/08/05/write-user-guide-maven-project-with-asciidoctor.html</link>
-        <guid isPermaLink="true">http://yourdomain.com/2017/08/05/write-user-guide-maven-project-with-asciidoctor.html</guid>
         
         
       </item>

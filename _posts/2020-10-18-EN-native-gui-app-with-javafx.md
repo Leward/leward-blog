@@ -15,6 +15,8 @@ By doing so, we lose the "build once, run everywhere" of Java. In exchange we ge
 
 <!--more-->
 
+If you are running Windows, you can check out [my follow-up post on how to compile a native JavaFX application on Windows](/2020/02/21/native-gui-app-with-javafx-windows.html).
+
 ## Setup
 
 ```bash
