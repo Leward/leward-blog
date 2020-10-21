@@ -32,3 +32,4 @@ Writing down my findings is a good way to:
 - [ ] Day 4 - Native executable with FXML and Annotations
 - [ ] Day 5 - Project Introduction - JSON Schema Manager
 - [ ] Day 6 - Databings Basics
+- [ ] Day 7 - Dark Mode
