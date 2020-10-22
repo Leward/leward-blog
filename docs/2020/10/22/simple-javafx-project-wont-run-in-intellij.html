@@ -6,11 +6,11 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>100 Days of JavaFX</title>
-  <meta name="description" content="I have to admit I kind of like playing with JavaFX even though I am not expert with it.In order to get better at it, I decided to do the 100 Days of Code cha...">
+  <title>Simple JavaFX project won&#39;t run with IntelliJ</title>
+  <meta name="description" content="If you try to run a simple JavaFX project like the one I used for my “Native GUI app with JavaFX” article in IntelliJ, you will run an error that looks like ...">
 
   <link rel="stylesheet" href="/css/main.css">
-  <link rel="canonical" href="http://yourdomain.com/2020/10/21/javafx-100-days-of-code.html">
+  <link rel="canonical" href="http://yourdomain.com/2020/10/22/simple-javafx-project-wont-run-in-intellij.html">
   <link rel="alternate" type="application/rss+xml" title="Paul-Julien Vauthier" href="http://yourdomain.com/feed.xml">
 </head>
 
@@ -31,7 +31,7 @@
         
         
           <li>
-            <a href="/2020/10/21/javafx-100-days-of-code.html" class="en">en</a>
+            <a href="/2020/10/22/simple-javafx-project-wont-run-in-intellij.html" class="en">en</a>
           </li>
         
 
@@ -115,40 +115,53 @@
         <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
 
   <header class="post-header">
-    <h1 class="post-title" itemprop="name headline">100 Days of JavaFX</h1>
-    <p class="post-meta"><time datetime="2020-10-21T12:02:00+08:00" itemprop="datePublished">Oct 21, 2020</time></p>
+    <h1 class="post-title" itemprop="name headline">Simple JavaFX project won't run with IntelliJ</h1>
+    <p class="post-meta"><time datetime="2020-10-22T11:32:00+08:00" itemprop="datePublished">Oct 22, 2020</time></p>
   </header>
 
   <div class="post-content" itemprop="articleBody">
-    <p>I have to admit I kind of like playing with JavaFX even though I am not expert with it.
-In order to get better at it, I decided to do the <a href="https://www.100daysofcode.com/">100 Days of Code</a> challenge.</p>
+    <p>If you try to run a simple JavaFX project like the one I used for my <a href="/2020/10/19/native-gui-app-with-javafx.html">“Native GUI app with JavaFX”</a> article in IntelliJ, you will run an error that looks like this:</p>
 
-<p>I’ll try to use that learning opportunity to write blog posts about my findings.</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Exception in Application start method
 
-<p>I may not exactly follow the “1 hour a day” rule, but that’s a similar idea.
-I want to do 100 Days of JavaFX blogging.</p>
+(...)
+
+Caused by: 
+    java.lang.IllegalAccessError: superclass access check failed: class com.sun.javafx.scene.control.ControlHelper (in unnamed module @0x183c1801) cannot access class com.sun.javafx.scene.layout.RegionHelper (in module javafx.graphics) because module javafx.graphics does not export com.sun.javafx.scene.layout to unnamed module @0x183c1801
+</code></pre></div></div>
 
 <!--more-->
 
-<p>Writing down my findings is a good way to:</p>
+<p>Yet if you run the project using the <code class="language-plaintext highlighter-rouge">mvn javafx:run</code> command it will work just fine:</p>
+
+<p><img src="/assets/2020-10-21-simple-javafx-project-wont-run-in-intellij/mvn-javafx-run.png" alt="The application will launch from the maven command" /></p>
+
+<p>It looks like IntelliJ is not configuring the modules/classpath correctly out of the box.</p>
+
+<p>A way to remediate this is to provide a module descriptor (<code class="language-plaintext highlighter-rouge">module-info.java</code>):</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// hellofx/src/main/java/module-info.java</span>
+
+<span class="n">module</span> <span class="n">eu</span><span class="o">.</span><span class="na">leward</span><span class="o">.</span><span class="na">hellofx</span> <span class="o">{</span>
+    <span class="n">requires</span> <span class="n">javafx</span><span class="o">.</span><span class="na">controls</span><span class="o">;</span>
+
+    <span class="n">opens</span> <span class="n">eu</span><span class="o">.</span><span class="na">leward</span><span class="o">.</span><span class="na">hellofx</span> <span class="n">to</span> <span class="n">javafx</span><span class="o">.</span><span class="na">graphics</span><span class="o">;</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>You won’t need to add a <code class="language-plaintext highlighter-rouge">require</code> for <code class="language-plaintext highlighter-rouge">[javafx.graphics](http://javafx.graphics)</code> and <code class="language-plaintext highlighter-rouge">javafx.base</code> since those are transitive requirements from <code class="language-plaintext highlighter-rouge">javafx.controls.</code></p>
+
+<p>Now, you can click on the “Run” button for <code class="language-plaintext highlighter-rouge">HelloFX</code> in Intellij and the application will start as expected.</p>
+
+<p>Quite quick reminder on modules:</p>
+
 <ul>
-  <li>share</li>
-  <li>writing help clarify my understanding of things</li>
-  <li>for future reference</li>
+  <li><strong><code class="language-plaintext highlighter-rouge">module eu.leward.hellofx</code></strong> indicates the <strong>name</strong> of the module, I decided to follow a naming convention, but it can be any name you want <code class="language-plaintext highlighter-rouge">module toto</code> will work too even though it may not be the best name</li>
+  <li><strong><code class="language-plaintext highlighter-rouge">opens eu.leward.hellofx to javafx.graphics;</code></strong> here <code class="language-plaintext highlighter-rouge">eu.leward.hellofx</code> is a Java package name, not the name of module!</li>
+  <li><strong><code class="language-plaintext highlighter-rouge">opens to</code></strong> is used because <code class="language-plaintext highlighter-rouge">main</code> uses the <code class="language-plaintext highlighter-rouge">launch()</code> method which does some refection to instantiate and run the application. 
+ <br />Using Java modules, you need to allow that reflection access using <code class="language-plaintext highlighter-rouge">opens</code>. You won’t get this error if you use <a href="https://gorillalogic.com/blog/understanding-java-9-modules/">classpath instead of modulepath</a>, however I believe modules and modulepath is the way forward.</li>
 </ul>
 
-<h2 id="log">Log</h2>
-
-<ul class="task-list">
-  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" /><a href="/2020/10/19/native-gui-app-with-javafx.html">Day 1 - Build a simple javafx app to a native executable (Linux)</a></li>
-  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" /><a href="/2020/10/21/native-gui-app-with-javafx-windows.html">Day 2 - JavaFx native app on Windows</a></li>
-  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" /><a href="/2020/10/22/simple-javafx-project-wont-run-in-intellij.html">Day 3 - Simple JavaFX project won’t run with IntelliJ</a></li>
-  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />Day 4 - Paste an image from the clipboard</li>
-  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />Day 5 - Native executable with FXML and Annotations</li>
-  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />Day 6 - Project Introduction - JSON Schema Manager</li>
-  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />Day 7 - Databings Basics</li>
-  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />Day 8 - Dark Mode</li>
-</ul>
 
   </div>
 

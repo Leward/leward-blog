@@ -5,9 +5,61 @@
     <description>{&quot;fr&quot;=&gt;&quot;Site web personnel à propos de mon travail en tant que Développer et Consultant IT , de vélo en tant que hobby, et de mon déménagement à venir à Singapour.&quot;, &quot;en&quot;=&gt;&quot;Personnal website about my job as an IT Consultant and Developer, casual Cycling and my relocation to Singapore.&quot;, &quot;de&quot;=&gt;&quot;Persönlich Website über meinen Job als einen IT-Berater und Softwareentwickler, Radfahren und meinen Umzug nach Singapur.&quot;, &quot;jp&quot;=&gt;&quot;じょうほうテクノロジー と じてんしゃ　と　シンガポール についての私のブログ.&quot;}</description>
     <link>http://yourdomain.com/</link>
     <atom:link href="http://yourdomain.com/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Wed, 21 Oct 2020 12:39:27 +0800</pubDate>
-    <lastBuildDate>Wed, 21 Oct 2020 12:39:27 +0800</lastBuildDate>
+    <pubDate>Thu, 22 Oct 2020 11:57:02 +0800</pubDate>
+    <lastBuildDate>Thu, 22 Oct 2020 11:57:02 +0800</lastBuildDate>
     <generator>Jekyll v4.1.0</generator>
+    
+      <item>
+        <title>Simple JavaFX project won't run with IntelliJ</title>
+        <description>&lt;p&gt;If you try to run a simple JavaFX project like the one I used for my &lt;a href=&quot;/2020/10/19/native-gui-app-with-javafx.html&quot;&gt;“Native GUI app with JavaFX”&lt;/a&gt; article in IntelliJ, you will run an error that looks like this:&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Exception in Application start method
+
+(...)
+
+Caused by: 
+    java.lang.IllegalAccessError: superclass access check failed: class com.sun.javafx.scene.control.ControlHelper (in unnamed module @0x183c1801) cannot access class com.sun.javafx.scene.layout.RegionHelper (in module javafx.graphics) because module javafx.graphics does not export com.sun.javafx.scene.layout to unnamed module @0x183c1801
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;!--more--&gt;
+
+&lt;p&gt;Yet if you run the project using the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;mvn javafx:run&lt;/code&gt; command it will work just fine:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/2020-10-21-simple-javafx-project-wont-run-in-intellij/mvn-javafx-run.png&quot; alt=&quot;The application will launch from the maven command&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;It looks like IntelliJ is not configuring the modules/classpath correctly out of the box.&lt;/p&gt;
+
+&lt;p&gt;A way to remediate this is to provide a module descriptor (&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;module-info.java&lt;/code&gt;):&lt;/p&gt;
+
+&lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;// hellofx/src/main/java/module-info.java&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;module&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;eu&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;leward&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;hellofx&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;requires&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;javafx&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;controls&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+
+    &lt;span class=&quot;n&quot;&gt;opens&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;eu&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;leward&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;hellofx&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;to&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;javafx&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;graphics&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;You won’t need to add a &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;require&lt;/code&gt; for &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;[javafx.graphics](http://javafx.graphics)&lt;/code&gt; and &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;javafx.base&lt;/code&gt; since those are transitive requirements from &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;javafx.controls.&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;Now, you can click on the “Run” button for &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;HelloFX&lt;/code&gt; in Intellij and the application will start as expected.&lt;/p&gt;
+
+&lt;p&gt;Quite quick reminder on modules:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;module eu.leward.hellofx&lt;/code&gt;&lt;/strong&gt; indicates the &lt;strong&gt;name&lt;/strong&gt; of the module, I decided to follow a naming convention, but it can be any name you want &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;module toto&lt;/code&gt; will work too even though it may not be the best name&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;opens eu.leward.hellofx to javafx.graphics;&lt;/code&gt;&lt;/strong&gt; here &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;eu.leward.hellofx&lt;/code&gt; is a Java package name, not the name of module!&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;opens to&lt;/code&gt;&lt;/strong&gt; is used because &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;main&lt;/code&gt; uses the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;launch()&lt;/code&gt; method which does some refection to instantiate and run the application. 
+ &lt;br /&gt;Using Java modules, you need to allow that reflection access using &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;opens&lt;/code&gt;. You won’t get this error if you use &lt;a href=&quot;https://gorillalogic.com/blog/understanding-java-9-modules/&quot;&gt;classpath instead of modulepath&lt;/a&gt;, however I believe modules and modulepath is the way forward.&lt;/li&gt;
+&lt;/ul&gt;
+
+</description>
+        <pubDate>Thu, 22 Oct 2020 11:32:00 +0800</pubDate>
+        <link>http://yourdomain.com/2020/10/22/simple-javafx-project-wont-run-in-intellij.html</link>
+        <guid isPermaLink="true">http://yourdomain.com/2020/10/22/simple-javafx-project-wont-run-in-intellij.html</guid>
+        
+        
+      </item>
     
       <item>
         <title>100 Days of JavaFX</title>
@@ -33,11 +85,12 @@ I want to do 100 Days of JavaFX blogging.&lt;/p&gt;
 &lt;ul class=&quot;task-list&quot;&gt;
   &lt;li class=&quot;task-list-item&quot;&gt;&lt;input type=&quot;checkbox&quot; class=&quot;task-list-item-checkbox&quot; disabled=&quot;disabled&quot; checked=&quot;checked&quot; /&gt;&lt;a href=&quot;/2020/10/19/native-gui-app-with-javafx.html&quot;&gt;Day 1 - Build a simple javafx app to a native executable (Linux)&lt;/a&gt;&lt;/li&gt;
   &lt;li class=&quot;task-list-item&quot;&gt;&lt;input type=&quot;checkbox&quot; class=&quot;task-list-item-checkbox&quot; disabled=&quot;disabled&quot; checked=&quot;checked&quot; /&gt;&lt;a href=&quot;/2020/10/21/native-gui-app-with-javafx-windows.html&quot;&gt;Day 2 - JavaFx native app on Windows&lt;/a&gt;&lt;/li&gt;
-  &lt;li class=&quot;task-list-item&quot;&gt;&lt;input type=&quot;checkbox&quot; class=&quot;task-list-item-checkbox&quot; disabled=&quot;disabled&quot; /&gt;Day 3 - Paste an image from the clipboard&lt;/li&gt;
-  &lt;li class=&quot;task-list-item&quot;&gt;&lt;input type=&quot;checkbox&quot; class=&quot;task-list-item-checkbox&quot; disabled=&quot;disabled&quot; /&gt;Day 4 - Native executable with FXML and Annotations&lt;/li&gt;
-  &lt;li class=&quot;task-list-item&quot;&gt;&lt;input type=&quot;checkbox&quot; class=&quot;task-list-item-checkbox&quot; disabled=&quot;disabled&quot; /&gt;Day 5 - Project Introduction - JSON Schema Manager&lt;/li&gt;
-  &lt;li class=&quot;task-list-item&quot;&gt;&lt;input type=&quot;checkbox&quot; class=&quot;task-list-item-checkbox&quot; disabled=&quot;disabled&quot; /&gt;Day 6 - Databings Basics&lt;/li&gt;
-  &lt;li class=&quot;task-list-item&quot;&gt;&lt;input type=&quot;checkbox&quot; class=&quot;task-list-item-checkbox&quot; disabled=&quot;disabled&quot; /&gt;Day 7 - Dark Mode&lt;/li&gt;
+  &lt;li class=&quot;task-list-item&quot;&gt;&lt;input type=&quot;checkbox&quot; class=&quot;task-list-item-checkbox&quot; disabled=&quot;disabled&quot; checked=&quot;checked&quot; /&gt;&lt;a href=&quot;/2020/10/22/simple-javafx-project-wont-run-in-intellij.html&quot;&gt;Day 3 - Simple JavaFX project won’t run with IntelliJ&lt;/a&gt;&lt;/li&gt;
+  &lt;li class=&quot;task-list-item&quot;&gt;&lt;input type=&quot;checkbox&quot; class=&quot;task-list-item-checkbox&quot; disabled=&quot;disabled&quot; /&gt;Day 4 - Paste an image from the clipboard&lt;/li&gt;
+  &lt;li class=&quot;task-list-item&quot;&gt;&lt;input type=&quot;checkbox&quot; class=&quot;task-list-item-checkbox&quot; disabled=&quot;disabled&quot; /&gt;Day 5 - Native executable with FXML and Annotations&lt;/li&gt;
+  &lt;li class=&quot;task-list-item&quot;&gt;&lt;input type=&quot;checkbox&quot; class=&quot;task-list-item-checkbox&quot; disabled=&quot;disabled&quot; /&gt;Day 6 - Project Introduction - JSON Schema Manager&lt;/li&gt;
+  &lt;li class=&quot;task-list-item&quot;&gt;&lt;input type=&quot;checkbox&quot; class=&quot;task-list-item-checkbox&quot; disabled=&quot;disabled&quot; /&gt;Day 7 - Databings Basics&lt;/li&gt;
+  &lt;li class=&quot;task-list-item&quot;&gt;&lt;input type=&quot;checkbox&quot; class=&quot;task-list-item-checkbox&quot; disabled=&quot;disabled&quot; /&gt;Day 8 - Dark Mode&lt;/li&gt;
 &lt;/ul&gt;
 </description>
         <pubDate>Wed, 21 Oct 2020 12:02:00 +0800</pubDate>
@@ -1306,115 +1359,6 @@ It is quick trickier to do it otherwise.&lt;/p&gt;
         <pubDate>Sun, 23 Sep 2018 22:35:00 +0800</pubDate>
         <link>http://yourdomain.com/2018/09/23/diesel-rust-notes.html</link>
         <guid isPermaLink="true">http://yourdomain.com/2018/09/23/diesel-rust-notes.html</guid>
-        
-        
-      </item>
-    
-      <item>
-        <title>Logs analysis with OVH Logs Data Platform</title>
-        <description>&lt;p&gt;OVH offers a service called “Logs Data Platform” which helps you centralizing and analyzing your logs.&lt;/p&gt;
-
-&lt;!--more--&gt;
-
-&lt;p&gt;I see two main benefits using this service:&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;It’s a managed service (SaaS)&lt;/li&gt;
-  &lt;li&gt;It’s cheap&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;The offertings starts at 1€ per month for 1GB of logs with one stream of logs and one dashboard. The data retention is of 45 days.&lt;/p&gt;
-
-&lt;p&gt;It also allows to setup multiple users and define more fine-grained access rules even though I did not test the feature.&lt;/p&gt;
-
-&lt;p&gt;The service allows to interact with your logs using &lt;a href=&quot;https://www.graylog.org/features&quot;&gt;Graylog&lt;/a&gt; or &lt;a href=&quot;https://www.elastic.co/products/elasticsearch&quot;&gt;Elastisearch&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;So I decided to give a try to store and analyze the the logs of &lt;a href=&quot;https://inkzone.games&quot;&gt;Inkzone&lt;/a&gt;, a website I am currently working on.&lt;/p&gt;
-
-&lt;!--more--&gt;
-
-&lt;h2 id=&quot;about-graylog-and-gelf-format&quot;&gt;About Graylog and GELF format&lt;/h2&gt;
-
-&lt;p&gt;Graylog is a tool that centralize your logs in one place and make in easier to browse and analyze them.&lt;/p&gt;
-
-&lt;p&gt;The more applications you have the more benefits you’ll get from this kind of tool. The more you have, the more log files you also have to manage with rotation and retention policy.&lt;/p&gt;
-
-&lt;p&gt;Greylog uses a log format called &lt;a href=&quot;http://docs.graylog.org/en/2.3/pages/gelf.html&quot;&gt;GELF (Graylog Extended Lenght Format)&lt;/a&gt;. GELF differs from other log formats (like &lt;a href=&quot;https://en.wikipedia.org/wiki/Syslog&quot;&gt;syslog&lt;/a&gt;) by being a structured logging format with custom typed fields. This makes it better suited for indexing and analysis than other non structured formats.&lt;/p&gt;
-
-&lt;h2 id=&quot;send-docker-container-logs-to-graylog&quot;&gt;Send Docker container logs to Graylog&lt;/h2&gt;
-
-&lt;p&gt;Docker has a native &lt;a href=&quot;https://docs.docker.com/engine/admin/logging/gelf/&quot;&gt;gelf log driver&lt;/a&gt;.
-If you use Docker to deploy your applications and print your logs in the standard output to print your logs you can directly send your logs to graylog by changing the log driver of your containers.&lt;/p&gt;
-
-&lt;p&gt;In order to proceed you will need to know:&lt;/p&gt;
-&lt;ul&gt;
-  &lt;li&gt;The endpoint to collect GELF logs over UDP (&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;udp://gra2.logs.ovh.com:2202&lt;/code&gt; for me)&lt;/li&gt;
-  &lt;li&gt;The token for your stream&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;Then, run the docker container with the following configuration:&lt;/p&gt;
-
-&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;docker run \
-  -e X-OVH-TOKEN=&quot;7982bbc4-9a66-4426-9de3-33d6eb201ed6&quot; \
-  --log-driver gelf \
-  --log-opt gelf-address=udp://gra2.logs.ovh.com:2202 \
-  --log-opt env=X-OVH-TOKEN \
-  -d busybox
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Replace &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;7982bbc4-9a66-4426-9de3-33d6eb201ed6&lt;/code&gt; by your actual Stream token.&lt;/p&gt;
-
-&lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;--log-opt env=X-OVH-TOKEN&lt;/code&gt; for the gelf log driver will put the specified environment variable as a custom field in the GELF message (prefixed by an underscore &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;_&lt;/code&gt;). That’s how OVH can accept and properly route the incoming logs.&lt;/p&gt;
-
-&lt;p&gt;It works, however the main drawback is that the logs will be made from the Docker perspective. The reported log levels are the ones from Docker, not from the java app. Docker will only consider for log levels the standard and error outputs, so you will note have the same granulary as the java logs (DEBUG, INFO, WARN, ERROR, etc.) without doing intermediate processing.&lt;/p&gt;
-
-&lt;p&gt;If you want richer logs there are two possible approaches:&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;Configure and use an &lt;a href=&quot;http://docs.graylog.org/en/2.3/pages/extractors.html&quot;&gt;Extractor&lt;/a&gt; in graylog&lt;/li&gt;
-  &lt;li&gt;Send logs from the Java logging framework of your choice (logback in my case)&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h2 id=&quot;send-logback-logs-to-graylog&quot;&gt;Send logback logs to Graylog&lt;/h2&gt;
-
-&lt;p&gt;From logback you can send the logs to to Greylogs by adding a new Appender:&lt;/p&gt;
-
-&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&amp;gt;
-&amp;lt;configuration debug=&quot;true&quot;&amp;gt;
-
-  &amp;lt;appender name=&quot;STDOUT&quot; class=&quot;ch.qos.logback.core.ConsoleAppender&quot;&amp;gt;
-    &amp;lt;layout class=&quot;ch.qos.logback.classic.PatternLayout&quot;&amp;gt;
-      &amp;lt;Pattern&amp;gt;
-        %level %logger - %msg%n
-      &amp;lt;/Pattern&amp;gt;
-    &amp;lt;/layout&amp;gt;
-  &amp;lt;/appender&amp;gt;
-
-  &amp;lt;appender name=&quot;GELF&quot; class=&quot;de.siegmar.logbackgelf.GelfUdpAppender&quot;&amp;gt;
-    &amp;lt;graylogHost&amp;gt;gra2.logs.ovh.com&amp;lt;/graylogHost&amp;gt;
-    &amp;lt;graylogPort&amp;gt;2202&amp;lt;/graylogPort&amp;gt;
-    &amp;lt;layout class=&quot;de.siegmar.logbackgelf.GelfLayout&quot;&amp;gt;
-        &amp;lt;staticField&amp;gt;X-OVH-TOKEN:7982bbc4-9a66-4426-9de3-33d6eb201ed6&amp;lt;/staticField&amp;gt;
-    &amp;lt;/layout&amp;gt;
-  &amp;lt;/appender&amp;gt;
-
-  &amp;lt;root level=&quot;INFO&quot;&amp;gt;
-    &amp;lt;appender-ref ref=&quot;STDOUT&quot; /&amp;gt;
-    &amp;lt;appender-ref ref=&quot;GELF&quot; /&amp;gt;
-  &amp;lt;/root&amp;gt;
-
-&amp;lt;/configuration&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Replace &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;7982bbc4-9a66-4426-9de3-33d6eb201ed6&lt;/code&gt; by your actual Stream token.&lt;/p&gt;
-
-&lt;p&gt;You’ll need to add the following dependency to you project: &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;compile 'de.siegmar:logback-gelf:1.0.4'&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;There is logback appender &lt;a href=&quot;https://github.com/mp911de/logstash-gelf&quot;&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;biz.paluch.logging:logstash-gelf&lt;/code&gt;&lt;/a&gt; that is quite popular, but I did not manage to make it work. So I went for &lt;a href=&quot;https://github.com/osiegmar/logback-gelf&quot;&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;de.siegmar:logback-gelf&lt;/code&gt;&lt;/a&gt; instead.&lt;/p&gt;
-</description>
-        <pubDate>Mon, 18 Dec 2017 00:40:00 +0800</pubDate>
-        <link>http://yourdomain.com/2017/12/18/logs-analysis-with-ovh.html</link>
-        <guid isPermaLink="true">http://yourdomain.com/2017/12/18/logs-analysis-with-ovh.html</guid>
         
         
       </item>

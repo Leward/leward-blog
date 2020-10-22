@@ -28,8 +28,9 @@ Writing down my findings is a good way to:
 
 - [x] [Day 1 - Build a simple javafx app to a native executable (Linux)]({% post_url 2020-10-18-EN-native-gui-app-with-javafx %})
 - [x] [Day 2 - JavaFx native app on Windows]({% post_url 2020-10-20-EN-native-gui-app-with-javafx-windows %})
-- [ ] Day 3 - Paste an image from the clipboard
-- [ ] Day 4 - Native executable with FXML and Annotations
-- [ ] Day 5 - Project Introduction - JSON Schema Manager
-- [ ] Day 6 - Databings Basics
-- [ ] Day 7 - Dark Mode
+- [x] [Day 3 - Simple JavaFX project won't run with IntelliJ]({% post_url 2020-10-21-EN-simple-javafx-project-wont-run-in-intellij %})
+- [ ] Day 4 - Paste an image from the clipboard
+- [ ] Day 5 - Native executable with FXML and Annotations
+- [ ] Day 6 - Project Introduction - JSON Schema Manager
+- [ ] Day 7 - Databings Basics
+- [ ] Day 8 - Dark Mode
