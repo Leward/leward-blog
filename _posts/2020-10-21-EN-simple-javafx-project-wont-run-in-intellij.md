@@ -44,10 +44,33 @@ You won't need to add a `require` for `[javafx.graphics](http://javafx.graphics)
 
 Now, you can click on the "Run" button for `HelloFX` in Intellij and the application will start as expected.
 
-Quite quick reminder on modules: 
+Quick reminder on modules: 
 
 - **`module eu.leward.hellofx`** indicates the **name** of the module, I decided to follow a naming convention, but it can be any name you want `module toto` will work too even though it may not be the best name
 - **`opens eu.leward.hellofx to javafx.graphics;`** here `eu.leward.hellofx` is a Java package name, not the name of module!
 - **`opens to`** is used because `main` uses the `launch()` method which does some refection to instantiate and run the application. 
  <br>Using Java modules, you need to allow that reflection access using `opens`. You won't get this error if you use [classpath instead of modulepath](https://gorillalogic.com/blog/understanding-java-9-modules/), however I believe modules and modulepath is the way forward.
 
+
+## Maven Compiler Plugin
+
+If you don't make any modification to you `pom.xml`, running `mvn compile` will now result in an error:
+
+```
+ Compilation failure
+[ERROR] /helofx/src/main/java/module-info.java:[2,20] module not found: javafx.controls
+```
+
+If you specify anything, maven will use by default an old version of the `maven-compiler-plugin`. So you need to specify a more recent version (>= 3.7.0) for compilation with modules to work:
+
+```xml
+<plugins>
+  <plugin>
+    <groupId>org.apache.maven.plugins</groupId>
+    <artifactId>maven-compiler-plugin</artifactId>
+    <version>3.8.1</version>
+  </plugin>
+</plugins>
+```
+
+With that out of the way, happy building and compiling!

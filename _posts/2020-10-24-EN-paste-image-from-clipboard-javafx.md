@@ -5,7 +5,7 @@ slug:       paste-image-from-clipboard-javafx
 date:       2020-10-24 01:30:00 -0400
 categories:
 lang:       en
-ref:        paste-image-from-clipboard-javafx.
+ref:        paste-image-from-clipboard-javafx
 excerpt_separator: <!--more-->
 ---
 

@@ -153,7 +153,7 @@ Caused by:
 
 <p>Now, you can click on the “Run” button for <code class="language-plaintext highlighter-rouge">HelloFX</code> in Intellij and the application will start as expected.</p>
 
-<p>Quite quick reminder on modules:</p>
+<p>Quick reminder on modules:</p>
 
 <ul>
   <li><strong><code class="language-plaintext highlighter-rouge">module eu.leward.hellofx</code></strong> indicates the <strong>name</strong> of the module, I decided to follow a naming convention, but it can be any name you want <code class="language-plaintext highlighter-rouge">module toto</code> will work too even though it may not be the best name</li>
@@ -162,6 +162,26 @@ Caused by:
  <br />Using Java modules, you need to allow that reflection access using <code class="language-plaintext highlighter-rouge">opens</code>. You won’t get this error if you use <a href="https://gorillalogic.com/blog/understanding-java-9-modules/">classpath instead of modulepath</a>, however I believe modules and modulepath is the way forward.</li>
 </ul>
 
+<h2 id="maven-compiler-plugin">Maven Compiler Plugin</h2>
+
+<p>If you don’t make any modification to you <code class="language-plaintext highlighter-rouge">pom.xml</code>, running <code class="language-plaintext highlighter-rouge">mvn compile</code> will now result in an error:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> Compilation failure
+[ERROR] /helofx/src/main/java/module-info.java:[2,20] module not found: javafx.controls
+</code></pre></div></div>
+
+<p>If you specify anything, maven will use by default an old version of the <code class="language-plaintext highlighter-rouge">maven-compiler-plugin</code>. So you need to specify a more recent version (&gt;= 3.7.0) for compilation with modules to work:</p>
+
+<div class="language-xml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;plugins&gt;</span>
+  <span class="nt">&lt;plugin&gt;</span>
+    <span class="nt">&lt;groupId&gt;</span>org.apache.maven.plugins<span class="nt">&lt;/groupId&gt;</span>
+    <span class="nt">&lt;artifactId&gt;</span>maven-compiler-plugin<span class="nt">&lt;/artifactId&gt;</span>
+    <span class="nt">&lt;version&gt;</span>3.8.1<span class="nt">&lt;/version&gt;</span>
+  <span class="nt">&lt;/plugin&gt;</span>
+<span class="nt">&lt;/plugins&gt;</span>
+</code></pre></div></div>
+
+<p>With that out of the way, happy building and compiling!</p>
 
   </div>
 

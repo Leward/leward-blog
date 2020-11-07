@@ -5,8 +5,8 @@
     <description>{&quot;fr&quot;=&gt;&quot;Site web personnel à propos de mon travail en tant que Développer et Consultant IT , de vélo en tant que hobby, et de mon déménagement à venir à Singapour.&quot;, &quot;en&quot;=&gt;&quot;Personnal website about my job as an IT Consultant and Developer, casual Cycling and my relocation to Singapore.&quot;, &quot;de&quot;=&gt;&quot;Persönlich Website über meinen Job als einen IT-Berater und Softwareentwickler, Radfahren und meinen Umzug nach Singapur.&quot;, &quot;jp&quot;=&gt;&quot;じょうほうテクノロジー と じてんしゃ　と　シンガポール についての私のブログ.&quot;}</description>
     <link>http://yourdomain.com/</link>
     <atom:link href="http://yourdomain.com/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sat, 24 Oct 2020 14:48:02 +0800</pubDate>
-    <lastBuildDate>Sat, 24 Oct 2020 14:48:02 +0800</lastBuildDate>
+    <pubDate>Sun, 08 Nov 2020 07:58:50 +0800</pubDate>
+    <lastBuildDate>Sun, 08 Nov 2020 07:58:50 +0800</lastBuildDate>
     <generator>Jekyll v4.1.0</generator>
     
       <item>
@@ -221,7 +221,7 @@ Caused by:
 
 &lt;p&gt;Now, you can click on the “Run” button for &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;HelloFX&lt;/code&gt; in Intellij and the application will start as expected.&lt;/p&gt;
 
-&lt;p&gt;Quite quick reminder on modules:&lt;/p&gt;
+&lt;p&gt;Quick reminder on modules:&lt;/p&gt;
 
 &lt;ul&gt;
   &lt;li&gt;&lt;strong&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;module eu.leward.hellofx&lt;/code&gt;&lt;/strong&gt; indicates the &lt;strong&gt;name&lt;/strong&gt; of the module, I decided to follow a naming convention, but it can be any name you want &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;module toto&lt;/code&gt; will work too even though it may not be the best name&lt;/li&gt;
@@ -230,6 +230,26 @@ Caused by:
  &lt;br /&gt;Using Java modules, you need to allow that reflection access using &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;opens&lt;/code&gt;. You won’t get this error if you use &lt;a href=&quot;https://gorillalogic.com/blog/understanding-java-9-modules/&quot;&gt;classpath instead of modulepath&lt;/a&gt;, however I believe modules and modulepath is the way forward.&lt;/li&gt;
 &lt;/ul&gt;
 
+&lt;h2 id=&quot;maven-compiler-plugin&quot;&gt;Maven Compiler Plugin&lt;/h2&gt;
+
+&lt;p&gt;If you don’t make any modification to you &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;pom.xml&lt;/code&gt;, running &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;mvn compile&lt;/code&gt; will now result in an error:&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; Compilation failure
+[ERROR] /helofx/src/main/java/module-info.java:[2,20] module not found: javafx.controls
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;If you specify anything, maven will use by default an old version of the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;maven-compiler-plugin&lt;/code&gt;. So you need to specify a more recent version (&amp;gt;= 3.7.0) for compilation with modules to work:&lt;/p&gt;
+
+&lt;div class=&quot;language-xml highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nt&quot;&gt;&amp;lt;plugins&amp;gt;&lt;/span&gt;
+  &lt;span class=&quot;nt&quot;&gt;&amp;lt;plugin&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;groupId&amp;gt;&lt;/span&gt;org.apache.maven.plugins&lt;span class=&quot;nt&quot;&gt;&amp;lt;/groupId&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;artifactId&amp;gt;&lt;/span&gt;maven-compiler-plugin&lt;span class=&quot;nt&quot;&gt;&amp;lt;/artifactId&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;version&amp;gt;&lt;/span&gt;3.8.1&lt;span class=&quot;nt&quot;&gt;&amp;lt;/version&amp;gt;&lt;/span&gt;
+  &lt;span class=&quot;nt&quot;&gt;&amp;lt;/plugin&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;/plugins&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;With that out of the way, happy building and compiling!&lt;/p&gt;
 </description>
         <pubDate>Thu, 22 Oct 2020 11:32:00 +0800</pubDate>
         <link>http://yourdomain.com/2020/10/22/simple-javafx-project-wont-run-in-intellij.html</link>
