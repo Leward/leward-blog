@@ -30,7 +30,7 @@ Writing down my findings is a good way to:
 - [x] [Day 2 - JavaFx native app on Windows]({% post_url 2020-10-20-EN-native-gui-app-with-javafx-windows %})
 - [x] [Day 3 - Simple JavaFX project won't run with IntelliJ]({% post_url 2020-10-21-EN-simple-javafx-project-wont-run-in-intellij %})
 - [x] [Day 4 - Paste an image from the clipboard]({% post_url 2020-10-24-EN-paste-image-from-clipboard-javafx %})
-- [ ] Day 5 - Native executable with FXML and Annotations
+- [x] [Day 5 - Native executable with FXML and Annotations]({% post_url 2020-11-08-EN-build-favafx-native-executable-fxml %})
 - [ ] Day 6 - Project Introduction - JSON Schema Manager
 - [ ] Day 7 - Databings Basics
 - [ ] Day 8 - Dark Mode

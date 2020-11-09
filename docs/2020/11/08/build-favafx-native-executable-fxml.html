@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Build a JavaFX native executable with FXML</title>
+  <meta name="description" content="So far we were able to build a native executable for our Java application using the Client Maven Plugin from Gluon. We built the UI using Java code only. Wha...">
+
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="canonical" href="http://yourdomain.com/2020/11/08/build-favafx-native-executable-fxml.html">
+  <link rel="alternate" type="application/rss+xml" title="Paul-Julien Vauthier" href="http://yourdomain.com/feed.xml">
+</head>
+
+
+  <body>
+
+    <header class="site-header">
+
+  <div class="wrapper">
+      
+    <a class="site-title" href="/">
+        <img src="/images/bicycle.svg">
+        Paul-Julien Vauthier
+    </a>
+      
+    <div class="langs">
+        <ul>
+        
+        
+          <li>
+            <a href="/2020/11/08/build-favafx-native-executable-fxml.html" class="en">en</a>
+          </li>
+        
+          <li>
+            <a href="/2020/10/24/paste-image-from-clipboard-javafx.html" class="en">en</a>
+          </li>
+        
+
+        
+        
+        </ul>
+    </div>
+      
+    <p class="site-sub-title">
+        Personnal website about my job as an IT Consultant and Developer, casual Cycling and my relocation to Singapore.
+    </p>
+      
+    <nav class="site-nav">
+      <!--<a href="#" class="menu-icon">
+        <svg viewBox="0 0 18 15">
+          <path fill="#424242" d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.031C17.335,0,18,0.665,18,1.484L18,1.484z"/>
+          <path fill="#424242" d="M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0c0-0.82,0.665-1.484,1.484-1.484 h15.031C17.335,6.031,18,6.696,18,7.516L18,7.516z"/>
+          <path fill="#424242" d="M18,13.516C18,14.335,17.335,15,16.516,15H1.484C0.665,15,0,14.335,0,13.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.031C17.335,12.031,18,12.696,18,13.516L18,13.516z"/>
+        </svg>
+      </a>-->
+
+      <div class="trigger">
+        
+        <a class="page-link" href="/">Home</a>
+        
+        <a class="page-link" href="/resume">Resume</a>
+        
+        <!--
+          
+          <a class="page-link" href="/about/">About</a>
+          
+        
+          
+          <a class="page-link" href="/credits/">Credits</a>
+          
+        
+          
+          <a class="page-link" href="/credits-fr/">Crédits</a>
+          
+        
+          
+          <a class="page-link" href="/cv">CV</a>
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+          <a class="page-link" href="/lebenslauf">Lebenslauf</a>
+          
+        
+          
+        
+          
+          <a class="page-link" href="/resume">Resume</a>
+          
+        
+          
+          <a class="page-link" href="/rirekisho">りれきしょ</a>
+          
+        -->
+      </div>
+    </nav>
+    
+    
+
+  </div>
+
+</header>
+
+
+    <div class="page-content">
+      <div class="wrapper">
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">Build a JavaFX native executable with FXML</h1>
+    <p class="post-meta"><time datetime="2020-11-08T13:30:00+08:00" itemprop="datePublished">Nov 8, 2020</time></p>
+  </header>
+
+  <div class="post-content" itemprop="articleBody">
+    <p><a href="/2020/10/19/native-gui-app-with-javafx.html">So far</a> we were able to build a native executable for our Java application using the <a href="https://docs.gluonhq.com/client/">Client Maven Plugin from Gluon</a>. We built the UI using Java code only. What if we want to make use of more “dynamic” features such as FXML?</p>
+
+<p>We will also cover the shortcomings you may face when using FXML with the Java Module System.</p>
+
+<!--more-->
+
+<h1 id="preparation">Preparation</h1>
+
+<p>If you don’t have one already, create a resources folder in your Maven project:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">cp</span> <span class="nt">-r</span> hellofx hellofxml
+<span class="nb">cd </span>hellofxml
+<span class="nb">mkdir</span> <span class="nt">-p</span> src/main/resources/
+</code></pre></div></div>
+
+<p>In order to use FXML we will need to <strong>add dependencies</strong> to:</p>
+
+<ol>
+  <li>Our Maven Project (pom.xml)</li>
+  <li>Our Java Module (module-info.java)</li>
+</ol>
+
+<div class="language-xml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">&lt;!-- pom.xml --&gt;</span>
+
+<span class="nt">&lt;properties&gt;</span>
+  <span class="nt">&lt;javafx.version&gt;</span>15<span class="nt">&lt;/javafx.version&gt;</span>
+<span class="nt">&lt;/properties&gt;</span>
+
+<span class="nt">&lt;dependencies&gt;</span>
+  <span class="nt">&lt;dependency&gt;</span>
+    <span class="nt">&lt;groupId&gt;</span>org.openjfx<span class="nt">&lt;/groupId&gt;</span>
+    <span class="nt">&lt;artifactId&gt;</span>javafx-controls<span class="nt">&lt;/artifactId&gt;</span>
+    <span class="nt">&lt;version&gt;</span>${javafx.version}<span class="nt">&lt;/version&gt;</span>
+  <span class="nt">&lt;/dependency&gt;</span>
+  <span class="nt">&lt;dependency&gt;</span>
+    <span class="nt">&lt;groupId&gt;</span>org.openjfx<span class="nt">&lt;/groupId&gt;</span>
+    <span class="nt">&lt;artifactId&gt;</span>javafx-fxml<span class="nt">&lt;/artifactId&gt;</span>
+    <span class="nt">&lt;version&gt;</span>${javafx.version}<span class="nt">&lt;/version&gt;</span>
+  <span class="nt">&lt;/dependency&gt;</span>
+<span class="nt">&lt;/dependencies&gt;</span>
+</code></pre></div></div>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// src/main/java/module-info.java</span>
+
+<span class="n">module</span> <span class="n">eu</span><span class="o">.</span><span class="na">leward</span><span class="o">.</span><span class="na">hellofxml</span> <span class="o">{</span>
+    <span class="n">requires</span> <span class="n">javafx</span><span class="o">.</span><span class="na">controls</span><span class="o">;</span>
+    <span class="n">requires</span> <span class="n">javafx</span><span class="o">.</span><span class="na">fxml</span><span class="o">;</span>
+
+    <span class="n">opens</span> <span class="n">eu</span><span class="o">.</span><span class="na">leward</span><span class="o">.</span><span class="na">hellofxml</span> <span class="n">to</span> <span class="n">javafx</span><span class="o">.</span><span class="na">graphics</span><span class="o">;</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<h1 id="fxml">FXML</h1>
+
+<p><strong>FXML is a markup language derivative from XML used to describe User Interfaces for JavaFX.</strong> It is similar to:</p>
+
+<ul>
+  <li>XAML in .Net</li>
+  <li>XML Layouts for Android</li>
+  <li>HTML for the web (to some extent: HTML is less strict than XML regarding the validity of the markup)</li>
+</ul>
+
+<p>Consider the following UI <a href="/2020/10/19/native-gui-app-with-javafx.html">we built previously</a>:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">HelloFXML</span> <span class="kd">extends</span> <span class="nc">Application</span> <span class="o">{</span>
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">start</span><span class="o">(</span><span class="nc">Stage</span> <span class="n">stage</span><span class="o">)</span> <span class="o">{</span>
+        <span class="nc">String</span> <span class="n">javaVersion</span> <span class="o">=</span> <span class="nc">System</span><span class="o">.</span><span class="na">getProperty</span><span class="o">(</span><span class="s">"java.version"</span><span class="o">);</span>
+        <span class="nc">String</span> <span class="n">javafxVersion</span> <span class="o">=</span> <span class="nc">System</span><span class="o">.</span><span class="na">getProperty</span><span class="o">(</span><span class="s">"javafx.version"</span><span class="o">);</span>
+        <span class="nc">Label</span> <span class="n">l</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Label</span><span class="o">(</span><span class="s">"Hello, JavaFX "</span> <span class="o">+</span> <span class="n">javafxVersion</span> <span class="o">+</span> <span class="s">", running on Java "</span> <span class="o">+</span> <span class="n">javaVersion</span> <span class="o">+</span> <span class="s">"."</span><span class="o">);</span>
+        <span class="nc">Scene</span> <span class="n">scene</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Scene</span><span class="o">(</span><span class="k">new</span> <span class="nc">StackPane</span><span class="o">(</span><span class="n">l</span><span class="o">),</span> <span class="mi">640</span><span class="o">,</span> <span class="mi">480</span><span class="o">);</span>
+        <span class="n">stage</span><span class="o">.</span><span class="na">setScene</span><span class="o">(</span><span class="n">scene</span><span class="o">);</span>
+        <span class="n">stage</span><span class="o">.</span><span class="na">show</span><span class="o">();</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="nc">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">launch</span><span class="o">();</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>With FXML, defining the UI looks like this:</p>
+
+<div class="language-xml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">&lt;!-- An FXML file is an XML file --&gt;</span>
+<span class="cp">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</span>
+
+<span class="c">&lt;!-- Imports are like Java Import, they allow you use classes without
+having to specify there fully qualified name.
+Here, the imports were auto-generated by my IDE (IntelliJ). --&gt;</span>
+<span class="cp">&lt;?import java.lang.*?&gt;</span>
+<span class="cp">&lt;?import java.util.*?&gt;</span>
+<span class="cp">&lt;?import javafx.scene.*?&gt;</span>
+<span class="cp">&lt;?import javafx.scene.control.*?&gt;</span>
+<span class="cp">&lt;?import javafx.scene.layout.*?&gt;</span>
+
+<span class="c">&lt;!-- Stack Pane is the root node --&gt;</span>
+<span class="nt">&lt;StackPane</span> <span class="na">xmlns=</span><span class="s">"http://javafx.com/javafx"</span>
+           <span class="na">xmlns:fx=</span><span class="s">"http://javafx.com/fxml"</span>
+           <span class="na">prefWidth=</span><span class="s">"640.0"</span> <span class="na">prefHeight=</span><span class="s">"480.0"</span><span class="nt">&gt;</span>
+
+    <span class="nt">&lt;Label</span> <span class="na">text=</span><span class="s">"Hello ${er} JavaFX!"</span><span class="nt">/&gt;</span>
+
+<span class="nt">&lt;/StackPane&gt;</span>
+</code></pre></div></div>
+
+<p>Create this file as <code class="language-plaintext highlighter-rouge">src/main/resources/hello.fxml</code>.</p>
+
+<p><strong>To use the FXML file you will need to use a <code class="language-plaintext highlighter-rouge">FXMLLoader</code>.</strong> Its job is to load a FXML resource and use in Java code as a regular JavaFX UI Node. The type you will be loading is the top element in the FXML file. In our example, it is a <code class="language-plaintext highlighter-rouge">StackPane</code>.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">HelloFXML</span> <span class="kd">extends</span> <span class="nc">Application</span> <span class="o">{</span>
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">start</span><span class="o">(</span><span class="nc">Stage</span> <span class="n">stage</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">IOException</span> <span class="o">{</span>
+        <span class="c1">// Load the FXML</span>
+        <span class="no">URL</span> <span class="n">fxmlResource</span> <span class="o">=</span> <span class="nc">HelloFXML</span><span class="o">.</span><span class="na">class</span><span class="o">.</span><span class="na">getResource</span><span class="o">(</span><span class="s">"/hello.fxml"</span><span class="o">);</span>
+        <span class="nc">FXMLLoader</span> <span class="n">loader</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">FXMLLoader</span><span class="o">(</span><span class="n">fxmlResource</span><span class="o">);</span>
+        <span class="nc">StackPane</span> <span class="n">pane</span> <span class="o">=</span> <span class="n">loader</span><span class="o">.</span><span class="na">load</span><span class="o">();</span>
+
+        <span class="c1">// Assign the loaded view to the stage and show it</span>
+        <span class="nc">Scene</span> <span class="n">scene</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Scene</span><span class="o">(</span><span class="n">pane</span><span class="o">);</span>
+        <span class="n">stage</span><span class="o">.</span><span class="na">setScene</span><span class="o">(</span><span class="n">scene</span><span class="o">);</span>
+        <span class="n">stage</span><span class="o">.</span><span class="na">show</span><span class="o">();</span>
+
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="nc">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">launch</span><span class="o">();</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>And running it a nice “Hello JavaFX” window:</p>
+
+<p><img src="/assets/2020-11-08-build-favafx-native-executable-fxml/example-1.png" alt="Hello World JavaFX App" /></p>
+
+<p>However, our text is no longer dynamic: it does not show which version of Java and JavaFX we are running.</p>
+
+<p>That is the main drawback a FXML: its static nature. However there are ways to make it more dynamic while keeping a static markup.</p>
+
+<h1 id="introducing-a-controller">Introducing a Controller</h1>
+
+<p>You can link together the FXML with some Java Code by setting a Controller on your root node:</p>
+
+<div class="language-xml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;StackPane</span> <span class="na">xmlns=</span><span class="s">"http://javafx.com/javafx"</span>
+           <span class="na">xmlns:fx=</span><span class="s">"http://javafx.com/fxml"</span>
+           <span class="na">fx:controller=</span><span class="s">"eu.leward.hellofxml.HelloController"</span>
+           <span class="na">prefWidth=</span><span class="s">"640.0"</span> <span class="na">prefHeight=</span><span class="s">"480.0"</span><span class="nt">&gt;</span>
+
+    <span class="nt">&lt;Label</span> <span class="na">text=</span><span class="s">"Hello JavaFX!"</span><span class="nt">/&gt;</span>
+
+<span class="nt">&lt;/StackPane&gt;</span>
+</code></pre></div></div>
+
+<p>With an empty <code class="language-plaintext highlighter-rouge">HelloController</code> class:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">package</span> <span class="nn">eu.leward.hellofxml</span><span class="o">;</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">HelloController</span> <span class="o">{</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>Trying to run the application now will result in Illegal Access Exception.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Caused by: java.lang.IllegalAccessException: 
+
+class javafx.fxml.FXMLLoader$ValueElement (in module javafx.fxml) 
+  cannot access class eu.leward.hellofxml.HelloController (in module eu.leward.hellofxml) 
+  because module eu.leward.hellofxml does not export eu.leward.hellofxml to module javafx.fxml
+</code></pre></div></div>
+
+<p>Because we use Java module system, we need to allow the <code class="language-plaintext highlighter-rouge">javafx.fxml</code> to use our classes.</p>
+
+<p>This can be fixed by adding an <code class="language-plaintext highlighter-rouge">exports</code> instruction in the <code class="language-plaintext highlighter-rouge">[module-info.java](http://module-info.java)</code> file:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// src/main/java/module-info.java</span>
+
+<span class="n">module</span> <span class="n">eu</span><span class="o">.</span><span class="na">leward</span><span class="o">.</span><span class="na">hellofxml</span> <span class="o">{</span>
+    <span class="n">requires</span> <span class="n">javafx</span><span class="o">.</span><span class="na">controls</span><span class="o">;</span>
+    <span class="n">requires</span> <span class="n">javafx</span><span class="o">.</span><span class="na">fxml</span><span class="o">;</span>
+
+    <span class="n">opens</span> <span class="n">eu</span><span class="o">.</span><span class="na">leward</span><span class="o">.</span><span class="na">hellofxml</span> <span class="n">to</span> <span class="n">javafx</span><span class="o">.</span><span class="na">graphics</span><span class="o">;</span>
+    <span class="n">exports</span> <span class="n">eu</span><span class="o">.</span><span class="na">leward</span><span class="o">.</span><span class="na">hellofxml</span> <span class="n">to</span> <span class="n">javafx</span><span class="o">.</span><span class="na">fxml</span><span class="o">;</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<h1 id="using-bindings-with-the-controller">Using Bindings with the Controller</h1>
+
+<p>We now have a controller linking our FXML root element with some Java code but this code is not doing anything for now.</p>
+
+<p>Let’s replicate the example we had before switching to FXML.</p>
+
+<p>From the controller, we are able to interact with UI elements in the FXML. In order to do so:</p>
+
+<ol>
+  <li>the elements must have an identifier, an <code class="language-plaintext highlighter-rouge">fx:id</code> attribute</li>
+  <li>the controller must have a binding on that identifier using an attribute annotated with <code class="language-plaintext highlighter-rouge">@FXML</code>. The attribute have to match the ID used in the FXML.</li>
+</ol>
+
+<div class="language-xml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;Label</span> <span class="na">fx:id=</span><span class="s">"label"</span> <span class="na">text=</span><span class="s">"Hello JavaFX!"</span><span class="nt">/&gt;</span>
+</code></pre></div></div>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">package</span> <span class="nn">eu.leward.hellofxml</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">javafx.fxml.FXML</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">javafx.scene.control.Label</span><span class="o">;</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">HelloController</span> <span class="o">{</span>
+    <span class="nd">@FXML</span>
+    <span class="kd">private</span> <span class="nc">Label</span> <span class="n">label</span><span class="o">;</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>Now, you should be running into another error running this snipet:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">Unable</span> <span class="n">to</span> <span class="n">make</span> <span class="n">field</span> <span class="kd">private</span> <span class="n">javafx</span><span class="o">.</span><span class="na">scene</span><span class="o">.</span><span class="na">control</span><span class="o">.</span><span class="na">Label</span> <span class="n">eu</span><span class="o">.</span><span class="na">leward</span><span class="o">.</span><span class="na">hellofxml</span><span class="o">.</span><span class="na">HelloController</span><span class="o">.</span><span class="na">label</span> <span class="nl">accessible:</span> 
+<span class="n">module</span> <span class="n">eu</span><span class="o">.</span><span class="na">leward</span><span class="o">.</span><span class="na">hellofxml</span> <span class="n">does</span> <span class="n">not</span> <span class="s">"opens eu.leward.hellofxml"</span> <span class="n">to</span> <span class="n">module</span> <span class="n">javafx</span><span class="o">.</span><span class="na">fxml</span>
+</code></pre></div></div>
+
+<p>Before we are using private attributes, the <code class="language-plaintext highlighter-rouge">javafx.fxml</code> module needs to be able perform reflection access on our code. Using <code class="language-plaintext highlighter-rouge">exports</code> in <code class="language-plaintext highlighter-rouge">module-info.java</code> is not enough, we need to use <code class="language-plaintext highlighter-rouge">open</code> instead:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// src/main/java/module-info.java</span>
+
+<span class="n">module</span> <span class="n">eu</span><span class="o">.</span><span class="na">leward</span><span class="o">.</span><span class="na">hellofxml</span> <span class="o">{</span>
+    <span class="n">requires</span> <span class="n">javafx</span><span class="o">.</span><span class="na">controls</span><span class="o">;</span>
+    <span class="n">requires</span> <span class="n">javafx</span><span class="o">.</span><span class="na">fxml</span><span class="o">;</span>
+
+    <span class="n">opens</span> <span class="n">eu</span><span class="o">.</span><span class="na">leward</span><span class="o">.</span><span class="na">hellofxml</span> <span class="n">to</span> <span class="n">javafx</span><span class="o">.</span><span class="na">graphics</span><span class="o">,</span> <span class="n">javafx</span><span class="o">.</span><span class="na">fxml</span><span class="o">;</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>In JavaFX you can define an <code class="language-plaintext highlighter-rouge">initialize()</code> method annotated with <code class="language-plaintext highlighter-rouge">@FXML</code>. It will get executing when initializing the controller. This is called after the <code class="language-plaintext highlighter-rouge">@FXML</code> bindings are applied, meaning you can interact with the UI nodes in this method.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">package</span> <span class="nn">eu.leward.hellofxml</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">javafx.fxml.FXML</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">javafx.scene.control.Label</span><span class="o">;</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">HelloController</span> <span class="o">{</span>
+    <span class="nd">@FXML</span>
+    <span class="kd">private</span> <span class="nc">Label</span> <span class="n">label</span><span class="o">;</span>
+
+    <span class="nd">@FXML</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">initialize</span><span class="o">()</span>
+    <span class="o">{</span>
+        <span class="nc">String</span> <span class="n">javaVersion</span> <span class="o">=</span> <span class="nc">System</span><span class="o">.</span><span class="na">getProperty</span><span class="o">(</span><span class="s">"java.version"</span><span class="o">);</span>
+        <span class="nc">String</span> <span class="n">javafxVersion</span> <span class="o">=</span> <span class="nc">System</span><span class="o">.</span><span class="na">getProperty</span><span class="o">(</span><span class="s">"javafx.version"</span><span class="o">);</span>
+        <span class="n">label</span><span class="o">.</span><span class="na">setText</span><span class="o">(</span><span class="s">"Hello, JavaFX "</span> <span class="o">+</span> <span class="n">javafxVersion</span> <span class="o">+</span> <span class="s">", running on Java "</span> <span class="o">+</span> <span class="n">javaVersion</span> <span class="o">+</span> <span class="s">"."</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p><img src="/assets/2020-11-08-build-favafx-native-executable-fxml/example-2.png" alt="Hello World JavaFX App" /></p>
+
+<p>The we have the text from the original example. The example is simple, but it is good introduction to the concept of FXML markup and controller.</p>
+
+<h1 id="compile-to-a-native-binary">Compile to a native binary</h1>
+
+<p>Let’s now try to compile the code as a native binary with <code class="language-plaintext highlighter-rouge">mvn client:build</code>…</p>
+
+<p>It takes some time but the builds looks good:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  03:56 min
+[INFO] Finished at: 2020-11-08T00:21:46-05:00
+[INFO] ------------------------------------------------------------------------
+</code></pre></div></div>
+
+<p>However, running the application, we have a nasty <code class="language-plaintext highlighter-rouge">ClassNotFoundException</code>.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>target/client/x86_64-linux/hellofx
+
+...
+
+Exception in thread "main" java.lang.RuntimeException: Exception in Application start method
+(...)
+Caused by: java.lang.ClassNotFoundException: eu.leward.hellofxml.HelloController
+</code></pre></div></div>
+
+<p>We are getting this error, because <strong>the compiler only keeps the classes which it knows are effectively used</strong>. However because the controller is only used in an .fxml file, the compiler thinks <code class="language-plaintext highlighter-rouge">HelloController</code> is an orphaned class and therefore should be ignored.</p>
+
+<p>Fortunately the gluon plugin has a configuration option for that: <code class="language-plaintext highlighter-rouge">reflectionList</code>. We can to that list the classes we want to compiler to keep.</p>
+
+<div class="language-xml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">&lt;!-- pom.xml --&gt;</span>
+
+<span class="nt">&lt;plugin&gt;</span>
+  <span class="nt">&lt;groupId&gt;</span>com.gluonhq<span class="nt">&lt;/groupId&gt;</span>
+  <span class="nt">&lt;artifactId&gt;</span>client-maven-plugin<span class="nt">&lt;/artifactId&gt;</span>
+  <span class="nt">&lt;version&gt;</span>0.1.31<span class="nt">&lt;/version&gt;</span>
+  <span class="nt">&lt;configuration&gt;</span>
+    <span class="nt">&lt;mainClass&gt;</span>eu.leward.hellofxml.HelloFXML<span class="nt">&lt;/mainClass&gt;</span>
+    <span class="nt">&lt;reflectionList&gt;</span>
+      <span class="nt">&lt;list&gt;</span>eu.leward.hellofxml.HelloController<span class="nt">&lt;/list&gt;</span>
+    <span class="nt">&lt;/reflectionList&gt;</span>
+  <span class="nt">&lt;/configuration&gt;</span>
+<span class="nt">&lt;/plugin&gt;</span>
+</code></pre></div></div>
+
+<p>Re-compile and run…</p>
+
+<p><img src="/assets/2020-11-08-build-favafx-native-executable-fxml/example-3.png" alt="Hello World JavaFX App" /></p>
+
+<p>Hurray, it’s working just how we want it 🙂!</p>
+
+  </div>
+
+</article>
+
+      </div>
+    </div>
+
+    <footer class="site-footer">
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Paul-Julien Vauthier</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li>Paul-Julien Vauthier</li>
+          <li><a href="mailto:pj.vauthier@gmail.com">pj.vauthier@gmail.com</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-2">
+        <ul class="social-media-list">
+          
+          <li>
+            <a href="https://github.com/Leward"><span class="icon icon--github"><svg viewBox="0 0 16 16"><path fill="#828282" d="M7.999,0.431c-4.285,0-7.76,3.474-7.76,7.761 c0,3.428,2.223,6.337,5.307,7.363c0.388,0.071,0.53-0.168,0.53-0.374c0-0.184-0.007-0.672-0.01-1.32 c-2.159,0.469-2.614-1.04-2.614-1.04c-0.353-0.896-0.862-1.135-0.862-1.135c-0.705-0.481,0.053-0.472,0.053-0.472 c0.779,0.055,1.189,0.8,1.189,0.8c0.692,1.186,1.816,0.843,2.258,0.645c0.071-0.502,0.271-0.843,0.493-1.037 C4.86,11.425,3.049,10.76,3.049,7.786c0-0.847,0.302-1.54,0.799-2.082C3.768,5.507,3.501,4.718,3.924,3.65 c0,0,0.652-0.209,2.134,0.796C6.677,4.273,7.34,4.187,8,4.184c0.659,0.003,1.323,0.089,1.943,0.261 c1.482-1.004,2.132-0.796,2.132-0.796c0.423,1.068,0.157,1.857,0.077,2.054c0.497,0.542,0.798,1.235,0.798,2.082 c0,2.981-1.814,3.637-3.543,3.829c0.279,0.24,0.527,0.713,0.527,1.437c0,1.037-0.01,1.874-0.01,2.129 c0,0.208,0.14,0.449,0.534,0.373c3.081-1.028,5.302-3.935,5.302-7.362C15.76,3.906,12.285,0.431,7.999,0.431z"/></svg>
+</span><span class="username">Leward</span></a>
+
+          </li>
+          
+
+          
+          <li>
+            <a href="https://twitter.com/Pj_Leward"><span class="icon icon--twitter"><svg viewBox="0 0 16 16"><path fill="#828282" d="M15.969,3.058c-0.586,0.26-1.217,0.436-1.878,0.515c0.675-0.405,1.194-1.045,1.438-1.809c-0.632,0.375-1.332,0.647-2.076,0.793c-0.596-0.636-1.446-1.033-2.387-1.033c-1.806,0-3.27,1.464-3.27,3.27 c0,0.256,0.029,0.506,0.085,0.745C5.163,5.404,2.753,4.102,1.14,2.124C0.859,2.607,0.698,3.168,0.698,3.767 c0,1.134,0.577,2.135,1.455,2.722C1.616,6.472,1.112,6.325,0.671,6.08c0,0.014,0,0.027,0,0.041c0,1.584,1.127,2.906,2.623,3.206 C3.02,9.402,2.731,9.442,2.433,9.442c-0.211,0-0.416-0.021-0.615-0.059c0.416,1.299,1.624,2.245,3.055,2.271 c-1.119,0.877-2.529,1.4-4.061,1.4c-0.264,0-0.524-0.015-0.78-0.046c1.447,0.928,3.166,1.469,5.013,1.469 c6.015,0,9.304-4.983,9.304-9.304c0-0.142-0.003-0.283-0.009-0.423C14.976,4.29,15.531,3.714,15.969,3.058z"/></svg>
+</span><span class="username">Pj_Leward</span></a>
+
+          </li>
+          
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-3">
+        <p><!--{"fr"=>"Site web personnel à propos de mon travail en tant que Développer et Consultant IT , de vélo en tant que hobby, et de mon déménagement à venir à Singapour.", "en"=>"Personnal website about my job as an IT Consultant and Developer, casual Cycling and my relocation to Singapore.", "de"=>"Persönlich Website über meinen Job als einen IT-Berater und Softwareentwickler, Radfahren und meinen Umzug nach Singapur.", "jp"=>"じょうほうテクノロジー と じてんしゃ　と　シンガポール についての私のブログ."}--></p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+
+
+  </body>
+
+  <script async defer data-domain="leward.eu" src="https://plausible.io/js/plausible.js"></script>
+
+</html>
