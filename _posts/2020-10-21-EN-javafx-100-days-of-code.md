@@ -31,6 +31,6 @@ Writing down my findings is a good way to:
 - [x] [Day 3 - Simple JavaFX project won't run with IntelliJ]({% post_url 2020-10-21-EN-simple-javafx-project-wont-run-in-intellij %})
 - [x] [Day 4 - Paste an image from the clipboard]({% post_url 2020-10-24-EN-paste-image-from-clipboard-javafx %})
 - [x] [Day 5 - Native executable with FXML and Annotations]({% post_url 2020-11-08-EN-build-favafx-native-executable-fxml %})
-- [ ] Day 6 - Project Introduction - JSON Schema Manager
+- [x] [Day 6 - Project Introduction - JSON Schema Manager](% post_url 2020-11-14-EN-new-project-json-schema-app %)
 - [ ] Day 7 - Databings Basics
 - [ ] Day 8 - Dark Mode
