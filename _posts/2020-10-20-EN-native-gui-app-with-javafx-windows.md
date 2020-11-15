@@ -3,7 +3,7 @@ layout:     post
 title:      "Native GUI app with JavaFX on Windows"
 slug:       native-gui-app-with-javafx-windows
 date:       2020-10-20 22:40:00 -0400
-categories:
+categories: 100-days-javafx
 lang:       en
 ref:        native-gui-app-with-javafx-windows
 excerpt_separator: <!--more-->

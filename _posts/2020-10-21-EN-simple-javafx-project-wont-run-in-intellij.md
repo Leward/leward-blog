@@ -3,7 +3,7 @@ layout:     post
 title:      "Simple JavaFX project won't run with IntelliJ"
 slug:       simple-javafx-project-wont-run-in-intellij
 date:       2020-10-21 23:32:00 -0400
-categories:
+categories: 100-days-javafx
 lang:       en
 ref:        simple-javafx-project-wont-run-in-intellij
 excerpt_separator: <!--more-->

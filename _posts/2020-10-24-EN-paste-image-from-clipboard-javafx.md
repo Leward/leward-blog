@@ -3,7 +3,7 @@ layout:     post
 title:      "Paste an Image from Clipboard in JavaFX"
 slug:       paste-image-from-clipboard-javafx
 date:       2020-10-24 01:30:00 -0400
-categories:
+categories: 100-days-javafx
 lang:       en
 ref:        paste-image-from-clipboard-javafx
 excerpt_separator: <!--more-->

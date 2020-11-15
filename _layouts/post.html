@@ -9,6 +9,15 @@ layout: default
   </header>
 
   <div class="post-content" itemprop="articleBody">
+
+    {% if page.categories contains "100-days-javafx" %}
+    <p>
+    <em>
+      This post is part the <a href="{% post_url 2020-10-21-EN-javafx-100-days-of-code %}">100 Days of JavaFX Series</a>.
+    </em>
+    </p>
+    {% endif %}
+
     {{ content }}
   </div>
 

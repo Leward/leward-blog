@@ -3,7 +3,7 @@ layout:     post
 title:      "Build a JavaFX native executable with FXML"
 slug:       build-favafx-native-executable-fxml
 date:       2020-11-08 01:30:00 -0400
-categories:
+categories: 100-days-javafx
 lang:       en
 ref:        paste-image-from-clipboard-javafx
 excerpt_separator: <!--more-->

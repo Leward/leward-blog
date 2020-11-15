@@ -3,7 +3,7 @@ layout:     post
 title:      "New Project: A JavaFX App to manage JSON Schema"
 slug:       new-project-json-schema-app
 date:       2020-11-14 22:47:00 -0400
-categories:
+categories: 100-days-javafx
 lang:       en
 ref:        new-project-json-schema-app
 excerpt_separator: <!--more-->
