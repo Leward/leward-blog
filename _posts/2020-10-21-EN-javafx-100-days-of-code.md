@@ -32,5 +32,6 @@ Writing down my findings is a good way to:
 - [x] [Day 4 - Paste an image from the clipboard]({% post_url 2020-10-24-EN-paste-image-from-clipboard-javafx %})
 - [x] [Day 5 - Native executable with FXML and Annotations]({% post_url 2020-11-08-EN-build-favafx-native-executable-fxml %})
 - [x] [Day 6 - Project Introduction - JSON Schema Manager]({% post_url 2020-11-14-EN-new-project-json-schema-app %})
-- [ ] Day 7 - Databings Basics
-- [ ] Day 8 - Dark Mode
+- [x] [Day 7 - Demo App: From FXML Static Content to Dynamic Content]({% post_url 2020-11-23-EN-demo-app-from-fxml-static-to-dynamic %})
+- [ ] Day 8 - React to Data Changes (Databinding)
+- [ ] Day ? - Dark Mode

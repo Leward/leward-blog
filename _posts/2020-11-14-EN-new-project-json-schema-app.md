@@ -9,7 +9,7 @@ ref:        new-project-json-schema-app
 excerpt_separator: <!--more-->
 ---
 
-Together, we've seen how [to create basic skeleton for a JavaFX application (using FXML)]({% post_url 2020-11-08-EN-build-favafx-native-executable-fxml %}). For the next days and articles, I will be using an example project to explore the different aspects of building a JavaFX application.
+Together, we've seen how [to create basic skeleton for a JavaFX application (using FXML)]({% post_url 2020-11-14-EN-new-project-json-schema-app %}). For the next days and articles, I will be using an example project to explore the different aspects of building a JavaFX application.
 
 The example application is a tool that offers a GUI to manage to collection of JSON Schemas. Who knows, if things go well I may even release it as a proper application. In this article we are going to layout the basics for the application UI.
 
