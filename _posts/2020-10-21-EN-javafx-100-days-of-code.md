@@ -33,5 +33,6 @@ Writing down my findings is a good way to:
 - [x] [Day 5 - Native executable with FXML and Annotations]({% post_url 2020-11-08-EN-build-favafx-native-executable-fxml %})
 - [x] [Day 6 - Project Introduction - JSON Schema Manager]({% post_url 2020-11-14-EN-new-project-json-schema-app %})
 - [x] [Day 7 - Demo App: From FXML Static Content to Dynamic Content]({% post_url 2020-11-23-EN-demo-app-from-fxml-static-to-dynamic %})
-- [ ] Day 8 - React to Data Changes (Databinding)
+- [x] [Day 8 - Introduction to Properties and Databinding in JavaFX]({% post_url 2020-11-28-EN-introduction-to-javafx-properties-and-databinding %})
+- [ ] Day 9 - Making use of properties
 - [ ] Day ? - Dark Mode
