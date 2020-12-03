@@ -34,5 +34,5 @@ Writing down my findings is a good way to:
 - [x] [Day 6 - Project Introduction - JSON Schema Manager]({% post_url 2020-11-14-EN-new-project-json-schema-app %})
 - [x] [Day 7 - Demo App: From FXML Static Content to Dynamic Content]({% post_url 2020-11-23-EN-demo-app-from-fxml-static-to-dynamic %})
 - [x] [Day 8 - Introduction to Properties and Databinding in JavaFX]({% post_url 2020-11-28-EN-introduction-to-javafx-properties-and-databinding %})
-- [ ] Day 9 - Making use of properties
+- [x] [Day 9 - Observable Collections and ListView in JavaFX]({% post_url 2020-12-03-EN-observable-collection-and-listview-in-javafx %})
 - [ ] Day ? - Dark Mode
