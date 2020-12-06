@@ -5,9 +5,94 @@
     <description>{&quot;fr&quot;=&gt;&quot;Site web personnel à propos de mon travail en tant que Développer et Consultant IT , de vélo en tant que hobby, et de mon déménagement à venir à Singapour.&quot;, &quot;en&quot;=&gt;&quot;Personnal website about my job as an IT Consultant and Developer, casual Cycling and my relocation to Singapore.&quot;, &quot;de&quot;=&gt;&quot;Persönlich Website über meinen Job als einen IT-Berater und Softwareentwickler, Radfahren und meinen Umzug nach Singapur.&quot;, &quot;jp&quot;=&gt;&quot;じょうほうテクノロジー と じてんしゃ　と　シンガポール についての私のブログ.&quot;}</description>
     <link>http://yourdomain.com/</link>
     <atom:link href="http://yourdomain.com/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sat, 05 Dec 2020 15:53:46 +0800</pubDate>
-    <lastBuildDate>Sat, 05 Dec 2020 15:53:46 +0800</lastBuildDate>
+    <pubDate>Sun, 06 Dec 2020 12:03:20 +0800</pubDate>
+    <lastBuildDate>Sun, 06 Dec 2020 12:03:20 +0800</lastBuildDate>
     <generator>Jekyll v4.1.0</generator>
+    
+      <item>
+        <title>Navigation using a ListView in JavaFX</title>
+        <description>&lt;p&gt;The &lt;a href=&quot;/2020/11/15/new-project-json-schema-app.html&quot;&gt;Schema Editor app&lt;/a&gt; I’ve been working on has two main panes in its UI: the menu on the left and the editor and the center.&lt;/p&gt;
+
+&lt;p&gt;In the previous posts we were able to &lt;a href=&quot;/2020/12/03/observable-collection-and-listview-in-javafx.html&quot;&gt;create a reactive menu&lt;/a&gt; and &lt;a href=&quot;/2020/12/05/editable-listview-cells-in-javafx.html&quot;&gt;make the name of the schema editable&lt;/a&gt;.&lt;/p&gt;
+
+&lt;!--more--&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/2020-12-05-navigation-using-a-listview-in-javafx/app.png&quot; alt=&quot;The Application after it started&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;react-when-an-schema-is-selected-in-the-listview&quot;&gt;React when an Schema is selected in the ListView&lt;/h2&gt;
+
+&lt;p&gt;We want the editor view to reflect the correct schema when selecting the schema from the ListView.&lt;/p&gt;
+
+&lt;p&gt;This not something you can do in FXML. However you can get a property that tracks the currently selected item: &lt;a href=&quot;https://openjfx.io/javadoc/15/javafx.controls/javafx/scene/control/SelectionModel.html#selectedItemProperty()&quot;&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;listView.getSelectionModel().selectedItemProperty()&lt;/code&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;AppController&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;nd&quot;&gt;@FXML&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;ListView&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;Schema&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;schemaListView&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;nd&quot;&gt;@FXML&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;TextArea&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;schemaEditor&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+
+    &lt;span class=&quot;kd&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;final&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;ObjectProperty&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;Schema&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;selectedSchemaProperty&lt;/span&gt; 
+        &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;SimpleObjectProperty&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;gt;();&lt;/span&gt;
+
+    &lt;span class=&quot;nd&quot;&gt;@FXML&lt;/span&gt;
+    &lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;initialize&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;throws&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;IOException&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;nc&quot;&gt;ObservableList&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;Schema&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;schemas&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;FXCollections&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;observableArrayList&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;schemaListView&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;setEditable&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kc&quot;&gt;true&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;schemaListView&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;setCellFactory&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;param&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;SchemaListCell&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;());&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;schemaListView&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;setItems&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;schemas&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+
+        &lt;span class=&quot;n&quot;&gt;selectedSchemaProperty&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;bind&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;schemaListView&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;getSelectionModel&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;().&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;selectedItemProperty&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;());&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;selectedSchemaProperty&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;addListener&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;((&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;observable&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;oldValue&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;newValue&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+            &lt;span class=&quot;n&quot;&gt;schemaEditor&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;setText&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;newValue&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;getRaw&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;());&lt;/span&gt;
+        &lt;span class=&quot;o&quot;&gt;});&lt;/span&gt;
+
+        &lt;span class=&quot;c1&quot;&gt;// Load data&lt;/span&gt;
+        &lt;span class=&quot;nc&quot;&gt;InitialDataLoader&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;dataLoader&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;InitialDataLoader&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;schemas&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;addAll&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;dataLoader&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;load&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;());&lt;/span&gt;
+    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Don’t forget to add &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;fx:id=&quot;schemaEditor&quot;&lt;/code&gt; to the TextArea in the .fxml file.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/2020-12-05-navigation-using-a-listview-in-javafx/demo.webp&quot; alt=&quot;Textarea updates based on the selected item in the ListView&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;Textarea updates based on the selected item in the ListView.&lt;/em&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;using-easybind&quot;&gt;Using EasyBind&lt;/h2&gt;
+
+&lt;p&gt;I worked in the past with &lt;a href=&quot;https://github.com/ReactiveX/RxJava&quot;&gt;RxJava&lt;/a&gt; which also have a type called &lt;a href=&quot;http://reactivex.io/RxJava/3.x/javadoc/io/reactivex/rxjava3/core/Observable.html&quot;&gt;Observable&lt;/a&gt; (its sematic varies from the JavaFX Observable though). One of the thing that I enjoy was possibility to use function such as &lt;a href=&quot;http://reactivex.io/RxJava/3.x/javadoc/io/reactivex/rxjava3/core/Observable.html#map-io.reactivex.rxjava3.functions.Function-&quot;&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;.map()&lt;/code&gt;&lt;/a&gt; to transform an observable.&lt;/p&gt;
+
+&lt;p&gt;While the &lt;a href=&quot;https://openjfx.io/javadoc/15/javafx.base/javafx/beans/binding/Bindings.html&quot;&gt;Bindings&lt;/a&gt; util class offers some tools to do transformation of observables, I am not found of its ergonomics. I prefer to use the &lt;a href=&quot;https://github.com/TomasMikula/EasyBind&quot;&gt;EasyBind&lt;/a&gt; library instead:&lt;/p&gt;
+
+&lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;// When the selected schema changes&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;selectedSchemaProperty&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;bind&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;schemaListView&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;getSelectionModel&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;().&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;selectedItemProperty&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;());&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;schemaEditor&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;textProperty&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;().&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;bind&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;
+    &lt;span class=&quot;nc&quot;&gt;EasyBind&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;monadic&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;selectedSchemaProperty&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;selectProperty&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;Schema:&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;rawProperty&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;I could skip using the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;selectedSchemaProperty&lt;/code&gt; variable altogether:&lt;/p&gt;
+
+&lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;// When the selected schema changes&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;schemaEditor&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;textProperty&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;().&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;bind&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;
+    &lt;span class=&quot;nc&quot;&gt;EasyBind&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;monadic&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;schemaListView&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;selectionModelProperty&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;())&lt;/span&gt;
+        &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;flatMap&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;SelectionModel:&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;selectedItemProperty&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;selectProperty&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;Schema:&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;rawProperty&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;em&gt;Don’t forget to add the esybind dependency to your &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;pom.xml&lt;/code&gt; and &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;module-info.java&lt;/code&gt; files.&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;I’m a big fan of monads as they allow to make my code linear, hence easier to read.&lt;/p&gt;
+</description>
+        <pubDate>Sun, 06 Dec 2020 09:43:00 +0800</pubDate>
+        <link>http://yourdomain.com/2020/12/06/navigation-using-a-listview-in-javafx.html</link>
+        <guid isPermaLink="true">http://yourdomain.com/2020/12/06/navigation-using-a-listview-in-javafx.html</guid>
+        
+        
+        <category>100-days-javafx</category>
+        
+      </item>
     
       <item>
         <title>Editable ListView Cells in JavaFX</title>
@@ -1318,7 +1403,7 @@ I want to do 100 Days of JavaFX blogging.&lt;/p&gt;
 
 &lt;ul class=&quot;task-list&quot;&gt;
   &lt;li class=&quot;task-list-item&quot;&gt;&lt;input type=&quot;checkbox&quot; class=&quot;task-list-item-checkbox&quot; disabled=&quot;disabled&quot; checked=&quot;checked&quot; /&gt;&lt;a href=&quot;/2020/10/19/native-gui-app-with-javafx.html&quot;&gt;Day 1 - Build a simple javafx app to a native executable (Linux)&lt;/a&gt;&lt;/li&gt;
-  &lt;li class=&quot;task-list-item&quot;&gt;&lt;input type=&quot;checkbox&quot; class=&quot;task-list-item-checkbox&quot; disabled=&quot;disabled&quot; checked=&quot;checked&quot; /&gt;&lt;a href=&quot;/2020/10/21/native-gui-app-with-javafx-windows.html&quot;&gt;Day 2 - JavaFx native app on Windows&lt;/a&gt;&lt;/li&gt;
+  &lt;li class=&quot;task-list-item&quot;&gt;&lt;input type=&quot;checkbox&quot; class=&quot;task-list-item-checkbox&quot; disabled=&quot;disabled&quot; checked=&quot;checked&quot; /&gt;&lt;a href=&quot;/2020/10/21/native-gui-app-with-javafx-windows.html&quot;&gt;Day 2 - JavaFX Native App on Windows&lt;/a&gt;&lt;/li&gt;
   &lt;li class=&quot;task-list-item&quot;&gt;&lt;input type=&quot;checkbox&quot; class=&quot;task-list-item-checkbox&quot; disabled=&quot;disabled&quot; checked=&quot;checked&quot; /&gt;&lt;a href=&quot;/2020/10/22/simple-javafx-project-wont-run-in-intellij.html&quot;&gt;Day 3 - Simple JavaFX project won’t run with IntelliJ&lt;/a&gt;&lt;/li&gt;
   &lt;li class=&quot;task-list-item&quot;&gt;&lt;input type=&quot;checkbox&quot; class=&quot;task-list-item-checkbox&quot; disabled=&quot;disabled&quot; checked=&quot;checked&quot; /&gt;&lt;a href=&quot;/2020/10/24/paste-image-from-clipboard-javafx.html&quot;&gt;Day 4 - Paste an image from the clipboard&lt;/a&gt;&lt;/li&gt;
   &lt;li class=&quot;task-list-item&quot;&gt;&lt;input type=&quot;checkbox&quot; class=&quot;task-list-item-checkbox&quot; disabled=&quot;disabled&quot; checked=&quot;checked&quot; /&gt;&lt;a href=&quot;/2020/11/08/build-favafx-native-executable-fxml.html&quot;&gt;Day 5 - Native executable with FXML and Annotations&lt;/a&gt;&lt;/li&gt;
@@ -1327,131 +1412,15 @@ I want to do 100 Days of JavaFX blogging.&lt;/p&gt;
   &lt;li class=&quot;task-list-item&quot;&gt;&lt;input type=&quot;checkbox&quot; class=&quot;task-list-item-checkbox&quot; disabled=&quot;disabled&quot; checked=&quot;checked&quot; /&gt;&lt;a href=&quot;/2020/11/28/introduction-to-javafx-properties-and-databinding.html&quot;&gt;Day 8 - Introduction to Properties and Databinding in JavaFX&lt;/a&gt;&lt;/li&gt;
   &lt;li class=&quot;task-list-item&quot;&gt;&lt;input type=&quot;checkbox&quot; class=&quot;task-list-item-checkbox&quot; disabled=&quot;disabled&quot; checked=&quot;checked&quot; /&gt;&lt;a href=&quot;/2020/12/03/observable-collection-and-listview-in-javafx.html&quot;&gt;Day 9 - Observable Collections and ListView in JavaFX&lt;/a&gt;&lt;/li&gt;
   &lt;li class=&quot;task-list-item&quot;&gt;&lt;input type=&quot;checkbox&quot; class=&quot;task-list-item-checkbox&quot; disabled=&quot;disabled&quot; checked=&quot;checked&quot; /&gt;&lt;a href=&quot;/2020/12/05/editable-listview-cells-in-javafx.html&quot;&gt;Day 10 - An Editable ListCell&lt;/a&gt;&lt;/li&gt;
+  &lt;li class=&quot;task-list-item&quot;&gt;&lt;input type=&quot;checkbox&quot; class=&quot;task-list-item-checkbox&quot; disabled=&quot;disabled&quot; checked=&quot;checked&quot; /&gt;&lt;a href=&quot;/2020/12/06/navigation-using-a-listview-in-javafx.html&quot;&gt;Day 11 - Navigation using a ListView&lt;/a&gt;&lt;/li&gt;
   &lt;li class=&quot;task-list-item&quot;&gt;&lt;input type=&quot;checkbox&quot; class=&quot;task-list-item-checkbox&quot; disabled=&quot;disabled&quot; /&gt;Day ? - Dark Mode&lt;/li&gt;
+  &lt;li class=&quot;task-list-item&quot;&gt;&lt;input type=&quot;checkbox&quot; class=&quot;task-list-item-checkbox&quot; disabled=&quot;disabled&quot; /&gt;Day ? - JavaFX with Kotlin&lt;/li&gt;
 &lt;/ul&gt;
 </description>
         <pubDate>Wed, 21 Oct 2020 12:02:00 +0800</pubDate>
         <link>http://yourdomain.com/2020/10/21/javafx-100-days-of-code.html</link>
         <guid isPermaLink="true">http://yourdomain.com/2020/10/21/javafx-100-days-of-code.html</guid>
         
-        
-      </item>
-    
-      <item>
-        <title>Native GUI app with JavaFX on Windows</title>
-        <description>&lt;p&gt;This is a following post on my previous &lt;a href=&quot;/2020/02/19/native-gui-app-with-javafx.html&quot;&gt;“Native GUI app with JavaFX”&lt;/a&gt; guide. Examples and instructions on that guide are targeted for Linux.&lt;/p&gt;
-
-&lt;p&gt;You could run the guide from the previous article if you are using the Windows Subsystem for Linux (WSL 2). However, because it runs in a Linux VM, it will not produce a native windows binary.&lt;/p&gt;
-
-&lt;p&gt;In this post we will see how to compile a JavaFX app as a Windows binary.&lt;/p&gt;
-
-&lt;!--more--&gt;
-
-&lt;h2 id=&quot;graalvm-and-maven-with-chocolatey&quot;&gt;GraalVM and Maven with Chocolatey&lt;/h2&gt;
-
-&lt;p&gt;If you don’t already use it, you can manage some of your software installations and updates on Windows using Chocolatey.&lt;/p&gt;
-
-&lt;p&gt;To install it, visit &lt;a href=&quot;https://chocolatey.org/install&quot;&gt;chocolatey.org/install&lt;/a&gt; and follow the instructions.&lt;/p&gt;
-
-&lt;p&gt;The following must be executed with admin privileges.&lt;/p&gt;
-
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# Install GraalVM&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; choco &lt;span class=&quot;nb&quot;&gt;install &lt;/span&gt;graalvm
-
-&lt;span class=&quot;c&quot;&gt;# Let`s check which version of java we are using&lt;/span&gt;
-&lt;span class=&quot;c&quot;&gt;# The coco command has updated are PATH to include binaries from the GraalVM installation&lt;/span&gt;
-&lt;span class=&quot;c&quot;&gt;# You may need to restart your shell after running `choco install`.&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; java &lt;span class=&quot;nt&quot;&gt;-version&lt;/span&gt;
-openjdk version &lt;span class=&quot;s2&quot;&gt;&quot;11.0.8&quot;&lt;/span&gt; 2020-07-14
-OpenJDK Runtime Environment GraalVM CE 20.2.0 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;build 11.0.8+10-jvmci-20.2-b03&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-OpenJDK 64-Bit Server VM GraalVM CE 20.2.0 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;build 11.0.8+10-jvmci-20.2-b03, mixed mode, sharing&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-
-&lt;span class=&quot;c&quot;&gt;# We will also need the Maven build tool.&lt;/span&gt;
-&lt;span class=&quot;c&quot;&gt;# Note: you can use Gradle too, this tutorial focuses on Maven.&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; choco &lt;span class=&quot;nb&quot;&gt;install &lt;/span&gt;maven
-
-&lt;span class=&quot;c&quot;&gt;# Native image will be used to compile to a native binary.&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; gu &lt;span class=&quot;nb&quot;&gt;install &lt;/span&gt;native-image
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h2 id=&quot;visual-studio-community&quot;&gt;Visual Studio Community&lt;/h2&gt;
-
-&lt;p&gt;My Windows installation being in French, the following screenshots are in French.&lt;/p&gt;
-
-&lt;p&gt;You can find the updated versions of installation requirements on the Gluon Client documentation: &lt;a href=&quot;http://docs.gluonhq.com/client/&quot;&gt;docs.gluonhq.com/client/&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;In order to build a native binary on Windows, you will need Visual Studio. Visual Studio offers a free &lt;a href=&quot;https://visualstudio.microsoft.com/vs/&quot;&gt;Community Version&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;At the time I am writing this, the requirements to select during the Visual Studio installation process are the following:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Choose the &lt;strong&gt;English Language Pack only&lt;/strong&gt;&lt;/li&gt;
-  &lt;li&gt;C++/CLI support for v142 build tools (14.25 or later)&lt;/li&gt;
-  &lt;li&gt;MSVC v142 - VS 2019 C++ x64/x86 build tools (v14.25 or later)&lt;/li&gt;
-  &lt;li&gt;Windows Universal CRT SDK&lt;/li&gt;
-  &lt;li&gt;Windows 10 SDK (10.0.19041.0 or later)&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;&lt;strong&gt;When you will run the commands to build the project, you must do it using the shell provided by Visual Studio: x64 Native Tools Command Prompt for VS 2019.&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/2020-10-20-native-gui-app-with-javafx-windows/run-native-tools-command.png&quot; alt=&quot;Run &amp;quot;x64 Native Tools Command Prompt for VS 2019&amp;quot; from start menu&quot; /&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;minimal-javafx-project&quot;&gt;Minimal JavaFX project&lt;/h2&gt;
-
-&lt;p&gt;Steps to create the minimal project are available in &lt;a href=&quot;/2020/02/19/native-gui-app-with-javafx.html&quot;&gt;my previous post&lt;/a&gt;. 
-I’ll highlight here the differences between Windows and Linux.&lt;/p&gt;
-
-&lt;p&gt;As far as creating the project, the only difference is the way you create a directory hierarchy on Windows (you don’t need the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;-p&lt;/code&gt; option):&lt;/p&gt;
-
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# Create a basic directory structure&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;mkdir &lt;/span&gt;hellofx&lt;span class=&quot;se&quot;&gt;\s&lt;/span&gt;rc&lt;span class=&quot;se&quot;&gt;\m&lt;/span&gt;ain&lt;span class=&quot;se&quot;&gt;\j&lt;/span&gt;ava&lt;span class=&quot;se&quot;&gt;\e&lt;/span&gt;u&lt;span class=&quot;se&quot;&gt;\l&lt;/span&gt;eward&lt;span class=&quot;se&quot;&gt;\h&lt;/span&gt;ellofx
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Because we already have &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;java&lt;/code&gt; and &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;mvn&lt;/code&gt; in our path, we can run: &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;mvn javafx:run&lt;/code&gt; to launch the program as a regular Java application.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/2020-10-20-native-gui-app-with-javafx-windows/javafx-run-traditional.png&quot; alt=&quot;The JavaFX application running on Windows&quot; /&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;compiling-as-a-native-app&quot;&gt;Compiling as a native app&lt;/h2&gt;
-
-&lt;p&gt;Once you have all the pre-requisites installed, the process building the application doesn’t not differ much between Windows and Linux.&lt;/p&gt;
-
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# You need to have a GRAALVM_HOME environment variable for the plugin to work. &lt;/span&gt;
-&lt;span class=&quot;nb&quot;&gt;set &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;GRAALVM_HOME&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;C:/Program Files/GraalVM/graalvm-ce-java11-20.2.0
-
-&lt;span class=&quot;c&quot;&gt;# Build the application as a native binary&lt;/span&gt;
-mvn cient:build
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;If you get the following error:&lt;/p&gt;
-
-&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;[ERROR] Failed to execute goal com.gluonhq:client-maven-plugin:0.1.31:compile (default-cli) on project hellofx: Error: Cannot run program &quot;cl&quot;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;You need to check that&lt;/p&gt;
-&lt;ul&gt;
-  &lt;li&gt;Visual Studio Community has been properly installed&lt;/li&gt;
-  &lt;li&gt;and &lt;strong&gt;you are running the command prompt “x64 Native Tools Command Prompt for VS 2019”&lt;/strong&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/2020-10-20-native-gui-app-with-javafx-windows/task-manager.png&quot; alt=&quot;Windows Task Manager during the compilation of the program&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;The compilation will make good use of your CPU cores. 
-This Windows laptop is a bit more powerful than my Linux machine. Build time was 2 minutes and 30 seconds instead of 4 minutes with my slower machine.&lt;/p&gt;
-
-&lt;p&gt;You will now have an hello.exe file in &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;target\client\x86_64-windows&lt;/code&gt; that you can click on to run your program.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/2020-10-20-native-gui-app-with-javafx-windows/exe-file.png&quot; alt=&quot;The .exe file in File Explorer&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/2020-10-20-native-gui-app-with-javafx-windows/javafx-run-compiled.png&quot; alt=&quot;The JavaFX application running from a native binary&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;And voilà, you have built and run a JavaFX application as a native binary on Windows.&lt;/p&gt;
-</description>
-        <pubDate>Wed, 21 Oct 2020 10:40:00 +0800</pubDate>
-        <link>http://yourdomain.com/2020/10/21/native-gui-app-with-javafx-windows.html</link>
-        <guid isPermaLink="true">http://yourdomain.com/2020/10/21/native-gui-app-with-javafx-windows.html</guid>
-        
-        
-        <category>100-days-javafx</category>
         
       </item>
     

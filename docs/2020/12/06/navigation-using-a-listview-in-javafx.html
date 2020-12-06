@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Navigation using a ListView in JavaFX</title>
+  <meta name="description" content="The Schema Editor app I’ve been working on has two main panes in its UI: the menu on the left and the editor and the center.In the previous posts we were abl...">
+
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="canonical" href="http://yourdomain.com/2020/12/06/navigation-using-a-listview-in-javafx.html">
+  <link rel="alternate" type="application/rss+xml" title="Paul-Julien Vauthier" href="http://yourdomain.com/feed.xml">
+</head>
+
+
+  <body>
+
+    <header class="site-header">
+
+  <div class="wrapper">
+      
+    <a class="site-title" href="/">
+        <img src="/images/bicycle.svg">
+        Paul-Julien Vauthier
+    </a>
+      
+    <div class="langs">
+        <ul>
+        
+        
+          <li>
+            <a href="/2020/12/06/navigation-using-a-listview-in-javafx.html" class="en">en</a>
+          </li>
+        
+
+        
+        
+        </ul>
+    </div>
+      
+    <p class="site-sub-title">
+        Personnal website about my job as an IT Consultant and Developer, casual Cycling and my relocation to Singapore.
+    </p>
+      
+    <nav class="site-nav">
+      <!--<a href="#" class="menu-icon">
+        <svg viewBox="0 0 18 15">
+          <path fill="#424242" d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.031C17.335,0,18,0.665,18,1.484L18,1.484z"/>
+          <path fill="#424242" d="M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0c0-0.82,0.665-1.484,1.484-1.484 h15.031C17.335,6.031,18,6.696,18,7.516L18,7.516z"/>
+          <path fill="#424242" d="M18,13.516C18,14.335,17.335,15,16.516,15H1.484C0.665,15,0,14.335,0,13.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.031C17.335,12.031,18,12.696,18,13.516L18,13.516z"/>
+        </svg>
+      </a>-->
+
+      <div class="trigger">
+        
+        <a class="page-link" href="/">Home</a>
+        
+        <a class="page-link" href="/resume">Resume</a>
+        
+        <!--
+          
+          <a class="page-link" href="/about/">About</a>
+          
+        
+          
+          <a class="page-link" href="/credits/">Credits</a>
+          
+        
+          
+          <a class="page-link" href="/credits-fr/">Crédits</a>
+          
+        
+          
+          <a class="page-link" href="/cv">CV</a>
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+          <a class="page-link" href="/lebenslauf">Lebenslauf</a>
+          
+        
+          
+        
+          
+          <a class="page-link" href="/resume">Resume</a>
+          
+        
+          
+          <a class="page-link" href="/rirekisho">りれきしょ</a>
+          
+        -->
+      </div>
+    </nav>
+    
+    
+
+  </div>
+
+</header>
+
+
+    <div class="page-content">
+      <div class="wrapper">
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">Navigation using a ListView in JavaFX</h1>
+    <p class="post-meta"><time datetime="2020-12-06T09:43:00+08:00" itemprop="datePublished">Dec 6, 2020</time></p>
+  </header>
+
+  <div class="post-content" itemprop="articleBody">
+
+    
+    <p>
+    <em>
+      This post is part the <a href="/2020/10/21/javafx-100-days-of-code.html">100 Days of JavaFX Series</a>.
+    </em>
+    </p>
+    
+
+    <p>The <a href="/2020/11/15/new-project-json-schema-app.html">Schema Editor app</a> I’ve been working on has two main panes in its UI: the menu on the left and the editor and the center.</p>
+
+<p>In the previous posts we were able to <a href="/2020/12/03/observable-collection-and-listview-in-javafx.html">create a reactive menu</a> and <a href="/2020/12/05/editable-listview-cells-in-javafx.html">make the name of the schema editable</a>.</p>
+
+<!--more-->
+
+<p><img src="/assets/2020-12-05-navigation-using-a-listview-in-javafx/app.png" alt="The Application after it started" /></p>
+
+<h2 id="react-when-an-schema-is-selected-in-the-listview">React when an Schema is selected in the ListView</h2>
+
+<p>We want the editor view to reflect the correct schema when selecting the schema from the ListView.</p>
+
+<p>This not something you can do in FXML. However you can get a property that tracks the currently selected item: <a href="https://openjfx.io/javadoc/15/javafx.controls/javafx/scene/control/SelectionModel.html#selectedItemProperty()"><code class="language-plaintext highlighter-rouge">listView.getSelectionModel().selectedItemProperty()</code></a></p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">AppController</span> <span class="o">{</span>
+    <span class="nd">@FXML</span> <span class="kd">private</span> <span class="nc">ListView</span><span class="o">&lt;</span><span class="nc">Schema</span><span class="o">&gt;</span> <span class="n">schemaListView</span><span class="o">;</span>
+    <span class="nd">@FXML</span> <span class="kd">private</span> <span class="nc">TextArea</span> <span class="n">schemaEditor</span><span class="o">;</span>
+
+    <span class="kd">private</span> <span class="kd">final</span> <span class="nc">ObjectProperty</span><span class="o">&lt;</span><span class="nc">Schema</span><span class="o">&gt;</span> <span class="n">selectedSchemaProperty</span> 
+        <span class="o">=</span> <span class="k">new</span> <span class="nc">SimpleObjectProperty</span><span class="o">&lt;&gt;();</span>
+
+    <span class="nd">@FXML</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">initialize</span><span class="o">()</span> <span class="kd">throws</span> <span class="nc">IOException</span> <span class="o">{</span>
+        <span class="nc">ObservableList</span><span class="o">&lt;</span><span class="nc">Schema</span><span class="o">&gt;</span> <span class="n">schemas</span> <span class="o">=</span> <span class="nc">FXCollections</span><span class="o">.</span><span class="na">observableArrayList</span><span class="o">();</span>
+        <span class="n">schemaListView</span><span class="o">.</span><span class="na">setEditable</span><span class="o">(</span><span class="kc">true</span><span class="o">);</span>
+        <span class="n">schemaListView</span><span class="o">.</span><span class="na">setCellFactory</span><span class="o">(</span><span class="n">param</span> <span class="o">-&gt;</span> <span class="k">new</span> <span class="nc">SchemaListCell</span><span class="o">());</span>
+        <span class="n">schemaListView</span><span class="o">.</span><span class="na">setItems</span><span class="o">(</span><span class="n">schemas</span><span class="o">);</span>
+
+        <span class="n">selectedSchemaProperty</span><span class="o">.</span><span class="na">bind</span><span class="o">(</span><span class="n">schemaListView</span><span class="o">.</span><span class="na">getSelectionModel</span><span class="o">().</span><span class="na">selectedItemProperty</span><span class="o">());</span>
+        <span class="n">selectedSchemaProperty</span><span class="o">.</span><span class="na">addListener</span><span class="o">((</span><span class="n">observable</span><span class="o">,</span> <span class="n">oldValue</span><span class="o">,</span> <span class="n">newValue</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="o">{</span>
+            <span class="n">schemaEditor</span><span class="o">.</span><span class="na">setText</span><span class="o">(</span><span class="n">newValue</span><span class="o">.</span><span class="na">getRaw</span><span class="o">());</span>
+        <span class="o">});</span>
+
+        <span class="c1">// Load data</span>
+        <span class="nc">InitialDataLoader</span> <span class="n">dataLoader</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">InitialDataLoader</span><span class="o">();</span>
+        <span class="n">schemas</span><span class="o">.</span><span class="na">addAll</span><span class="o">(</span><span class="n">dataLoader</span><span class="o">.</span><span class="na">load</span><span class="o">());</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>Don’t forget to add <code class="language-plaintext highlighter-rouge">fx:id="schemaEditor"</code> to the TextArea in the .fxml file.</p>
+
+<p><img src="/assets/2020-12-05-navigation-using-a-listview-in-javafx/demo.webp" alt="Textarea updates based on the selected item in the ListView" /></p>
+
+<p><em>Textarea updates based on the selected item in the ListView.</em></p>
+
+<h2 id="using-easybind">Using EasyBind</h2>
+
+<p>I worked in the past with <a href="https://github.com/ReactiveX/RxJava">RxJava</a> which also have a type called <a href="http://reactivex.io/RxJava/3.x/javadoc/io/reactivex/rxjava3/core/Observable.html">Observable</a> (its sematic varies from the JavaFX Observable though). One of the thing that I enjoy was possibility to use function such as <a href="http://reactivex.io/RxJava/3.x/javadoc/io/reactivex/rxjava3/core/Observable.html#map-io.reactivex.rxjava3.functions.Function-"><code class="language-plaintext highlighter-rouge">.map()</code></a> to transform an observable.</p>
+
+<p>While the <a href="https://openjfx.io/javadoc/15/javafx.base/javafx/beans/binding/Bindings.html">Bindings</a> util class offers some tools to do transformation of observables, I am not found of its ergonomics. I prefer to use the <a href="https://github.com/TomasMikula/EasyBind">EasyBind</a> library instead:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// When the selected schema changes</span>
+<span class="n">selectedSchemaProperty</span><span class="o">.</span><span class="na">bind</span><span class="o">(</span><span class="n">schemaListView</span><span class="o">.</span><span class="na">getSelectionModel</span><span class="o">().</span><span class="na">selectedItemProperty</span><span class="o">());</span>
+<span class="n">schemaEditor</span><span class="o">.</span><span class="na">textProperty</span><span class="o">().</span><span class="na">bind</span><span class="o">(</span>
+    <span class="nc">EasyBind</span><span class="o">.</span><span class="na">monadic</span><span class="o">(</span><span class="n">selectedSchemaProperty</span><span class="o">)</span>
+        <span class="o">.</span><span class="na">selectProperty</span><span class="o">(</span><span class="nl">Schema:</span><span class="o">:</span><span class="n">rawProperty</span><span class="o">)</span>
+<span class="o">);</span>
+</code></pre></div></div>
+
+<p>I could skip using the <code class="language-plaintext highlighter-rouge">selectedSchemaProperty</code> variable altogether:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// When the selected schema changes</span>
+<span class="n">schemaEditor</span><span class="o">.</span><span class="na">textProperty</span><span class="o">().</span><span class="na">bind</span><span class="o">(</span>
+    <span class="nc">EasyBind</span><span class="o">.</span><span class="na">monadic</span><span class="o">(</span><span class="n">schemaListView</span><span class="o">.</span><span class="na">selectionModelProperty</span><span class="o">())</span>
+        <span class="o">.</span><span class="na">flatMap</span><span class="o">(</span><span class="nl">SelectionModel:</span><span class="o">:</span><span class="n">selectedItemProperty</span><span class="o">)</span>
+        <span class="o">.</span><span class="na">selectProperty</span><span class="o">(</span><span class="nl">Schema:</span><span class="o">:</span><span class="n">rawProperty</span><span class="o">)</span>
+<span class="o">);</span>
+</code></pre></div></div>
+
+<p><em>Don’t forget to add the esybind dependency to your <code class="language-plaintext highlighter-rouge">pom.xml</code> and <code class="language-plaintext highlighter-rouge">module-info.java</code> files.</em></p>
+
+<p>I’m a big fan of monads as they allow to make my code linear, hence easier to read.</p>
+
+  </div>
+
+</article>
+
+      </div>
+    </div>
+
+    <footer class="site-footer">
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Paul-Julien Vauthier</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li>Paul-Julien Vauthier</li>
+          <li><a href="mailto:pj.vauthier@gmail.com">pj.vauthier@gmail.com</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-2">
+        <ul class="social-media-list">
+          
+          <li>
+            <a href="https://github.com/Leward"><span class="icon icon--github"><svg viewBox="0 0 16 16"><path fill="#828282" d="M7.999,0.431c-4.285,0-7.76,3.474-7.76,7.761 c0,3.428,2.223,6.337,5.307,7.363c0.388,0.071,0.53-0.168,0.53-0.374c0-0.184-0.007-0.672-0.01-1.32 c-2.159,0.469-2.614-1.04-2.614-1.04c-0.353-0.896-0.862-1.135-0.862-1.135c-0.705-0.481,0.053-0.472,0.053-0.472 c0.779,0.055,1.189,0.8,1.189,0.8c0.692,1.186,1.816,0.843,2.258,0.645c0.071-0.502,0.271-0.843,0.493-1.037 C4.86,11.425,3.049,10.76,3.049,7.786c0-0.847,0.302-1.54,0.799-2.082C3.768,5.507,3.501,4.718,3.924,3.65 c0,0,0.652-0.209,2.134,0.796C6.677,4.273,7.34,4.187,8,4.184c0.659,0.003,1.323,0.089,1.943,0.261 c1.482-1.004,2.132-0.796,2.132-0.796c0.423,1.068,0.157,1.857,0.077,2.054c0.497,0.542,0.798,1.235,0.798,2.082 c0,2.981-1.814,3.637-3.543,3.829c0.279,0.24,0.527,0.713,0.527,1.437c0,1.037-0.01,1.874-0.01,2.129 c0,0.208,0.14,0.449,0.534,0.373c3.081-1.028,5.302-3.935,5.302-7.362C15.76,3.906,12.285,0.431,7.999,0.431z"/></svg>
+</span><span class="username">Leward</span></a>
+
+          </li>
+          
+
+          
+          <li>
+            <a href="https://twitter.com/Pj_Leward"><span class="icon icon--twitter"><svg viewBox="0 0 16 16"><path fill="#828282" d="M15.969,3.058c-0.586,0.26-1.217,0.436-1.878,0.515c0.675-0.405,1.194-1.045,1.438-1.809c-0.632,0.375-1.332,0.647-2.076,0.793c-0.596-0.636-1.446-1.033-2.387-1.033c-1.806,0-3.27,1.464-3.27,3.27 c0,0.256,0.029,0.506,0.085,0.745C5.163,5.404,2.753,4.102,1.14,2.124C0.859,2.607,0.698,3.168,0.698,3.767 c0,1.134,0.577,2.135,1.455,2.722C1.616,6.472,1.112,6.325,0.671,6.08c0,0.014,0,0.027,0,0.041c0,1.584,1.127,2.906,2.623,3.206 C3.02,9.402,2.731,9.442,2.433,9.442c-0.211,0-0.416-0.021-0.615-0.059c0.416,1.299,1.624,2.245,3.055,2.271 c-1.119,0.877-2.529,1.4-4.061,1.4c-0.264,0-0.524-0.015-0.78-0.046c1.447,0.928,3.166,1.469,5.013,1.469 c6.015,0,9.304-4.983,9.304-9.304c0-0.142-0.003-0.283-0.009-0.423C14.976,4.29,15.531,3.714,15.969,3.058z"/></svg>
+</span><span class="username">Pj_Leward</span></a>
+
+          </li>
+          
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-3">
+        <p><!--{"fr"=>"Site web personnel à propos de mon travail en tant que Développer et Consultant IT , de vélo en tant que hobby, et de mon déménagement à venir à Singapour.", "en"=>"Personnal website about my job as an IT Consultant and Developer, casual Cycling and my relocation to Singapore.", "de"=>"Persönlich Website über meinen Job als einen IT-Berater und Softwareentwickler, Radfahren und meinen Umzug nach Singapur.", "jp"=>"じょうほうテクノロジー と じてんしゃ　と　シンガポール についての私のブログ."}--></p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+
+
+  </body>
+
+  <script async defer data-domain="leward.eu" src="https://plausible.io/js/plausible.js"></script>
+
+</html>
