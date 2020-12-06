@@ -37,5 +37,6 @@ Writing down my findings is a good way to:
 - [x] [Day 9 - Observable Collections and ListView in JavaFX]({% post_url 2020-12-03-EN-observable-collection-and-listview-in-javafx %})
 - [x] [Day 10 - An Editable ListCell]({% post_url 2020-12-05-EN-editable-listview-cells-in-javafx %})
 - [x] [Day 11 - Navigation using a ListView]({% post_url 2020-12-05-EN-navigation-using-a-listview-in-javafx %})
+- [x] [Day 12 - Extract JavaFX Component (FXML)]({% post_url 2020-12-06-EN-extract-javafx-component-fxml %})
 - [ ] Day ? - Dark Mode
 - [ ] Day ? - JavaFX with Kotlin
