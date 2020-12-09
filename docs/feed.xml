@@ -5,8 +5,8 @@
     <description>{&quot;fr&quot;=&gt;&quot;Site web personnel à propos de mon travail en tant que Développer et Consultant IT , de vélo en tant que hobby, et de mon déménagement à venir à Singapour.&quot;, &quot;en&quot;=&gt;&quot;Personnal website about my job as an IT Consultant and Developer, casual Cycling and my relocation to Singapore.&quot;, &quot;de&quot;=&gt;&quot;Persönlich Website über meinen Job als einen IT-Berater und Softwareentwickler, Radfahren und meinen Umzug nach Singapur.&quot;, &quot;jp&quot;=&gt;&quot;じょうほうテクノロジー と じてんしゃ　と　シンガポール についての私のブログ.&quot;}</description>
     <link>http://yourdomain.com/</link>
     <atom:link href="http://yourdomain.com/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Wed, 09 Dec 2020 13:29:47 +0800</pubDate>
-    <lastBuildDate>Wed, 09 Dec 2020 13:29:47 +0800</lastBuildDate>
+    <pubDate>Wed, 09 Dec 2020 13:33:03 +0800</pubDate>
+    <lastBuildDate>Wed, 09 Dec 2020 13:33:03 +0800</lastBuildDate>
     <generator>Jekyll v4.1.0</generator>
     
       <item>
@@ -133,9 +133,9 @@
 
 &lt;p&gt;Styling of the text editor is exactly what we need to apply syntax highlighting on our JSON Schema. This is what we will see in the next post.&lt;/p&gt;
 </description>
-        <pubDate>Sun, 06 Dec 2020 09:43:00 +0800</pubDate>
-        <link>http://yourdomain.com/2020/12/06/json-editor-with-richtextfx-part-1.html</link>
-        <guid isPermaLink="true">http://yourdomain.com/2020/12/06/json-editor-with-richtextfx-part-1.html</guid>
+        <pubDate>Wed, 09 Dec 2020 11:32:00 +0800</pubDate>
+        <link>http://yourdomain.com/2020/12/09/json-editor-with-richtextfx-part-1.html</link>
+        <guid isPermaLink="true">http://yourdomain.com/2020/12/09/json-editor-with-richtextfx-part-1.html</guid>
         
         
         <category>100-days-javafx</category>

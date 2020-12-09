@@ -2,7 +2,7 @@
 layout:     post
 title:      "JSON Editor with RichTextFX (part 1)"
 slug:       json-editor-with-richtextfx-part-1
-date:       2020-12-05 21:43:00 -0400
+date:       2020-12-08 23:32:00 -0400
 categories: 100-days-javafx
 lang:       en
 ref:        json-editor-with-richtextfx-part-1
