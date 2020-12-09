@@ -38,5 +38,7 @@ Writing down my findings is a good way to:
 - [x] [Day 10 - An Editable ListCell]({% post_url 2020-12-05-EN-editable-listview-cells-in-javafx %})
 - [x] [Day 11 - Navigation using a ListView]({% post_url 2020-12-05-EN-navigation-using-a-listview-in-javafx %})
 - [x] [Day 12 - Extract JavaFX Component (FXML)]({% post_url 2020-12-06-EN-extract-javafx-component-fxml %})
+- [x] [Day 13 - JSON Editor with RichTextFX (part 1)]({% post_url 2020-12-08-EN-json-editor-with-richtextfx-part-1 %})
+- [x] Day 14 - JSON Editor with RichTextFX (part 2)
 - [ ] Day ? - Dark Mode
 - [ ] Day ? - JavaFX with Kotlin
