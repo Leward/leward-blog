@@ -131,15 +131,15 @@
 
     <p>In <a href="/2020/12/09/json-editor-with-richtextfx-part-1.html">the part 1</a> we discovered how to use the capabilities of the <a href="http://fxmisc.github.io/richtext/javadoc/0.10.5/org/fxmisc/richtext/CodeArea.html"><code class="language-plaintext highlighter-rouge">CodeArea</code></a> component from <a href="https://github.com/FXMisc/RichTextFX">the RichTextFX library</a> in order to have a textarea suited for editing code and which can render rich text.</p>
 
-<p>In this part we base on this to build a JSON syntax highlighter for the JSON Editor of <a href="/2020/11/15/new-project-json-schema-app.html">our JSON Schema application</a>.</p>
+<p>In this post (part 2) we will to make a JSON syntax highlighter for the JSON Editor of <a href="/2020/11/15/new-project-json-schema-app.html">our JSON Schema application</a>.</p>
 
 <!--more-->
 
 <h2 id="leveraging-jackson-parser">Leveraging Jackson Parser</h2>
 
-<p>Jackson is a good and popular option when it comes to work with JSON in the Java ecosystem. We are interesting in leveraging the <a href="https://fasterxml.github.io/jackson-core/javadoc/2.12/com/fasterxml/jackson/core/JsonParser.html"><code class="language-plaintext highlighter-rouge">JsonParser</code></a> class to break down our JSON String into JSON tokens and apply styling to those individual tokens.</p>
+<p>Jackson is a good and popular option when it comes to work with JSON in the Java ecosystem. We want to leveraging the <a href="https://fasterxml.github.io/jackson-core/javadoc/2.12/com/fasterxml/jackson/core/JsonParser.html"><code class="language-plaintext highlighter-rouge">JsonParser</code></a> class to break down our JSON String into JSON tokens and apply styling to those individual tokens.</p>
 
-<p>Add Jackson dependency the your <code class="language-plaintext highlighter-rouge">pom.xml</code> file. Also don’t forget to add <code class="language-plaintext highlighter-rouge">requires com.fasterxml.jackson.core;</code> to you <code class="language-plaintext highlighter-rouge">module-info.java</code> file.</p>
+<p>Add the Jackson dependency the your <code class="language-plaintext highlighter-rouge">pom.xml</code> file. Also don’t forget to add <code class="language-plaintext highlighter-rouge">requires com.fasterxml.jackson.core;</code> to you <code class="language-plaintext highlighter-rouge">module-info.java</code> file.</p>
 
 <div class="language-xml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">&lt;!-- pom.xml --&gt;</span>
 <span class="nt">&lt;dependency&gt;</span>
@@ -160,7 +160,7 @@
 <span class="o">}</span>
 </code></pre></div></div>
 
-<p>Because we are parsing JSON for the purpose of syntax highlighting we can ingore JSON Parsing exceptions and just not (or partially) highlight invalid JSON.</p>
+<p>Because we are parsing JSON for the purpose of syntax highlighting we can ingore JSON Parsing exceptions and not (or partially) highlight invalid JSON.</p>
 
 <h2 id="css-classes">CSS classes</h2>
 
@@ -210,7 +210,7 @@
 <span class="o">}</span>
 </code></pre></div></div>
 
-<p>This won’t do much, but gives some foundation to build on.</p>
+<p>This won’t do much, but gives us some foundation to build on.</p>
 
 <h3 id="json-syntax-highlighting-using-jackson">JSON Syntax Highlighting using Jackson</h3>
 
@@ -250,11 +250,11 @@
 
 <p>Uh oh. Not quite what we expected… So what happened here?</p>
 
-<p>Did you notice when we add a <a href="http://fxmisc.github.io/richtext/javadoc/0.10.5/org/fxmisc/richtext/model/StyleSpan.html"><code class="language-plaintext highlighter-rouge">StyleSpan</code></a> to the builder we only specify the length of the span, not where it starts.</p>
+<p>Did you notice when we add a <a href="http://fxmisc.github.io/richtext/javadoc/0.10.5/org/fxmisc/richtext/model/StyleSpan.html"><code class="language-plaintext highlighter-rouge">StyleSpan</code></a> to the builder we only specify the length of the span, not where it starts?</p>
 
 <p>The thing is: <strong>Style Spans need to be contiguous from start to finish.</strong></p>
 
-<p>In order to do so we can track the last highlighted car, and fill in the blanks if needed.</p>
+<p>To overcome this issue we can track the last highlighted character, and fill in the blanks if needed.</p>
 
 <p>Replace in the previous snippet to add spans of non styled text:</p>
 <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">String</span> <span class="n">className</span> <span class="o">=</span> <span class="n">jsonTokenToClassName</span><span class="o">(</span><span class="n">jsonToken</span><span class="o">);</span>

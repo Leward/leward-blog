@@ -11,15 +11,15 @@ excerpt_separator: <!--more-->
 
 In [the part 1]({% post_url 2020-12-08-EN-json-editor-with-richtextfx-part-1 %}) we discovered how to use the capabilities of the [`CodeArea`](http://fxmisc.github.io/richtext/javadoc/0.10.5/org/fxmisc/richtext/CodeArea.html) component from [the RichTextFX library](https://github.com/FXMisc/RichTextFX) in order to have a textarea suited for editing code and which can render rich text.
 
-In this part we base on this to build a JSON syntax highlighter for the JSON Editor of [our JSON Schema application]({% post_url 2020-11-14-EN-new-project-json-schema-app %}).
+In this post (part 2) we will to make a JSON syntax highlighter for the JSON Editor of [our JSON Schema application]({% post_url 2020-11-14-EN-new-project-json-schema-app %}).
 
 <!--more-->
 
 ## Leveraging Jackson Parser
 
-Jackson is a good and popular option when it comes to work with JSON in the Java ecosystem. We are interesting in leveraging the [`JsonParser`](https://fasterxml.github.io/jackson-core/javadoc/2.12/com/fasterxml/jackson/core/JsonParser.html) class to break down our JSON String into JSON tokens and apply styling to those individual tokens.
+Jackson is a good and popular option when it comes to work with JSON in the Java ecosystem. We want to leveraging the [`JsonParser`](https://fasterxml.github.io/jackson-core/javadoc/2.12/com/fasterxml/jackson/core/JsonParser.html) class to break down our JSON String into JSON tokens and apply styling to those individual tokens.
 
-Add Jackson dependency the your `pom.xml` file. Also don't forget to add `requires com.fasterxml.jackson.core;` to you `module-info.java` file.
+Add the Jackson dependency the your `pom.xml` file. Also don't forget to add `requires com.fasterxml.jackson.core;` to you `module-info.java` file.
 
 ```xml
 <!-- pom.xml -->
@@ -42,7 +42,7 @@ while (!parser.isClosed()) {
 }
 ```
 
-Because we are parsing JSON for the purpose of syntax highlighting we can ingore JSON Parsing exceptions and just not (or partially) highlight invalid JSON.
+Because we are parsing JSON for the purpose of syntax highlighting we can ingore JSON Parsing exceptions and not (or partially) highlight invalid JSON.
 
 ## CSS classes
 
@@ -95,7 +95,7 @@ class Json {
 }
 ```
 
-This won't do much, but gives some foundation to build on.
+This won't do much, but gives us some foundation to build on.
 
 ### JSON Syntax Highlighting using Jackson
 
@@ -136,11 +136,11 @@ And if we run it...
 
 Uh oh. Not quite what we expected... So what happened here? 
 
-Did you notice when we add a [`StyleSpan`](http://fxmisc.github.io/richtext/javadoc/0.10.5/org/fxmisc/richtext/model/StyleSpan.html) to the builder we only specify the length of the span, not where it starts.
+Did you notice when we add a [`StyleSpan`](http://fxmisc.github.io/richtext/javadoc/0.10.5/org/fxmisc/richtext/model/StyleSpan.html) to the builder we only specify the length of the span, not where it starts?
 
 The thing is: **Style Spans need to be contiguous from start to finish.** 
 
-In order to do so we can track the last highlighted car, and fill in the blanks if needed. 
+To overcome this issue we can track the last highlighted character, and fill in the blanks if needed. 
 
 Replace in the previous snippet to add spans of non styled text:
 ```java
