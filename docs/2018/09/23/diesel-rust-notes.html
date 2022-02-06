@@ -316,7 +316,7 @@ The snippet below fetches the 5 latest news.</p>
         <span class="py">.load</span><span class="p">::</span><span class="o">&lt;</span><span class="p">(</span><span class="n">NewsRow</span><span class="p">,</span> <span class="n">Cover</span><span class="p">)</span><span class="o">&gt;</span><span class="p">(</span><span class="n">connection</span><span class="p">)</span> <span class="c">// To this point we get the result as a tuple. </span>
         <span class="nf">.expect</span><span class="p">(</span><span class="s">"Error loading news"</span><span class="p">)</span> <span class="c">// Another panic waiting to happen!</span>
         <span class="nf">.iter</span><span class="p">()</span>
-        <span class="nf">.map</span><span class="p">(|</span><span class="n">result</span><span class="p">|</span> <span class="nn">News</span><span class="p">::</span><span class="nf">from</span><span class="p">(</span><span class="o">&amp;</span><span class="n">result</span><span class="err">.</span><span class="mi">0</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">result</span><span class="err">.</span><span class="mi">1</span><span class="p">))</span>
+        <span class="nf">.map</span><span class="p">(|</span><span class="n">result</span><span class="p">|</span> <span class="nn">News</span><span class="p">::</span><span class="nf">from</span><span class="p">(</span><span class="o">&amp;</span><span class="n">result</span><span class="na">.0</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">result</span><span class="na">.1</span><span class="p">))</span>
         <span class="nf">.collect</span><span class="p">()</span>
 <span class="p">}</span>
 </code></pre></div></div>

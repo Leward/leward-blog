@@ -5,9 +5,142 @@
     <description>{&quot;fr&quot;=&gt;&quot;Site web personnel à propos de mon travail en tant que Développer et Consultant IT , de vélo en tant que hobby, et de mon déménagement à venir à Singapour.&quot;, &quot;en&quot;=&gt;&quot;Personnal website about my job as an IT Consultant and Developer, casual Cycling and my relocation to Singapore.&quot;, &quot;de&quot;=&gt;&quot;Persönlich Website über meinen Job als einen IT-Berater und Softwareentwickler, Radfahren und meinen Umzug nach Singapur.&quot;, &quot;jp&quot;=&gt;&quot;じょうほうテクノロジー と じてんしゃ　と　シンガポール についての私のブログ.&quot;}</description>
     <link>http://yourdomain.com/</link>
     <atom:link href="http://yourdomain.com/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Tue, 15 Dec 2020 12:31:24 +0800</pubDate>
-    <lastBuildDate>Tue, 15 Dec 2020 12:31:24 +0800</lastBuildDate>
-    <generator>Jekyll v4.1.0</generator>
+    <pubDate>Sun, 06 Feb 2022 14:45:44 +0800</pubDate>
+    <lastBuildDate>Sun, 06 Feb 2022 14:45:44 +0800</lastBuildDate>
+    <generator>Jekyll v4.2.0</generator>
+    
+      <item>
+        <title>WSL Setup On a New Windows 11 machine for Go Development</title>
+        <description>&lt;p&gt;I used to run &lt;a href=&quot;https://system76.com/pop&quot;&gt;Pop!_OS&lt;/a&gt; on my desktop computer. It was great for working on side projects (Java, Go, PHP, etc. ).&lt;/p&gt;
+
+&lt;p&gt;However, I also like to ride with &lt;a href=&quot;https://www.zwift.com/&quot;&gt;Zwift&lt;/a&gt; in the winter months.&lt;/p&gt;
+
+&lt;p&gt;Linux compatibility is not great. After fighting my computer to get a dual boot running (I got some weird boot sector errors, that were on and and off) I decided to bite the bullet a put Windows as the only OS.&lt;/p&gt;
+
+&lt;p&gt;I mostly use my desktop for Zwift in the winter anyway. Recently I wanted to dig into some Go again on my free time and had to figure a setup that works for me. I decided to document my process in this post.&lt;/p&gt;
+
+&lt;!--more--&gt;
+
+&lt;h2 id=&quot;wsl-installation&quot;&gt;WSL Installation&lt;/h2&gt;
+
+&lt;p&gt;I can’t tell for older versions of Windows, but on my WIndows 11 install it was very simple an painless.&lt;/p&gt;
+
+&lt;p&gt;Open the Windows Terminal (finally a decent terminal application on Windows!) as Administrator and type: &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;wsl --install&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;It will use Ubuntu as the default distribution. I believe it is sane default for the vast majority of people.&lt;/p&gt;
+
+&lt;p&gt;To jump to WSL mode, simply type the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ubuntu&lt;/code&gt; command in the terminal.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Check WSL version:&lt;/strong&gt;&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;gt; wsl --list --verbose
+
+  NAME      STATE           VERSION
+* Ubuntu    Running         2
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;strong&gt;Check ubuntu version:&lt;/strong&gt;&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;gt; ubuntu
+
+$ lsb_release -a
+
+No LSB modules are available.
+Distributor ID: Ubuntu
+Description:    Ubuntu 20.04 LTS
+Release:        20.04
+Codename:       focal
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Cool. We have, at the time of writing, the latest LTS version of Ubuntu (end of life April 2030).&lt;/p&gt;
+
+&lt;h2 id=&quot;zsh&quot;&gt;ZSH&lt;/h2&gt;
+
+&lt;p&gt;I like to use ZSH with &lt;a href=&quot;https://ohmyz.sh&quot;&gt;oh-my-zsh&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;In WSL run:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;apt &lt;span class=&quot;nb&quot;&gt;install &lt;/span&gt;zsh
+
+&lt;span class=&quot;c&quot;&gt;# Get the latest instructions at https://ohmyz.sh/#install &lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;sh &lt;span class=&quot;nt&quot;&gt;-c&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;$(&lt;/span&gt;curl &lt;span class=&quot;nt&quot;&gt;-fsSL&lt;/span&gt; https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh&lt;span class=&quot;si&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;You’ll be asked if you want to use ZSH by default, and you should be good to go.&lt;/p&gt;
+
+&lt;h2 id=&quot;brew-for-linux&quot;&gt;Brew for Linux&lt;/h2&gt;
+
+&lt;p&gt;For a dev environment, I usually want to have a very recent version of a package (latest Go, PHP, etc), with the possibility to install multiple versions at the same time.&lt;/p&gt;
+
+&lt;p&gt;Unfortunately the Ubuntu package manager usually lags a couple of versions behind the latest software releases.&lt;/p&gt;
+
+&lt;p&gt;For my dev dependencies, I had a good experience using Brew on a Mac at work. 
+&lt;a href=&quot;https://docs.brew.sh/Homebrew-on-Linux&quot;&gt;Brew also exists for Linux&lt;/a&gt;. I decided to give it a try.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# Get the latest instructions at https://brew.sh&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;/bin/bash &lt;span class=&quot;nt&quot;&gt;-c&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;$(&lt;/span&gt;curl &lt;span class=&quot;nt&quot;&gt;-fsSL&lt;/span&gt; https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh&lt;span class=&quot;si&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;# After the installation you should be asked to run the following commands&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'eval &quot;$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)&quot;'&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&amp;gt;&lt;/span&gt; ~/.zprofile
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;eval&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;$(&lt;/span&gt;/home/linuxbrew/.linuxbrew/bin/brew shellenv&lt;span class=&quot;si&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;apt-get &lt;span class=&quot;nb&quot;&gt;install &lt;/span&gt;build-essential
+
+&lt;span class=&quot;c&quot;&gt;# Recommended: &lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;brew &lt;span class=&quot;nb&quot;&gt;install &lt;/span&gt;gcc
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;golang&quot;&gt;Golang&lt;/h2&gt;
+
+&lt;p&gt;I am installing &lt;a href=&quot;https://go.dev&quot;&gt;Golang&lt;/a&gt; with &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;brew&lt;/code&gt;.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;brew &lt;span class=&quot;nb&quot;&gt;install &lt;/span&gt;go
+
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;go version
+go version go1.17.6 linux/amd64
+
+&lt;span class=&quot;c&quot;&gt;# Where is go installed?&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# It will be useful to know when setting up an IDE such as Goland&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# Here GOROOT = /home/linuxbrew/Cellar/go/1.17.6&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;ls&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-l&lt;/span&gt; &lt;span class=&quot;si&quot;&gt;$(&lt;/span&gt;which go&lt;span class=&quot;si&quot;&gt;)&lt;/span&gt;
+lrwxrwxrwx 1 leward leward 26 Feb  4 23:58 /home/linuxbrew/.linuxbrew/bin/go -&amp;gt; ../Cellar/go/1.17.6/bin/go
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;WSL paths in ny IDE (Goland) will look like: &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;\\wsl$\Ubuntu\home\leward\projects\go-play&lt;/code&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;docker&quot;&gt;Docker&lt;/h2&gt;
+
+&lt;p&gt;Since we have installed and enabled the Windows Subsystem for Linux (WSL - version 2), we can also use the &lt;a href=&quot;https://docs.docker.com/desktop/windows/wsl/&quot;&gt;Docker Desktop WSL 2 backend&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;Since we installed WSL 2, all should be setup to use the WSL 2 backend by default.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/2022-02-05-wsl-windows11-setup/docker-wsl2-bakend.png&quot; alt=&quot;Use the WSL 2 based engine&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;One nice thing of using the WSL 2 based engine is that resource management is handled by Windows. Unlike Docker for Mac where you need to setup and properly size the VM used for docker.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/2022-02-05-wsl-windows11-setup/docker-wsl2-resources.png&quot; alt=&quot;With the WSL 2 backend, Windows is managing the resources&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Let’s try the Docker installation.&lt;/p&gt;
+
+&lt;p&gt;Run from the Windows terminal: &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;docker run -d -p 80:80 docker/getting-started&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;The cool thing is that it will also work when using the docker command from a WSL terminal.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/2022-02-05-wsl-windows11-setup/docker-wsl2-in-ubuntu.png&quot; alt=&quot;Docker commands works from the Windows terminal, but also the WSL terminal&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;closing-thoughts&quot;&gt;Closing thoughts&lt;/h2&gt;
+
+&lt;p&gt;It ain’t much but this setup helps me get started quickly on Windows. It’s been a couple of years I did not do any programming from a Windows machine and seeing some of the improvements made recently is refreshing. The Docker experience is even better than MacOS.&lt;/p&gt;
+
+&lt;p&gt;I still prefer my old Pop_OS! setup as a development environment. But I am not - yet - frustrated by my Windows installation.&lt;/p&gt;
+
+&lt;p&gt;Also I have a Logitech Camera that works with Windows Hello. This is also something I really got to enjoy. You sit, and the computer recognizes you.&lt;/p&gt;
+</description>
+        <pubDate>Sun, 06 Feb 2022 07:30:00 +0800</pubDate>
+        <link>http://yourdomain.com/2022/02/06/wsl-setup-windows-11-go-development.html</link>
+        <guid isPermaLink="true">http://yourdomain.com/2022/02/06/wsl-setup-windows-11-go-development.html</guid>
+        
+        
+      </item>
     
       <item>
         <title>JSON Editor with RichTextFX (part 2)</title>
@@ -1288,321 +1421,6 @@ Like for java Beans, the concept of JavaFX Bean is a convention:&lt;/p&gt;
         <pubDate>Sun, 15 Nov 2020 10:47:00 +0800</pubDate>
         <link>http://yourdomain.com/2020/11/15/new-project-json-schema-app.html</link>
         <guid isPermaLink="true">http://yourdomain.com/2020/11/15/new-project-json-schema-app.html</guid>
-        
-        
-        <category>100-days-javafx</category>
-        
-      </item>
-    
-      <item>
-        <title>Build a JavaFX native executable with FXML</title>
-        <description>&lt;p&gt;&lt;a href=&quot;/2020/10/19/native-gui-app-with-javafx.html&quot;&gt;So far&lt;/a&gt; we were able to build a native executable for our Java application using the &lt;a href=&quot;https://docs.gluonhq.com/client/&quot;&gt;Client Maven Plugin from Gluon&lt;/a&gt;. We built the UI using Java code only. What if we want to make use of more “dynamic” features such as FXML?&lt;/p&gt;
-
-&lt;p&gt;We will also cover the shortcomings you may face when using FXML with the Java Module System.&lt;/p&gt;
-
-&lt;!--more--&gt;
-
-&lt;h1 id=&quot;preparation&quot;&gt;Preparation&lt;/h1&gt;
-
-&lt;p&gt;If you don’t have one already, create a resources folder in your Maven project:&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;cp&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-r&lt;/span&gt; hellofx hellofxml
-&lt;span class=&quot;nb&quot;&gt;cd &lt;/span&gt;hellofxml
-&lt;span class=&quot;nb&quot;&gt;mkdir&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-p&lt;/span&gt; src/main/resources/
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;In order to use FXML we will need to &lt;strong&gt;add dependencies&lt;/strong&gt; to:&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;Our Maven Project (pom.xml)&lt;/li&gt;
-  &lt;li&gt;Our Java Module (module-info.java)&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;div class=&quot;language-xml highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;&amp;lt;!-- pom.xml --&amp;gt;&lt;/span&gt;
-
-&lt;span class=&quot;nt&quot;&gt;&amp;lt;properties&amp;gt;&lt;/span&gt;
-  &lt;span class=&quot;nt&quot;&gt;&amp;lt;javafx.version&amp;gt;&lt;/span&gt;15&lt;span class=&quot;nt&quot;&gt;&amp;lt;/javafx.version&amp;gt;&lt;/span&gt;
-&lt;span class=&quot;nt&quot;&gt;&amp;lt;/properties&amp;gt;&lt;/span&gt;
-
-&lt;span class=&quot;nt&quot;&gt;&amp;lt;dependencies&amp;gt;&lt;/span&gt;
-  &lt;span class=&quot;nt&quot;&gt;&amp;lt;dependency&amp;gt;&lt;/span&gt;
-    &lt;span class=&quot;nt&quot;&gt;&amp;lt;groupId&amp;gt;&lt;/span&gt;org.openjfx&lt;span class=&quot;nt&quot;&gt;&amp;lt;/groupId&amp;gt;&lt;/span&gt;
-    &lt;span class=&quot;nt&quot;&gt;&amp;lt;artifactId&amp;gt;&lt;/span&gt;javafx-controls&lt;span class=&quot;nt&quot;&gt;&amp;lt;/artifactId&amp;gt;&lt;/span&gt;
-    &lt;span class=&quot;nt&quot;&gt;&amp;lt;version&amp;gt;&lt;/span&gt;${javafx.version}&lt;span class=&quot;nt&quot;&gt;&amp;lt;/version&amp;gt;&lt;/span&gt;
-  &lt;span class=&quot;nt&quot;&gt;&amp;lt;/dependency&amp;gt;&lt;/span&gt;
-  &lt;span class=&quot;nt&quot;&gt;&amp;lt;dependency&amp;gt;&lt;/span&gt;
-    &lt;span class=&quot;nt&quot;&gt;&amp;lt;groupId&amp;gt;&lt;/span&gt;org.openjfx&lt;span class=&quot;nt&quot;&gt;&amp;lt;/groupId&amp;gt;&lt;/span&gt;
-    &lt;span class=&quot;nt&quot;&gt;&amp;lt;artifactId&amp;gt;&lt;/span&gt;javafx-fxml&lt;span class=&quot;nt&quot;&gt;&amp;lt;/artifactId&amp;gt;&lt;/span&gt;
-    &lt;span class=&quot;nt&quot;&gt;&amp;lt;version&amp;gt;&lt;/span&gt;${javafx.version}&lt;span class=&quot;nt&quot;&gt;&amp;lt;/version&amp;gt;&lt;/span&gt;
-  &lt;span class=&quot;nt&quot;&gt;&amp;lt;/dependency&amp;gt;&lt;/span&gt;
-&lt;span class=&quot;nt&quot;&gt;&amp;lt;/dependencies&amp;gt;&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;// src/main/java/module-info.java&lt;/span&gt;
-
-&lt;span class=&quot;n&quot;&gt;module&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;eu&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;leward&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;hellofxml&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;requires&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;javafx&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;controls&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;requires&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;javafx&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;fxml&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-
-    &lt;span class=&quot;n&quot;&gt;opens&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;eu&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;leward&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;hellofxml&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;to&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;javafx&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;graphics&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h1 id=&quot;fxml&quot;&gt;FXML&lt;/h1&gt;
-
-&lt;p&gt;&lt;strong&gt;FXML is a markup language derivative from XML used to describe User Interfaces for JavaFX.&lt;/strong&gt; It is similar to:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;XAML in .Net&lt;/li&gt;
-  &lt;li&gt;XML Layouts for Android&lt;/li&gt;
-  &lt;li&gt;HTML for the web (to some extent: HTML is less strict than XML regarding the validity of the markup)&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;Consider the following UI &lt;a href=&quot;/2020/10/19/native-gui-app-with-javafx.html&quot;&gt;we built previously&lt;/a&gt;:&lt;/p&gt;
-
-&lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;HelloFXML&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;extends&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Application&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-    &lt;span class=&quot;nd&quot;&gt;@Override&lt;/span&gt;
-    &lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;start&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;Stage&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;stage&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-        &lt;span class=&quot;nc&quot;&gt;String&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;javaVersion&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;System&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;getProperty&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;java.version&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
-        &lt;span class=&quot;nc&quot;&gt;String&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;javafxVersion&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;System&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;getProperty&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;javafx.version&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
-        &lt;span class=&quot;nc&quot;&gt;Label&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;l&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Label&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Hello, JavaFX &quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;javafxVersion&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;, running on Java &quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;javaVersion&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;.&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
-        &lt;span class=&quot;nc&quot;&gt;Scene&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;scene&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Scene&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;StackPane&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;l&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;),&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;640&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;480&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
-        &lt;span class=&quot;n&quot;&gt;stage&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;setScene&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;scene&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
-        &lt;span class=&quot;n&quot;&gt;stage&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;show&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
-    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-
-    &lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;main&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[]&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;args&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-        &lt;span class=&quot;n&quot;&gt;launch&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
-    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;With FXML, defining the UI looks like this:&lt;/p&gt;
-
-&lt;div class=&quot;language-xml highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;&amp;lt;!-- An FXML file is an XML file --&amp;gt;&lt;/span&gt;
-&lt;span class=&quot;cp&quot;&gt;&amp;lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&amp;gt;&lt;/span&gt;
-
-&lt;span class=&quot;c&quot;&gt;&amp;lt;!-- Imports are like Java Import, they allow you use classes without
-having to specify there fully qualified name.
-Here, the imports were auto-generated by my IDE (IntelliJ). --&amp;gt;&lt;/span&gt;
-&lt;span class=&quot;cp&quot;&gt;&amp;lt;?import java.lang.*?&amp;gt;&lt;/span&gt;
-&lt;span class=&quot;cp&quot;&gt;&amp;lt;?import java.util.*?&amp;gt;&lt;/span&gt;
-&lt;span class=&quot;cp&quot;&gt;&amp;lt;?import javafx.scene.*?&amp;gt;&lt;/span&gt;
-&lt;span class=&quot;cp&quot;&gt;&amp;lt;?import javafx.scene.control.*?&amp;gt;&lt;/span&gt;
-&lt;span class=&quot;cp&quot;&gt;&amp;lt;?import javafx.scene.layout.*?&amp;gt;&lt;/span&gt;
-
-&lt;span class=&quot;c&quot;&gt;&amp;lt;!-- Stack Pane is the root node --&amp;gt;&lt;/span&gt;
-&lt;span class=&quot;nt&quot;&gt;&amp;lt;StackPane&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;xmlns=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;http://javafx.com/javafx&quot;&lt;/span&gt;
-           &lt;span class=&quot;na&quot;&gt;xmlns:fx=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;http://javafx.com/fxml&quot;&lt;/span&gt;
-           &lt;span class=&quot;na&quot;&gt;prefWidth=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;640.0&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;prefHeight=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;480.0&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
-
-    &lt;span class=&quot;nt&quot;&gt;&amp;lt;Label&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;text=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Hello ${er} JavaFX!&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;/&amp;gt;&lt;/span&gt;
-
-&lt;span class=&quot;nt&quot;&gt;&amp;lt;/StackPane&amp;gt;&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Create this file as &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;src/main/resources/hello.fxml&lt;/code&gt;.&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;To use the FXML file you will need to use a &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;FXMLLoader&lt;/code&gt;.&lt;/strong&gt; Its job is to load a FXML resource and use in Java code as a regular JavaFX UI Node. The type you will be loading is the top element in the FXML file. In our example, it is a &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;StackPane&lt;/code&gt;.&lt;/p&gt;
-
-&lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;HelloFXML&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;extends&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Application&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-    &lt;span class=&quot;nd&quot;&gt;@Override&lt;/span&gt;
-    &lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;start&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;Stage&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;stage&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;throws&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;IOException&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-        &lt;span class=&quot;c1&quot;&gt;// Load the FXML&lt;/span&gt;
-        &lt;span class=&quot;no&quot;&gt;URL&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;fxmlResource&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;HelloFXML&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;getResource&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;/hello.fxml&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
-        &lt;span class=&quot;nc&quot;&gt;FXMLLoader&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;loader&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;FXMLLoader&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;fxmlResource&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
-        &lt;span class=&quot;nc&quot;&gt;StackPane&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pane&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;loader&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;load&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
-
-        &lt;span class=&quot;c1&quot;&gt;// Assign the loaded view to the stage and show it&lt;/span&gt;
-        &lt;span class=&quot;nc&quot;&gt;Scene&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;scene&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Scene&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;pane&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
-        &lt;span class=&quot;n&quot;&gt;stage&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;setScene&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;scene&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
-        &lt;span class=&quot;n&quot;&gt;stage&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;show&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
-
-    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-
-    &lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;main&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[]&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;args&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-        &lt;span class=&quot;n&quot;&gt;launch&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
-    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;And running it a nice “Hello JavaFX” window:&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/2020-11-08-build-favafx-native-executable-fxml/example-1.png&quot; alt=&quot;Hello World JavaFX App&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;However, our text is no longer dynamic: it does not show which version of Java and JavaFX we are running.&lt;/p&gt;
-
-&lt;p&gt;That is the main drawback a FXML: its static nature. However there are ways to make it more dynamic while keeping a static markup.&lt;/p&gt;
-
-&lt;h1 id=&quot;introducing-a-controller&quot;&gt;Introducing a Controller&lt;/h1&gt;
-
-&lt;p&gt;You can link together the FXML with some Java Code by setting a Controller on your root node:&lt;/p&gt;
-
-&lt;div class=&quot;language-xml highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nt&quot;&gt;&amp;lt;StackPane&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;xmlns=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;http://javafx.com/javafx&quot;&lt;/span&gt;
-           &lt;span class=&quot;na&quot;&gt;xmlns:fx=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;http://javafx.com/fxml&quot;&lt;/span&gt;
-           &lt;span class=&quot;na&quot;&gt;fx:controller=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;eu.leward.hellofxml.HelloController&quot;&lt;/span&gt;
-           &lt;span class=&quot;na&quot;&gt;prefWidth=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;640.0&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;prefHeight=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;480.0&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
-
-    &lt;span class=&quot;nt&quot;&gt;&amp;lt;Label&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;text=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Hello JavaFX!&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;/&amp;gt;&lt;/span&gt;
-
-&lt;span class=&quot;nt&quot;&gt;&amp;lt;/StackPane&amp;gt;&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;With an empty &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;HelloController&lt;/code&gt; class:&lt;/p&gt;
-
-&lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kn&quot;&gt;package&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;eu.leward.hellofxml&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-
-&lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;HelloController&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Trying to run the application now will result in Illegal Access Exception.&lt;/p&gt;
-
-&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Caused by: java.lang.IllegalAccessException: 
-
-class javafx.fxml.FXMLLoader$ValueElement (in module javafx.fxml) 
-  cannot access class eu.leward.hellofxml.HelloController (in module eu.leward.hellofxml) 
-  because module eu.leward.hellofxml does not export eu.leward.hellofxml to module javafx.fxml
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Because we use Java module system, we need to allow the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;javafx.fxml&lt;/code&gt; to use our classes.&lt;/p&gt;
-
-&lt;p&gt;This can be fixed by adding an &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;exports&lt;/code&gt; instruction in the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;[module-info.java](http://module-info.java)&lt;/code&gt; file:&lt;/p&gt;
-
-&lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;// src/main/java/module-info.java&lt;/span&gt;
-
-&lt;span class=&quot;n&quot;&gt;module&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;eu&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;leward&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;hellofxml&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;requires&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;javafx&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;controls&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;requires&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;javafx&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;fxml&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-
-    &lt;span class=&quot;n&quot;&gt;opens&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;eu&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;leward&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;hellofxml&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;to&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;javafx&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;graphics&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;exports&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;eu&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;leward&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;hellofxml&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;to&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;javafx&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;fxml&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h1 id=&quot;using-bindings-with-the-controller&quot;&gt;Using Bindings with the Controller&lt;/h1&gt;
-
-&lt;p&gt;We now have a controller linking our FXML root element with some Java code but this code is not doing anything for now.&lt;/p&gt;
-
-&lt;p&gt;Let’s replicate the example we had before switching to FXML.&lt;/p&gt;
-
-&lt;p&gt;From the controller, we are able to interact with UI elements in the FXML. In order to do so:&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;the elements must have an identifier, an &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;fx:id&lt;/code&gt; attribute&lt;/li&gt;
-  &lt;li&gt;the controller must have a binding on that identifier using an attribute annotated with &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;@FXML&lt;/code&gt;. The attribute have to match the ID used in the FXML.&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;div class=&quot;language-xml highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nt&quot;&gt;&amp;lt;Label&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;fx:id=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;label&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;text=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Hello JavaFX!&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;/&amp;gt;&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kn&quot;&gt;package&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;eu.leward.hellofxml&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-
-&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;javafx.fxml.FXML&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;javafx.scene.control.Label&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-
-&lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;HelloController&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-    &lt;span class=&quot;nd&quot;&gt;@FXML&lt;/span&gt;
-    &lt;span class=&quot;kd&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Label&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;label&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Now, you should be running into another error running this snipet:&lt;/p&gt;
-
-&lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nc&quot;&gt;Unable&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;to&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;make&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;field&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;javafx&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;scene&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;control&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;Label&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;eu&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;leward&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;hellofxml&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;HelloController&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;label&lt;/span&gt; &lt;span class=&quot;nl&quot;&gt;accessible:&lt;/span&gt; 
-&lt;span class=&quot;n&quot;&gt;module&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;eu&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;leward&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;hellofxml&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;does&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;not&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;opens eu.leward.hellofxml&quot;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;to&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;module&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;javafx&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;fxml&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Before we are using private attributes, the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;javafx.fxml&lt;/code&gt; module needs to be able perform reflection access on our code. Using &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;exports&lt;/code&gt; in &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;module-info.java&lt;/code&gt; is not enough, we need to use &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;open&lt;/code&gt; instead:&lt;/p&gt;
-
-&lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;// src/main/java/module-info.java&lt;/span&gt;
-
-&lt;span class=&quot;n&quot;&gt;module&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;eu&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;leward&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;hellofxml&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;requires&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;javafx&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;controls&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;requires&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;javafx&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;fxml&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-
-    &lt;span class=&quot;n&quot;&gt;opens&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;eu&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;leward&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;hellofxml&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;to&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;javafx&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;graphics&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;javafx&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;fxml&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;In JavaFX you can define an &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;initialize()&lt;/code&gt; method annotated with &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;@FXML&lt;/code&gt;. It will get executing when initializing the controller. This is called after the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;@FXML&lt;/code&gt; bindings are applied, meaning you can interact with the UI nodes in this method.&lt;/p&gt;
-
-&lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kn&quot;&gt;package&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;eu.leward.hellofxml&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-
-&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;javafx.fxml.FXML&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;javafx.scene.control.Label&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-
-&lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;HelloController&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-    &lt;span class=&quot;nd&quot;&gt;@FXML&lt;/span&gt;
-    &lt;span class=&quot;kd&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Label&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;label&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-
-    &lt;span class=&quot;nd&quot;&gt;@FXML&lt;/span&gt;
-    &lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;initialize&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt;
-    &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-        &lt;span class=&quot;nc&quot;&gt;String&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;javaVersion&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;System&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;getProperty&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;java.version&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
-        &lt;span class=&quot;nc&quot;&gt;String&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;javafxVersion&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;System&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;getProperty&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;javafx.version&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
-        &lt;span class=&quot;n&quot;&gt;label&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;setText&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Hello, JavaFX &quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;javafxVersion&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;, running on Java &quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;javaVersion&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;.&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
-    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/2020-11-08-build-favafx-native-executable-fxml/example-2.png&quot; alt=&quot;Hello World JavaFX App&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;The we have the text from the original example. The example is simple, but it is good introduction to the concept of FXML markup and controller.&lt;/p&gt;
-
-&lt;h1 id=&quot;compile-to-a-native-binary&quot;&gt;Compile to a native binary&lt;/h1&gt;
-
-&lt;p&gt;Let’s now try to compile the code as a native binary with &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;mvn client:build&lt;/code&gt;…&lt;/p&gt;
-
-&lt;p&gt;It takes some time but the builds looks good:&lt;/p&gt;
-
-&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;[INFO] ------------------------------------------------------------------------
-[INFO] BUILD SUCCESS
-[INFO] ------------------------------------------------------------------------
-[INFO] Total time:  03:56 min
-[INFO] Finished at: 2020-11-08T00:21:46-05:00
-[INFO] ------------------------------------------------------------------------
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;However, running the application, we have a nasty &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ClassNotFoundException&lt;/code&gt;.&lt;/p&gt;
-
-&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;target/client/x86_64-linux/hellofx
-
-...
-
-Exception in thread &quot;main&quot; java.lang.RuntimeException: Exception in Application start method
-(...)
-Caused by: java.lang.ClassNotFoundException: eu.leward.hellofxml.HelloController
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;We are getting this error, because &lt;strong&gt;the compiler only keeps the classes which it knows are effectively used&lt;/strong&gt;. However because the controller is only used in an .fxml file, the compiler thinks &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;HelloController&lt;/code&gt; is an orphaned class and therefore should be ignored.&lt;/p&gt;
-
-&lt;p&gt;Fortunately the gluon plugin has a configuration option for that: &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;reflectionList&lt;/code&gt;. We can to that list the classes we want to compiler to keep.&lt;/p&gt;
-
-&lt;div class=&quot;language-xml highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;&amp;lt;!-- pom.xml --&amp;gt;&lt;/span&gt;
-
-&lt;span class=&quot;nt&quot;&gt;&amp;lt;plugin&amp;gt;&lt;/span&gt;
-  &lt;span class=&quot;nt&quot;&gt;&amp;lt;groupId&amp;gt;&lt;/span&gt;com.gluonhq&lt;span class=&quot;nt&quot;&gt;&amp;lt;/groupId&amp;gt;&lt;/span&gt;
-  &lt;span class=&quot;nt&quot;&gt;&amp;lt;artifactId&amp;gt;&lt;/span&gt;client-maven-plugin&lt;span class=&quot;nt&quot;&gt;&amp;lt;/artifactId&amp;gt;&lt;/span&gt;
-  &lt;span class=&quot;nt&quot;&gt;&amp;lt;version&amp;gt;&lt;/span&gt;0.1.31&lt;span class=&quot;nt&quot;&gt;&amp;lt;/version&amp;gt;&lt;/span&gt;
-  &lt;span class=&quot;nt&quot;&gt;&amp;lt;configuration&amp;gt;&lt;/span&gt;
-    &lt;span class=&quot;nt&quot;&gt;&amp;lt;mainClass&amp;gt;&lt;/span&gt;eu.leward.hellofxml.HelloFXML&lt;span class=&quot;nt&quot;&gt;&amp;lt;/mainClass&amp;gt;&lt;/span&gt;
-    &lt;span class=&quot;nt&quot;&gt;&amp;lt;reflectionList&amp;gt;&lt;/span&gt;
-      &lt;span class=&quot;nt&quot;&gt;&amp;lt;list&amp;gt;&lt;/span&gt;eu.leward.hellofxml.HelloController&lt;span class=&quot;nt&quot;&gt;&amp;lt;/list&amp;gt;&lt;/span&gt;
-    &lt;span class=&quot;nt&quot;&gt;&amp;lt;/reflectionList&amp;gt;&lt;/span&gt;
-  &lt;span class=&quot;nt&quot;&gt;&amp;lt;/configuration&amp;gt;&lt;/span&gt;
-&lt;span class=&quot;nt&quot;&gt;&amp;lt;/plugin&amp;gt;&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Re-compile and run…&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/2020-11-08-build-favafx-native-executable-fxml/example-3.png&quot; alt=&quot;Hello World JavaFX App&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Hurray, it’s working just how we want it 🙂!&lt;/p&gt;
-</description>
-        <pubDate>Sun, 08 Nov 2020 13:30:00 +0800</pubDate>
-        <link>http://yourdomain.com/2020/11/08/build-favafx-native-executable-fxml.html</link>
-        <guid isPermaLink="true">http://yourdomain.com/2020/11/08/build-favafx-native-executable-fxml.html</guid>
         
         
         <category>100-days-javafx</category>
